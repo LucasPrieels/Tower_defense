@@ -1,9 +1,8 @@
 package Model;
 
 public abstract class Tower {
-    private int curr_level;
     private Asteroid asteroid;
-    private static int[] price_upgrade = {200, 500};
+    private int curr_level;
 
     protected Tower(Asteroid asteroid){
         this.asteroid = asteroid;
@@ -14,8 +13,9 @@ public abstract class Tower {
         return curr_level;
     }
 
-    public int get_price_upgrade(int curr_level){
-        return price_upgrade[curr_level];
+    public void increment_curr_level(){
+        curr_level ++;
     }
+
     public abstract boolean upgrade();
 }
