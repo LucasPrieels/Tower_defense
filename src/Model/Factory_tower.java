@@ -7,7 +7,7 @@ public class Factory_tower extends Tower implements Runnable{
     private boolean money_produced = false;
 
     public Factory_tower(Asteroid asteroid) {
-        super(asteroid, period, price_upgrade, max_level);
+        super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
     }
 
     public void run(){
@@ -25,13 +25,5 @@ public class Factory_tower extends Tower implements Runnable{
     public int get_money() {
         money_produced = false;
         return prod_money[get_curr_level()];
-    }
-
-    public boolean upgrade() {
-        if (get_curr_level() != max_level && Game.pay(price_upgrade[get_curr_level()])) {
-            increment_curr_level();
-            return true;
-        }
-        return false;
     }
 }

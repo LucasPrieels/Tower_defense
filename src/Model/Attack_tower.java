@@ -5,25 +5,18 @@ import java.util.ArrayList;
 public abstract class Attack_tower extends Tower implements Runnable{
     private double[] range;
     private int[] power,  npc_destroyed_needed;
-    private int npc_destroyed;
     private boolean shot = false;
+    private ArrayList<Munition> munitions;
 
     protected Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
-        super(asteroid, period, price_upgrade, max_level);
+        super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
         this.range = range;
         this.power = power;
         this.npc_destroyed_needed = npc_destroyed_needed;
-        npc_destroyed = 0;
     }
 
-    //void shoot();
-
-    public boolean upgrade() {
-        if (get_curr_level() != get_max_level() && npc_destroyed >= npc_destroyed_needed[get_curr_level()] && Game.pay(get_price_upgrade())) {
-            increment_curr_level();
-            return true;
-        }
-        return false;
+    public void add_munition(Munition munition){
+        munitions.add(munition);
     }
 
     public boolean npc_in_tower_area(NPC npc){
