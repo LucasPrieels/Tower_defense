@@ -41,14 +41,10 @@ public abstract class Tower {
     }
 
     public boolean upgrade() {
-        if (get_curr_level() != get_max_level() && get_npc_destroyed() >= npc_destroyed_needed[get_curr_level()] && Game.pay(get_price_upgrade())) {
+        if (get_curr_level() != get_max_level() && Game.get_npc_destroyed() >= npc_destroyed_needed[get_curr_level()] && Game.pay(get_price_upgrade())) {
             increment_curr_level();
             return true;
         }
         return false;
-    }
-
-    public int get_npc_destroyed() {
-        return get_asteroid().get_board().get_npc_destroyed();
     }
 }
