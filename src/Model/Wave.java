@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Wave implement Runnable{
+public class Wave implements Runnable{
     int health_npc;
     int speed_npc;
     float time; //time since beginning of the wave
