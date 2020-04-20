@@ -15,6 +15,23 @@ public class Asteroid {
         return pos_y;
     }
 
+    //private boolean is_occupied(){
+    //    boolean res = false;
+    //    if(){
+    //        res = true;
+    //    }
+    //    return res;
+    }
+
+    }
+
+    private void occupy(Tower tower){
+        if(boolean occupated == false){
+
+            }
+        }
+    }
+
 
 
 }
