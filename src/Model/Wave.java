@@ -2,23 +2,21 @@ package Model;
 
 import java.util.ArrayList;
 
-public class Wave implement Runnable{
-    int health_npc;
-    int speed_npc;
-    float time; //time since beginning of the wave
-    float max_time = 30000; //durée vague
-    private ArrayList<Integer> time_small_npc;
-    private ArrayList<Integer> time_med_npc;
-    private ArrayList<Integer> time_big_npc;
+public class Wave implements Runnable{
+    private int health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc,time;
+    private ArrayList<Integer> time_small_npc, time_med_npc, time_big_npc;
     private ArrayList<Small_NPC> small_npcs_list;
     private ArrayList<Medium_NPC> med_npcs_list;
     private ArrayList<Big_NPC> big_npcs_list;
-    private Thread t;
     Map map;
 
-    public Wave(int health_npc, int speed_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer>  time_med_npc, ArrayList<Integer> time_big_npc){
-        this.health_npc = health_npc;
-        this.speed_npc = speed_npc;
+    public Wave(int health_small_npc, int speed_small_npc, int health_med_npc, int speed_med_npc, int health_big_npc, int speed_big_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer>  time_med_npc, ArrayList<Integer> time_big_npc){
+        this.health_small_npc = health_small_npc;
+        this.speed_small_npc = speed_small_npc;
+        this.health_med_npc = health_med_npc;
+        this.speed_med_npc = speed_med_npc;
+        this.health_big_npc = health_big_npc;
+        this.speed_big_npc = speed_big_npc;
         this.time_small_npc = time_small_npc;
         this.time_med_npc = time_med_npc;
         this.time_big_npc = time_big_npc;
@@ -28,7 +26,6 @@ public class Wave implement Runnable{
         //ArrayList<Integer> time_small_npc = new ArrayList<Integer>();
         //ArrayList<Integer> time_med_npc = new ArrayList<Integer>();
         //ArrayList<Integer> time_big_npc = new ArrayList<Integer>();
-        t = new Thread(this);
 
 
 
@@ -46,49 +43,57 @@ public class Wave implement Runnable{
     }
 
     public void run(){
-        try{
-            time = 0;
-            while(time < max_time){
-                time++;
+        while (true){
+            try{
                 Thread.sleep(1000);
+            } catch(InterruptedException e){
+                System.out.println("Erreur dans le sleep de la classe Wave");
             }
-        }catch(Exception e){};
+            time++;
+            if (time == Level.get_time_wave(Game.get_curr_wave())){
+                return; // Wave finished
+            }
+            if (Game.get_score() < 0){
+                Game.game_over();
+                return;
+            }
+        }
     }
 
     private void add_npcs_easy_wave(){
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
     }
 
     private void add_npcs_medium_wave(){
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
     }
 
     private void add_npcs_difficult_wave(){
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        small_npcs_list.add(new Small_NPC(0,0,health_small_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        med_npcs_list.add(new Medium_NPC(0,0,health_med_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
+        big_npcs_list.add(new Big_NPC(0,0,health_big_npc));
     }
 
     private void update(int wave_type){
