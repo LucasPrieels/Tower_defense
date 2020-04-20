@@ -14,4 +14,7 @@ public class Asteroid {
     public double get_pos_y(){
         return pos_y;
     }
+
+
+
 }

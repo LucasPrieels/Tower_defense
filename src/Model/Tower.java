@@ -16,6 +16,7 @@ public abstract class Tower {
         curr_level = 1;
     }
 
+
     public int get_curr_level(){
         return curr_level;
     }
