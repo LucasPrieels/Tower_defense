@@ -1,17 +1,31 @@
 package Model;
 
-public class NPC {
+public class NPC implements Runnable {
     protected double pos_x, pos_y;
     protected int health;
+    protected Thread t;
+    protected int time;
 
     protected NPC(double pos_x, double pos_y, int health){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.health = health;
+        t = new Thread(this);
+        t.start();
     }
 
     public double get_pos_x(){ return pos_x; }
     public double get_pos_y(){ return pos_y; }
+
+    public void run() {
+        try {
+            time = 0;
+            while (true) {
+                time++;
+                Thread.sleep(1000);
+            }
+        } catch (Exception e) {};
+    }
 
     private boolean is_shot(Munition munition){
         boolean res = false;
