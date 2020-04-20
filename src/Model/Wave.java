@@ -7,27 +7,24 @@ public class Wave implements Runnable{
     int speed_npc;
     float time; //time since beginning of the wave
     float max_time = 30000; //durée vague
-    private ArrayList<Integer> time_small_npc;
-    private ArrayList<Integer> time_med_npc;
-    private ArrayList<Integer> time_big_npc;
+    private float dt_small_npc;
+    private float dt_med_npc;
+    private float dt_big_npc;
     private ArrayList<Small_NPC> small_npcs_list;
     private ArrayList<Medium_NPC> med_npcs_list;
     private ArrayList<Big_NPC> big_npcs_list;
     private Thread t;
     Map map;
 
-    public Wave(int health_npc, int speed_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer>  time_med_npc, ArrayList<Integer> time_big_npc){
+    public Wave(int health_npc, int speed_npc, float dt_small_npc, float dt_med_npc, float dt_big_npc){
         this.health_npc = health_npc;
         this.speed_npc = speed_npc;
-        this.time_small_npc = time_small_npc;
-        this.time_med_npc = time_med_npc;
-        this.time_big_npc = time_big_npc;
+        this.dt_small_npc = dt_small_npc;
+        this.dt_med_npc = dt_med_npc;
+        this.dt_big_npc = dt_big_npc;
         ArrayList<Small_NPC> small_npcs_list = new ArrayList<Small_NPC>();
         ArrayList<Medium_NPC> med_npcs_list = new ArrayList<Medium_NPC>();
         ArrayList<Big_NPC> big_npcs_list = new ArrayList<Big_NPC>();
-        //ArrayList<Integer> time_small_npc = new ArrayList<Integer>();
-        //ArrayList<Integer> time_med_npc = new ArrayList<Integer>();
-        //ArrayList<Integer> time_big_npc = new ArrayList<Integer>();
         t = new Thread(this);
 
 
@@ -55,104 +52,31 @@ public class Wave implements Runnable{
         }catch(Exception e){};
     }
 
-    private void add_npcs_easy_wave(){
+    private void create_small_npc(){
         small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
     }
 
-    private void add_npcs_medium_wave(){
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
+    private void create_med_npc() {
+        med_npcs_list.add(new Medium_NPC(0, 0, health_npc));
     }
 
-    private void add_npcs_difficult_wave(){
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        med_npcs_list.add(new Medium_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
-        big_npcs_list.add(new Big_NPC(0,0,health_npc));
+    private void create_big_npc() {
+        big_npcs_list.add(new Big_NPC(0, 0, health_npc));
     }
 
-    private void update(int wave_type){
-        if (wave_type == 1){
-            add_npcs_easy_wave();
-            for(Integer int:time_small_npc){
-                if(int==time){
-                    Small_NPC npc = small_npcs_list.get(int);
-                    map.draw(npc);
-                }
+    private void update(){
+        for(time < max_time){
+            if(time/dt_small_npc instanceof Integer){
+                create_small_npc();
+                //map.draw();
             }
-            for(Integer int:time_med_npc){
-                if(int==time){
-                    Medium_NPC npc = med_npcs_list.get(int);
-                    map.draw(npc);
-                }
+            else if(time/dt_med_npc instanceof Integer){
+                create_med_npc();
+                //map.draw();
             }
-            for(Integer int:time_big_npc){
-                if(int==time){
-                    Big_NPC npc = big_npcs_list.get(int);
-                    map.draw(npc);
-                }
-            }
-        }
-        else if (wave_type == 2) {
-            add_npcs_medium_wave();
-            for(Integer int:time_small_npc){
-                if(int==time){
-                    Small_NPC npc = small_npcs_list.get(int);
-                    map.draw(npc);
-                }
-            }
-            for(Integer int:time_med_npc){
-                if(int==time){
-                    Medium_NPC npc = med_npcs_list.get(int);
-                    map.draw(npc);
-                }
-            }
-            for(Integer int:time_big_npc){
-                if(int==time){
-                    Big_NPC npc = big_npcs_list.get(int);
-                    map.draw(npc);
-                }
-            }
-        }
-        else {
-            add_npcs_difficult_wave();
-            for(Integer int:time_small_npc){
-                if(int==time){
-                    Small_NPC npc = small_npcs_list.get(int);
-                    map.draw(npc);
-                }
-            }
-            for(Integer int:time_med_npc){
-                if(int==time){
-                    Medium_NPC npc = med_npcs_list.get(int);
-                    map.draw(npc);
-                }
-            }
-            for(Integer int:time_big_npc){
-                if(int==time){
-                    Big_NPC npc = big_npcs_list.get(int);
-                    map.draw(npc);
-                }
+            else if(time/dt_big_npc){
+                create_big_npc();
+                //map.draw();
             }
         }
 
