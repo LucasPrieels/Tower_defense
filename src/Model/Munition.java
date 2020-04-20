@@ -1,6 +1,6 @@
 package Model;
 
-public class Munition {
+public abstract class Munition {
     Tower tower;
     NPC npc;
 

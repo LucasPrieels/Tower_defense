@@ -1,8 +1,8 @@
 package Model;
 
-public class NPC {
-    protected double pos_x, pos_y;
-    protected int health;
+public abstract class NPC {
+    private double pos_x, pos_y;
+    private int health;
 
     protected NPC(double pos_x, double pos_y, int health){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
@@ -31,7 +31,8 @@ public class NPC {
 
     private void is_destroyed(){
         if(health<=0){
-            Board.remove_npc();
+            Board.remove_npc(this);
+            Game.increment_npc_destroyed();
         }
     }
 
@@ -50,4 +51,5 @@ public class NPC {
         }
     }
 
+    public abstract int get_radius();
 }

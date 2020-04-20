@@ -3,7 +3,7 @@ package Model;
 import java.util.ArrayList;
 
 public class Wave {
-    public Wave(int health_npc, int speed_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer>  time_med_npc, ArrayList<Integer> time_big_npc){
+    public Wave(int health_small_npc, int speed_small_npc, int health_med_npc, int speed_med_npc, int health_big_npc, int speed_big_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer>  time_med_npc, ArrayList<Integer> time_big_npc){
         //...
         //health_npc et speed_npc sont les santés et vitesses initiales des PNJ de la vague
         //Les trois ArrayList contiennent une liste d'entiers représentant les temps d'apparition du type respectif de PNJ
