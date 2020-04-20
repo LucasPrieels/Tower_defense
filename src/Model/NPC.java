@@ -1,6 +1,6 @@
 package Model;
 
-public class NPC implements Runnable {
+public abstract class NPC implements Runnable {
     protected double pos_x, pos_y;
     protected int health;
     protected Thread t;
@@ -45,7 +45,8 @@ public class NPC implements Runnable {
 
     private void is_destroyed(){
         if(health<=0){
-            Board.remove_npc();
+            Board.remove_npc(this);
+            Game.increment_npc_destroyed();
         }
     }
 
@@ -64,4 +65,5 @@ public class NPC implements Runnable {
         }
     }
 
+    public abstract int get_radius();
 }

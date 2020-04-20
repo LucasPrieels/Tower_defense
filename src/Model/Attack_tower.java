@@ -35,7 +35,7 @@ public abstract class Attack_tower extends Tower implements Runnable{
     }
 
     private boolean fire(){
-        ArrayList<NPC> npcs = this.get_asteroid().get_board().get_npcs();
+        ArrayList<NPC> npcs = Board.get_npcs();
         for (NPC npc: npcs){
             if (npc_in_tower_area(npc)){
                 shoot(npc);

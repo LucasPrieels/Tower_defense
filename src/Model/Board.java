@@ -10,7 +10,7 @@ public class Board {
     private static ArrayList<Tower> towers;
     private static ArrayList<ArrayList<Asteroid>> asteroids = new ArrayList<>();
     private static ArrayList<Munition> munitions;
-    private static int npc_destroyed, dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset;
+    private static int dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset;
 
     private Board(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, int proba, int max_offset, ArrayList<Path> paths){
         Board.dim_x = dim_x;
@@ -25,7 +25,6 @@ public class Board {
         Board.paths = paths; // Ne pas les créer aléatoirement car ça pourrait créer des conflits (croisements, bloquages de chemins etc)
         for (int i=0; i<dim_x; i++){ asteroids.add(new ArrayList<>());}
         create_asteroids_random();
-        npc_destroyed = 0;
     }
 
     //Singleton
@@ -49,6 +48,10 @@ public class Board {
         }
     }
 
+    public static void remove_npc(NPC npc){
+        npcs.remove(npc);
+    }
+
     public static void add_npc(NPC npc){ npcs.add(npc);}
     public static void add_tower(Tower tower){ towers.add(tower);}
     public static void add_munition(Munition munition){ munitions.add(munition);}
@@ -58,4 +61,23 @@ public class Board {
     public static ArrayList<Tower> get_towers(){ return towers;}
     public static ArrayList<ArrayList<Asteroid>> get_asteroids(){ return asteroids;}
     public static ArrayList<Munition> get_munitions(){ return munitions;}
+
+    public static int get_dim_x(){return dim_x;}
+    public static int get_dim_y(){return dim_y;}
+    public static int get_num_paths(){return paths.size();}
+    public static int get_width_path(int num_path){return paths.get(num_path).get_width();}
+    public static int get_ord_path(int num_path){return paths.get(num_path).get_ord(dim_x-1);}
+
+    public static boolean empty(int pos_x, int pos_y, int radius){
+        for (NPC npc: npcs){
+            if (distance(npc.get_pos_x(), npc.get_pos_y(), pos_x, pos_y) < radius + npc.get_radius()){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static double distance(double pos_x1, double pos_y1, int pos_x2, int pos_y2) {
+        return Math.sqrt(Math.pow(pos_x1-pos_x2, 2)+Math.pow(pos_y1-pos_y2, 2));
+    }
 }
