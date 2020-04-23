@@ -1,45 +1,49 @@
 package View;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import javafx.event.EventHandler;
+import javafx.scene.Group;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
-public class Menu extends JPanel implements ActionListener {
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-    private JFrame frame;
-    private JPanel panel;
-    private JButton start_game;
-    private JLabel title;
+public class Menu extends Parent {
 
-    public Menu(){
-        frame = new JFrame("Menu");
-        frame.setTitle("Nom du jeu");
-        frame.setSize(1920, 1080);
-        frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setContentPane(new Background());
+    private Stage theStage;
 
+    public Menu() throws FileNotFoundException {
 
-        panel = new JPanel();
-        frame.getContentPane().add(panel);
-        panel.setOpaque(false);
+        Image image = new Image(new FileInputStream("Images/menu.jpg"));
+        ImageView imageView = new ImageView(image);
 
-        start_game = new JButton("Start Game");
-        //start_game.setForeground(Color.RED);
-        //start_game.setBackground(Color.BLACK);
-        //start_game.getColorModel();
-        panel.add(start_game);
+        Button button = new Button("Start Game");
+        //je changerai la taille, position, et graphisme du bouton plus tard
+        //c'est pas très important
 
-        start_game.addActionListener(this);
+        this.getChildren().addAll(imageView,button);
 
-        frame.setVisible(true);
-    }
+        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                Stage theStage2 = new Stage();
+                Group root2 = new Group();
+                theStage2.setScene(new Scene(root2,1920,1080));
+                theStage2.show();
 
-    public void actionPerformed(ActionEvent event){
-        Object source = event.getSource();
-
-        if(source == start_game){
-            Window window = new Window();
-        }
+                View.Map map = null;
+                try {
+                    map = new View.Map();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                root2.getChildren().add(map);
+            }
+        });
     }
 }

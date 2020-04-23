@@ -1,38 +1,38 @@
 package View;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import javafx.scene.Parent;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 
-public class Map extends JPanel {
-    private Graphics2D g;
-    Image space;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-    public Map(){
-        this.setFocusable(true);
-        this.requestFocusInWindow();
+public class Map extends Parent {
+    private int level;
+
+    public Map() throws FileNotFoundException {
+        Canvas canvas = new Canvas(1920,1080);
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+
+        Image level1 = new Image(new FileInputStream("Images/level1.jpg"));
+        gc.drawImage(level1,0,0);
+
+        Image planet1 = new Image(new FileInputStream("Images/asteroid1.png"));
+        gc.drawImage(planet1,100,100);
+
+        Image planet2 = new Image(new FileInputStream("Images/asteroid2.png"));
+        gc.drawImage(planet2,700,200);
+
+        Image planet3 = new Image(new FileInputStream("Images/asteroid3.png"));
+        gc.drawImage(planet3,1100,450);
+
+        Image planet5 = new Image(new FileInputStream("Images/asteroid5.png"));
+        gc.drawImage(planet5,500,400);
+
+        Image planet6 = new Image(new FileInputStream("Images/asteroid6.png"));
+        gc.drawImage(planet6,1100,0);
+
+        this.getChildren().add(canvas);
     }
-
-    public void paint(Graphics g){
-        this.g = (Graphics2D)g;
-
-        Image asteroid1 = new ImageIcon("images/asteroid1.png").getImage();
-
-        this.space = new ImageIcon("images/level1.jpg").getImage();
-        ((Graphics2D) g).drawImage(space,0,0,null);
-
-        g.drawImage(asteroid1,100,200,80,80,null);
-
-
-
-
-    }
-
-    public void redraw(){
-        this.repaint();
-    }
-
-
 }
