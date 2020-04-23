@@ -47,8 +47,8 @@ public class Game{
         double proba = 0.5; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
 
-        Path path1 = new Path(...);
-        Path path2 = new Path(...);
+        Path path1 = new Path(/*...*/);
+        Path path2 = new Path(/*...*/);
         ArrayList<Path> paths = new ArrayList<>(List.of(path1, path2));
 
         Level.get_instance(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc);
@@ -75,38 +75,6 @@ public class Game{
 
     public static void game_over(){
         //...
-    }
-
-    private void create_npcs(){//Factory?
-        for (int i=0; i<Level.get_time_small_npc(curr_wave, time); i++){
-            int radius = Small_NPC.get_radius_static();
-            int pos_x = Board.get_dim_x()-radius;
-            int pos_y = random_pos_NPC(radius);
-            Board.add_npc(new Small_NPC(pos_x, pos_y, Level.get_health_small_npc(curr_wave)));
-        }
-        for (int i=0; i<Level.get_time_med_npc(curr_wave, time); i++){
-            int radius = Medium_NPC.get_radius_static();
-            int pos_x = Board.get_dim_x()-radius;
-            int pos_y = random_pos_NPC(radius);
-            Board.add_npc(new Medium_NPC(pos_x, pos_y, Level.get_health_med_npc(curr_wave)));
-        }
-        for (int i=0; i<Level.get_time_big_npc(curr_wave, time); i++){
-            int radius = Big_NPC.get_radius_static();
-            int pos_x = Board.get_dim_x()-radius;
-            int pos_y = random_pos_NPC(radius);
-            Board.add_npc(new Big_NPC(pos_x, pos_y, Level.get_health_big_npc(curr_wave)));
-        }
-    }
-
-    private int random_pos_NPC(int radius){
-        int num_paths, path_chosen, width, pos_y;
-        do {
-            num_paths = Board.get_num_paths();
-            path_chosen = (int) Math.round(Math.random() * num_paths);
-            width = Board.get_width_path(path_chosen)-2*radius;
-            pos_y = Board.get_ord_path(path_chosen) + (int)(Math.random()*2*width) - width;
-        } while(!Board.empty(Board.get_dim_x(), pos_y, radius));
-        return Board.get_ord_path(path_chosen);
     }
 
     public static boolean pay(int paid){

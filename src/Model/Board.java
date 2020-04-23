@@ -10,9 +10,10 @@ public class Board {
     private static ArrayList<Tower> towers;
     private static ArrayList<ArrayList<Asteroid>> asteroids = new ArrayList<>();
     private static ArrayList<Munition> munitions;
-    private static int dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset;
+    private static int dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, max_offset;
+    private static double proba;
 
-    private Board(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, int proba, int max_offset, ArrayList<Path> paths){
+    private Board(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, double proba, int max_offset, ArrayList<Path> paths){
         Board.dim_x = dim_x;
         Board.dim_y = dim_y;
         Board.margin_x = margin_x;
@@ -28,7 +29,8 @@ public class Board {
     }
 
     //Singleton
-    public static Board get_instance(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, int proba, int max_offset, ArrayList<Path> paths){
+    //Attention, le return ne sert à rien car la classe est tout le temps utilisée en static mais la fonction est utile pour initialiser les valeurs
+    public static Board get_instance(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, double proba, int max_offset, ArrayList<Path> paths){
         if (Board.instance==null){Board.instance = new Board(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);}
         return Board.instance;
     }

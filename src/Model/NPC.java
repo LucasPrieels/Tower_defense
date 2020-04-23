@@ -2,13 +2,14 @@ package Model;
 
 public abstract class NPC implements Runnable {
     protected double pos_x, pos_y;
-    protected int health;
+    protected int health, speed;
     protected Thread t;
     protected int time;
 
-    protected NPC(double pos_x, double pos_y, int health){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
+    protected NPC(double pos_x, double pos_y, int speed, int health){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
         this.pos_y = pos_y;
+        this.speed = speed;
         this.health = health;
         t = new Thread(this);
         t.start();

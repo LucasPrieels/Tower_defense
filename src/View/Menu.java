@@ -39,7 +39,7 @@ public class Menu extends JPanel implements ActionListener {
         Object source = event.getSource();
 
         if(source == start_game){
-            sample.Window window = new sample.Window();
+            Window window = new Window();
         }
     }
 }

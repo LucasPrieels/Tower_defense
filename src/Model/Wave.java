@@ -1,37 +1,28 @@
 package Model;
 
+import View.Map;
+
 import java.util.ArrayList;
 
 public class Wave implements Runnable{
-    int health_npc;
-    int speed_npc;
-    float time; //time since beginning of the wave
-    float max_time = 30000; //durée vague
-    private float dt_small_npc;
-    private float dt_med_npc;
-    private float dt_big_npc;
-    private ArrayList<Small_NPC> small_npcs_list;
-    private ArrayList<Medium_NPC> med_npcs_list;
-    private ArrayList<Big_NPC> big_npcs_list;
+    private int health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time, max_time, curr_wave; //time since beginning of the wave
+    private ArrayList<Integer> time_small_npc, time_med_npc, time_big_npc;
     private Thread t;
-    Map map;
+    private Map map;
 
-    public Wave(int health_npc, int speed_npc, float dt_small_npc, float dt_med_npc, float dt_big_npc){
-        this.health_npc = health_npc;
-        this.speed_npc = speed_npc;
-        this.dt_small_npc = dt_small_npc;
-        this.dt_med_npc = dt_med_npc;
-        this.dt_big_npc = dt_big_npc;
-        ArrayList<Small_NPC> small_npcs_list = new ArrayList<Small_NPC>();
-        ArrayList<Medium_NPC> med_npcs_list = new ArrayList<Medium_NPC>();
-        ArrayList<Big_NPC> big_npcs_list = new ArrayList<Big_NPC>();
+    public Wave(int health_small_npc, int speed_small_npc, int health_med_npc, int speed_med_npc, int health_big_npc, int speed_big_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer> time_med_npc, ArrayList<Integer> time_big_npc){
+        this.health_small_npc = health_small_npc;
+        this.speed_small_npc = speed_small_npc;
+        this.health_med_npc = health_med_npc;
+        this.speed_med_npc = speed_med_npc;
+        this.health_big_npc = health_big_npc;
+        this.speed_big_npc = speed_big_npc;
+        this.time_small_npc = time_small_npc;
+        this.time_med_npc = time_med_npc;
+        this.time_big_npc = time_big_npc;
         t = new Thread(this);
-
-
-
-
-
-
+        curr_wave = Game.get_curr_wave();
+        max_time = Level.get_time_wave(curr_wave);
         //...
         //health_npc et speed_npc sont les santés et vitesses initiales des PNJ de la vague
         //Les trois ArrayList contiennent une liste d'entiers représentant les temps d'apparition du type respectif de PNJ
@@ -46,40 +37,44 @@ public class Wave implements Runnable{
         try{
             time = 0;
             while(time < max_time){
-                time++;
                 Thread.sleep(1000);
+                time++;
+                update();
             }
-        }catch(Exception e){};
+        }catch(Exception e){
+            System.out.println("Erreur dans le thread de la classe Wave");
+        };
     }
 
-    private void create_small_npc(){
-        small_npcs_list.add(new Small_NPC(0,0,health_npc));
-    }
-
-    private void create_med_npc() {
-        med_npcs_list.add(new Medium_NPC(0, 0, health_npc));
-    }
-
-    private void create_big_npc() {
-        big_npcs_list.add(new Big_NPC(0, 0, health_npc));
-    }
-
-    private void update(){
-        for(time < max_time){
-            if(time/dt_small_npc instanceof Integer){
-                create_small_npc();
-                //map.draw();
-            }
-            else if(time/dt_med_npc instanceof Integer){
-                create_med_npc();
-                //map.draw();
-            }
-            else if(time/dt_big_npc){
-                create_big_npc();
-                //map.draw();
-            }
+    private void update(){ //Factory?
+        for (int i=0; i<time_small_npc.get(time); i++){
+            int radius = Small_NPC.get_radius_static();
+            int pos_x = Board.get_dim_x()-radius;
+            int pos_y = random_pos_NPC(radius);
+            Board.add_npc(new Small_NPC(pos_x, pos_y, speed_small_npc, health_small_npc));
         }
+        for (int i=0; i<time_med_npc.get(time); i++){
+            int radius = Medium_NPC.get_radius_static();
+            int pos_x = Board.get_dim_x()-radius;
+            int pos_y = random_pos_NPC(radius);
+            Board.add_npc(new Medium_NPC(pos_x, pos_y, speed_med_npc, health_med_npc));
+        }
+        for (int i=0; i<time_big_npc.get(time); i++){
+            int radius = Big_NPC.get_radius_static();
+            int pos_x = Board.get_dim_x()-radius;
+            int pos_y = random_pos_NPC(radius);
+            Board.add_npc(new Big_NPC(pos_x, pos_y, speed_big_npc, health_big_npc));
+        }
+    }
 
-
+    private int random_pos_NPC(int radius){
+        int num_paths, path_chosen, width, pos_y;
+        do {
+            num_paths = Board.get_num_paths();
+            path_chosen = (int) Math.round(Math.random() * num_paths);
+            width = Board.get_width_path(path_chosen)-2*radius;
+            pos_y = Board.get_ord_path(path_chosen) + (int)(Math.random()*2*width) - width;
+        } while(!Board.empty(Board.get_dim_x(), pos_y, radius));
+        return Board.get_ord_path(path_chosen);
     }
 }
