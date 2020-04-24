@@ -1,32 +1,23 @@
 package Model;
 
-public abstract class NPC implements Runnable {
-    protected double pos_x, pos_y;
-    protected int health, speed;
-    protected Thread t;
-    protected int time;
+public abstract class NPC{
+    private int pos_x, pos_y;
+    private int health, speed;
+    private Path path;
 
-    protected NPC(double pos_x, double pos_y, int speed, int health){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
+    protected NPC(int pos_x, int pos_y, int speed, int health, Path path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.speed = speed;
         this.health = health;
-        t = new Thread(this);
-        t.start();
+        this.path = path;
     }
 
-    public double get_pos_x(){ return pos_x; }
-    public double get_pos_y(){ return pos_y; }
+    public int get_pos_x(){return pos_x;}
+    public int get_pos_y(){return pos_y;}
 
-    public void run() {
-        try {
-            time = 0;
-            while (true) {
-                time++;
-                Thread.sleep(1000);
-            }
-        } catch (Exception e) {};
-    }
+    public void set_pos_x(int pos_x){this.pos_x = pos_x;}
+    public void set_pos_y(int pos_y){this.pos_y = pos_y;}
 
     private boolean is_shot(Munition munition){
         boolean res = false;
@@ -65,6 +56,9 @@ public abstract class NPC implements Runnable {
             }
         }
     }
+
+    public Path get_path() {return path;}
+    public int get_speed() {return speed;}
 
     public abstract int get_radius();
 }

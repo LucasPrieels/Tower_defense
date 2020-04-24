@@ -41,7 +41,8 @@ public class Menu extends Parent {
                 View.Map map = null;
 
                 try {
-                    map = new View.Map();
+                    Map.init(theStage2);
+                    map = Map.get_instance();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
