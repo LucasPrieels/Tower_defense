@@ -1,5 +1,6 @@
 package View;
 
+import Model.Game;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,7 +17,7 @@ public class Main extends Application {
         Scene scene = new Scene(root,1920,1080, Color.LIGHTGRAY);
         //Canvas canvas = new Canvas(1920,1080);
 
-        View.Menu menu = new View.Menu();
+        Menu menu = new Menu();
         root.getChildren().add(menu);
 
 

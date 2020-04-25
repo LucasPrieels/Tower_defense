@@ -5,11 +5,11 @@ import java.util.ArrayList;
 public class Board {
     private static Board instance = null;
 
-    private static ArrayList<NPC> npcs;
+    private static ArrayList<NPC> npcs = new ArrayList<>();
     private static ArrayList<Path> paths;
-    private static ArrayList<Tower> towers;
+    private static ArrayList<Tower> towers = new ArrayList<>();
     private static ArrayList<ArrayList<Asteroid>> asteroids = new ArrayList<>();
-    private static ArrayList<Munition> munitions;
+    private static ArrayList<Munition> munitions = new ArrayList<>();
     private static int dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, max_offset;
     private static double proba;
 
@@ -73,10 +73,10 @@ public class Board {
     public static boolean empty(int pos_x, int pos_y, int radius){
         for (NPC npc: npcs){
             if (distance(npc.get_pos_x(), npc.get_pos_y(), pos_x, pos_y) < radius + npc.get_radius()){
-                return true;
+                return false;
             }
         }
-        return false;
+        return true;
     }
 
     private static double distance(double pos_x1, double pos_y1, int pos_x2, int pos_y2) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Level {
     private static int num_waves; // Tous les arguments d'un singleton se mettent en static?
-    private static ArrayList<Wave> waves;
+    private static ArrayList<Wave> waves = new ArrayList<>();
     private static int[] health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc; //i-th element is the health or speed of that type on npc for the i-th wave
     private static ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc; // time_small_npc[i][j] is the number of small npcs that appear on time j in the i-th wave
     private static Level instance;
@@ -31,8 +31,9 @@ public class Level {
 
     public static void create_waves(){
         for (int i=0; i<num_waves; i++){
-            Wave wave = new Wave(health_small_npc[i], speed_small_npc[i], health_small_npc[i], speed_med_npc[i], health_med_npc[i], speed_big_npc[i], time_big_npc.get(i), time_med_npc.get(i), time_big_npc.get(i));
+            Wave wave = new Wave(health_small_npc[i], speed_small_npc[i], health_small_npc[i], speed_med_npc[i], health_med_npc[i], speed_big_npc[i], time_small_npc.get(i), time_med_npc.get(i), time_big_npc.get(i));
             waves.add(wave);
+            System.out.println("Fini");
         }
     }
 

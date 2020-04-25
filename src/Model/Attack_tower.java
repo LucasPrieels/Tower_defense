@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-public abstract class Attack_tower extends Tower implements Runnable{
+public abstract class Attack_tower extends Tower/* implements Runnable*/{
     private double[] range;
     private int[] power,  npc_destroyed_needed;
     private boolean shot = false;
@@ -24,6 +24,7 @@ public abstract class Attack_tower extends Tower implements Runnable{
         return Math.sqrt(Math.pow(npc.get_pos_x()-asteroid.get_pos_x(), 2)+Math.pow(npc.get_pos_y()-asteroid.get_pos_y(), 2)) < range[get_curr_level()];
     }
 
+    /*
     public void run(){
         try{
             if (fire()){
@@ -33,6 +34,7 @@ public abstract class Attack_tower extends Tower implements Runnable{
             System.out.println("Erreur dans le sleep du thread des Attack_tower");
         }
     }
+    */
 
     private boolean fire(){
         ArrayList<NPC> npcs = Board.get_npcs();

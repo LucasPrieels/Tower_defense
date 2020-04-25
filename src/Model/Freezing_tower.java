@@ -10,7 +10,7 @@ public class Freezing_tower extends Attack_tower{
     }
 
     protected void shoot(NPC npc){
-        Munition munition = new Freezing_munition(this, npc);
+        Munition munition = new Freezing_munition(this, npc, power[this.get_curr_level()]);
         add_munition(munition);
     }
 }
