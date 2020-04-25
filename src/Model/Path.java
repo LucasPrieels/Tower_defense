@@ -13,12 +13,6 @@ public class Path {
 
     public int[] next_pos(int pos_x, int pos_y, int speed){
         int offset = pos_y-pos[pos_x];
-        System.out.println("next_pos");
-        System.out.println(offset);
-        System.out.println(pos_x);
-        System.out.println(speed);
-        System.out.println(Math.max(pos[Math.max(pos_x-speed,0)]+offset, 0));
-        System.out.println();
         return new int[]{Math.max(pos_x-speed, 0), Math.max(pos[Math.max(pos_x-speed,0)]+offset, 0)};
     }
 

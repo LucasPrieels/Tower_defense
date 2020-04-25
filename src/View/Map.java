@@ -22,7 +22,7 @@ public class Map extends Parent {
     private int score = 1;
     private int money = 2;
     private Image background;
-    private int size_asteroid = 40, size_small_npc = 25, size_med_npc = 35, size_big_npc = 50;
+    private int size_asteroid = 50, size_small_npc = 25, size_med_npc = 35, size_big_npc = 50;
     private Canvas canvas;
     private GraphicsContext gc;
     private Stage stage;
