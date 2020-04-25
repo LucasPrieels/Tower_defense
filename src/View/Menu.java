@@ -22,11 +22,13 @@ public class Menu extends Parent {
         Image image = new Image(new FileInputStream("Images/menu.jpg"));
         ImageView imageView = new ImageView(image);
 
+
         Button button = new Button("Start Game");
         //je changerai la taille, position, et graphisme du bouton plus tard
         //c'est pas très important
 
         this.getChildren().addAll(imageView,button);
+
 
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -37,12 +39,15 @@ public class Menu extends Parent {
                 theStage2.show();
 
                 View.Map map = null;
+
                 try {
                     map = new View.Map();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
+
                 root2.getChildren().add(map);
+
             }
         });
     }
