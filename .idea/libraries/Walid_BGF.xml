@@ -1,0 +1,65 @@
+<component name="libraryTable">
+  <library name="Walid BGF">
+    <CLASSES>
+      <root url="file://$USER_HOME$" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../../../GemDefender_Final-master/src" />
+      <root url="file://$PROJECT_DIR$/../ESPACE APPLICATION/SpaceRunner-master/SpaceRunner-master/src" />
+      <root url="file://$PROJECT_DIR$/../Projet1/src" />
+      <root url="file://$PROJECT_DIR$/src" />
+      <root url="file://$PROJECT_DIR$/../Towerdefense Dossier/GemDefender_Final-master/GemDefender_Final-master/src" />
+      <root url="file://$PROJECT_DIR$/../Towerdefense Dossier/JacaTowerDefence-master/JacaTowerDefence-master/src" />
+      <root url="file://$PROJECT_DIR$/../Towerdefense Dossier/TowerDefense11-22-04-20/TowerDefense-master/src" />
+      <root url="file://$PROJECT_DIR$/../Towerdefense Dossier/towerdefense10-22-04-20/towerDefense-master/src" />
+      <root url="file://$PROJECT_DIR$/../towerdefense-master/towerdefense-master/src" />
+      <root url="file://$PROJECT_DIR$/../voogasalad-master/voogasalad-master/doc/api" />
+      <root url="file://$PROJECT_DIR$/../voogasalad-master/voogasalad-master/doc/usecases" />
+      <root url="file://$PROJECT_DIR$/../voogasalad-master/voogasalad-master/src" />
+      <root url="file://$PROJECT_DIR$/../../../POO/TPS/tp6" />
+      <root url="file://$PROJECT_DIR$/../../../POO/projet info/Projet fourmis/FlappyBirdTutorial-master/FlappyBirdTutorial-master" />
+      <root url="file://$PROJECT_DIR$/../../../POO/projet info/Projet fourmis/Livre2/Devoir1" />
+      <root url="file://$PROJECT_DIR$/../../../POO/projet info/Projet fourmis/Livre2/Devoir1/task" />
+      <root url="file://$PROJECT_DIR$/../../../POO/projet info/Projet fourmis/Livre2/Livre2 - Copie/Devoir1" />
+      <root url="file://$PROJECT_DIR$/../../../POO/projet info/Projet fourmis/Livre2/Livre2 - Copie/Devoir1/task" />
+      <root url="file://$USER_HOME$/Documents/TowerDefense17-04/Towerdefense1/src" />
+      <root url="file://$USER_HOME$/Documents/TowerDefense17-04/neon-td-master/neon-td-master/src" />
+      <root url="file://$USER_HOME$/IdeaProjects/Hello/src" />
+      <root url="file://$USER_HOME$/IdeaProjects/Helloman/src" />
+      <root url="file://$USER_HOME$/IdeaProjects/Mero/src" />
+      <root url="file://$USER_HOME$/IdeaProjects/TP6/src" />
+      <root url="file://$USER_HOME$/Pictures/17-04(1)/TowerDefense-master/TowerDefense-master/GAME/src" />
+      <root url="file://$USER_HOME$/Pictures/17-04/MyGame-master/MyGame-master/src" />
+      <root url="file://$USER_HOME$/Pictures/JavaFX_Tower_Defense-master/JavaFX_Tower_Defense-master/src" />
+      <root url="file://$USER_HOME$/Pictures/JavaFX_Tower_Defense-master/TowerDefensa/src" />
+      <root url="file://$USER_HOME$/Pictures/LE JEU DE DINGUE/GemDefender_Final-master/GemDefender_Final-master/src" />
+      <root url="file://$USER_HOME$/Pictures/LE JEU DE DINGUE/GemDefender_Final-master/Test/src" />
+      <root url="file://$USER_HOME$/Pictures/Saved Pictures/TowerDefense-1/TowerDefense-1/src" />
+      <root url="file://$USER_HOME$/Pictures/Saved Pictures/tower-defense-v2-master/tower-defense-v2-master/src" />
+      <root url="file://$USER_HOME$/Pictures/Towerdefense1/TowerDefense-master/TowerDefense-master/GAME/src" />
+      <root url="file://$USER_HOME$/Pictures/Towerdefense2, il choque/TowerDefense_JavaFx-master/TowerDefense_JavaFx-master/src/main/java" />
+      <root url="file://$USER_HOME$/Pictures/towerdefense3/ZergRush-master/ZergRush-master" />
+      <root url="file://$USER_HOME$/Pictures/towerdefense4/OOP_UpgradedProject-master/OOP_UpgradedProject-master/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Begin/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Concept_clé/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Demofx/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Devoir1/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Devoir2/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Devoir3/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Devoir4/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Devoir5/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Flappy Bird/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Hello/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Helloword/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Main/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Martini/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Myjavafx/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Part2/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/Quantum/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/antSimulation/projet" />
+      <root url="file://$USER_HOME$/eclipse-workspace/test/src" />
+      <root url="file://$USER_HOME$/eclipse-workspace/vasi/src" />
+    </SOURCES>
+  </library>
+</component>

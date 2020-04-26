@@ -13,23 +13,44 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class Menu extends Parent {
+public class Menu extends Parent {/*
 
     private Stage theStage;
 
     public Menu() throws FileNotFoundException {
 
+
+
+
+
+        //Mise en page de l'image
+
         Image image = new Image(new FileInputStream("Images/menu.jpg"));
         ImageView imageView = new ImageView(image);
 
 
+
         Button button = new Button("Start Game");
-        //je changerai la taille, position, et graphisme du bouton plus tard
-        //c'est pas très important
+
 
         this.getChildren().addAll(imageView,button);
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+         //Evenement Button
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -51,5 +72,5 @@ public class Menu extends Parent {
 
             }
         });
-    }
+    }*/
 }

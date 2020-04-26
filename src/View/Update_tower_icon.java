@@ -10,6 +10,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Update_tower_icon extends Parent {
+    /*
     public Update_tower_icon() throws FileNotFoundException {
         Image tower = new Image(new FileInputStream("Images/update_tower.png"));
         ImageView imageView = new ImageView(tower);
@@ -17,5 +18,5 @@ public class Update_tower_icon extends Parent {
         imageView.setY(550);
 
         this.getChildren().add(imageView);
-    }
+    }*/
 }
