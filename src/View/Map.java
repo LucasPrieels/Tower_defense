@@ -87,9 +87,9 @@ public class Map extends Parent {
         planet6 = new Image(new FileInputStream("Images/asteroid6.png"), size_asteroid,  size_asteroid,  false, false);
         score_img = new Image(new FileInputStream("Images/score_img.png"));
         money_img = new Image(new FileInputStream("Images/money_img.png"));
-        im_small_npc = new Image(new FileInputStream("Images/small_npc.jpg"), size_small_npc,  size_small_npc,  false, false);
-        im_med_npc = new Image(new FileInputStream("Images/med_npc.jpg"), size_med_npc,  size_med_npc,  false, false);
-        im_big_npc = new Image(new FileInputStream("Images/big_npc.jpg"), size_big_npc,  size_big_npc,  false, false);
+        im_small_npc = new Image(new FileInputStream("Images/small_npc.png"), size_small_npc,  size_small_npc,  false, false);
+        im_med_npc = new Image(new FileInputStream("Images/med_npc.png"), size_med_npc,  size_med_npc,  false, false);
+        im_big_npc = new Image(new FileInputStream("Images/big_npc.png"), size_big_npc,  size_big_npc,  false, false);
     }
 
     public void update_npc_canvas(){
