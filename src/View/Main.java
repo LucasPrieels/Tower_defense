@@ -14,7 +14,7 @@ public class Main extends Application {
     public void start(Stage theStage) throws FileNotFoundException {
         theStage.setTitle("Nom du jeu");
         Group root = new Group();
-        Scene scene = new Scene(root,1920,1080, Color.LIGHTGRAY);
+        Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
         //Canvas canvas = new Canvas(1920,1080);
 
         Menu menu = new Menu();
