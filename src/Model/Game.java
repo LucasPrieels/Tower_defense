@@ -1,11 +1,18 @@
 package Model;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.util.Duration;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game{
-    private static int money, npc_destroyed = 0, score, time = 0, curr_wave = 0;
+    private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves;
     private static Game instance;
 
     private Game(){ //All the parameters of the game are here
@@ -45,9 +52,9 @@ public class Game{
         ArrayList<Integer> time_big_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
         ArrayList<Integer> time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
-        ArrayList<ArrayList<Integer>> time_small_npc = new ArrayList<>(List.of(time_small_npc1));
-        ArrayList<ArrayList<Integer>> time_med_npc = new ArrayList<>(List.of(time_med_npc1));
-        ArrayList<ArrayList<Integer>> time_big_npc = new ArrayList<>(List.of(time_big_npc1));
+        ArrayList<ArrayList<Integer>> time_small_npc = new ArrayList<>(List.of(time_small_npc1, time_small_npc2, time_small_npc3));
+        ArrayList<ArrayList<Integer>> time_med_npc = new ArrayList<>(List.of(time_med_npc1, time_med_npc2, time_med_npc3));
+        ArrayList<ArrayList<Integer>> time_big_npc = new ArrayList<>(List.of(time_big_npc1, time_big_npc2, time_big_npc3));
 
         //Board
         int dim_x = 200;
@@ -58,6 +65,8 @@ public class Game{
         int size_asteroid = 10;
         double proba = 0.5; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
+
+        time_between_waves = 10;
 
         int start_path1 = 100, width1 = 8;
         int[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1);
@@ -79,9 +88,24 @@ public class Game{
     }
 
     private void begin(){ //Appelé par un listener sur un bouton
-        for (Wave wave: Level.get_waves()){
-            wave.start();
+        for (int i=0; i<Level.get_waves().size(); i++){
+            Wave wave = Level.get_waves().get(i);
+            Thread t = new Thread(wave);
+            t.start();
+            /*
+            try{
+                t.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
+            }catch(InterruptedException e){
+                System.out.println("Erreur dans le join de la méthode begin() de la classe Game");
+            }
+            */
+            /*
+            Platform.setImplicitExit(false);
+            wave.setDaemon(true);
+            Platform.runLater(wave);
+             */
         }
+
         if (score>=0) won();
         else game_over();
     }
@@ -126,4 +150,6 @@ public class Game{
         }
         return tab;
     }
+
+    public static int get_time_between_waves(){return time_between_waves;}
 }
