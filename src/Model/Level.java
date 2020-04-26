@@ -33,7 +33,6 @@ public class Level {
         for (int i=0; i<num_waves; i++){
             Wave wave = new Wave(health_small_npc[i], speed_small_npc[i], health_small_npc[i], speed_med_npc[i], health_med_npc[i], speed_big_npc[i], time_small_npc.get(i), time_med_npc.get(i), time_big_npc.get(i));
             waves.add(wave);
-            System.out.println("Fini");
         }
     }
 
@@ -46,7 +45,7 @@ public class Level {
     public static int get_speed_small_npc(int wave){return speed_small_npc[wave];}
     public static int get_speed_med_npc(int wave){return speed_med_npc[wave];}
     public static int get_speed_big_npc(int wave){return speed_big_npc[wave];}
-    public static int get_time_wave(int wave){return time_small_npc.get(wave).size();}
+    //public static int get_time_wave(int wave){return time_waves[wave];}
     public static int get_num_waves(){return num_waves;}
     public static ArrayList<Wave> get_waves(){return waves;}
 }

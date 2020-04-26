@@ -40,7 +40,8 @@ public abstract class Attack_tower extends Tower/* implements Runnable*/{
         ArrayList<NPC> npcs = Board.get_npcs();
         for (NPC npc: npcs){
             if (npc_in_tower_area(npc)){
-                shoot(npc);
+                shoot(npc); // On s'arrête dès que le premier PNJ dans la zone d'attaque a été trouvé car c'est dans l'ordre
+                // le premier a avoir été tiré donc celui qui est le plus loin sur la plateau
                 return true;
             }
         }

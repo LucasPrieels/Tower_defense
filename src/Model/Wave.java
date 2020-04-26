@@ -3,15 +3,17 @@ package Model;
 import View.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
 
-public class Wave{
+public class Wave implements Runnable{
     private int health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time, max_time, curr_wave; //time since beginning of the wave
     private ArrayList<Integer> time_small_npc, time_med_npc, time_big_npc;
+    private boolean finished = false;
 
     public Wave(int health_small_npc, int speed_small_npc, int health_med_npc, int speed_med_npc, int health_big_npc, int speed_big_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer> time_med_npc, ArrayList<Integer> time_big_npc){
         this.health_small_npc = health_small_npc;
@@ -23,8 +25,8 @@ public class Wave{
         this.time_small_npc = time_small_npc;
         this.time_med_npc = time_med_npc;
         this.time_big_npc = time_big_npc;
+        max_time = time_small_npc.size(); //ATTENTION exception si pas même taille que med et big
         curr_wave = Game.get_curr_wave();
-        max_time = Level.get_time_wave(curr_wave);
         /*
         Thread t = new Thread(this);
         t.start();
@@ -39,18 +41,64 @@ public class Wave{
         //Pour créer un NPC différent en fonction de ce qui est demandé, se renseigner sur les Factories (voir TP 5 sur les design patterns)
     }
 
-    public void start(){
-        Timeline timer = new Timeline();
-        timer.setCycleCount(max_time);
-        timer.getKeyFrames().add(new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>(){
-            public void handle(ActionEvent event){
+    public void run(){
+        /*
+        int sleep_time = 0;
+        for (int wave=0; wave<curr_wave; wave++){
+            sleep_time += Level.get_waves().get(wave).get_max_time();
+            sleep_time += Game.get_time_between_waves();
+            System.out.println(sleep_time);
+        }
+        try{
+            Thread.sleep(sleep_time*1000);
+        } catch(InterruptedException e){
+            System.out.println("Erreur dans le sleep du début du run() du thread d'une vague");
+        }
+        */
+
+        /*
+        while (time<max_time){
+            try{
                 add_new_npcs();
                 update_pos_npcs();
                 Controller.Update_manager.get_instance().update_window();
+                Thread.sleep(1000);
                 time++;
+            } catch(InterruptedException e){
+                System.out.println("Erreur dans le thread run de la classe Wave");
             }
-        }));
-        timer.play();
+        }
+        finish_wave();
+         */
+
+        while (time<max_time){
+            System.out.println(time);
+            try{
+                add_new_npcs();
+                update_pos_npcs();
+                System.out.println("ici");
+                Platform.setImplicitExit(false);
+                Platform.runLater( () -> {
+                    System.out.println("Updating");
+                    Controller.Update_manager.get_instance().update_window();
+                });
+                Thread.sleep(1000);
+                time++;
+            } catch(InterruptedException e){
+                System.out.println("Erreur dans le thread run de la classe Wave");
+            }
+        }
+        finish_wave();
+    }
+
+    private void finish_wave(){
+        System.out.println("Wave pre-finished");
+        while (Board.get_npcs().size() != 0){
+            update_pos_npcs();
+            time++;
+        }
+        finished = true;
+        System.out.println("Wave finished");
     }
 
     /*
@@ -81,29 +129,35 @@ public class Wave{
      */
 
     private void add_new_npcs(){ //Factory?
-        for (int i=0; i<time_small_npc.get(time); i++){
-            int radius = Small_NPC.get_radius_static();
-            int pos_x = Board.get_dim_x()-radius;
-            int[] res = random_pos_npc(radius);
-            Path path = Board.get_paths().get(res[0]);
-            int pos_y = res[1];
-            Board.add_npc(new Small_NPC(pos_x, pos_y, speed_small_npc, health_small_npc, path));
+        if (time<time_small_npc.size()){ //Ou plutot try except?
+            for (int i=0; i<time_small_npc.get(time); i++){
+                int radius = Small_NPC.get_radius_static();
+                int pos_x = Board.get_dim_x()-radius;
+                int[] res = random_pos_npc(radius);
+                Path path = Board.get_paths().get(res[0]);
+                int pos_y = res[1];
+                Board.add_npc(new Small_NPC(pos_x, pos_y, speed_small_npc, health_small_npc, path));
+            }
         }
-        for (int i=0; i<time_med_npc.get(time); i++){
-            int radius = Medium_NPC.get_radius_static();
-            int pos_x = Board.get_dim_x()-radius;
-            int[] res = random_pos_npc(radius);
-            Path path = Board.get_paths().get(res[0]);
-            int pos_y = res[1];
-            Board.add_npc(new Medium_NPC(pos_x, pos_y, speed_med_npc, health_med_npc, path));
+        if (time<time_med_npc.size()){
+            for (int i=0; i<time_med_npc.get(time); i++){
+                int radius = Medium_NPC.get_radius_static();
+                int pos_x = Board.get_dim_x()-radius;
+                int[] res = random_pos_npc(radius);
+                Path path = Board.get_paths().get(res[0]);
+                int pos_y = res[1];
+                Board.add_npc(new Medium_NPC(pos_x, pos_y, speed_med_npc, health_med_npc, path));
+            }
         }
-        for (int i=0; i<time_big_npc.get(time); i++){
-            int radius = Big_NPC.get_radius_static();
-            int pos_x = Board.get_dim_x()-radius;
-            int[] res = random_pos_npc(radius);
-            Path path = Board.get_paths().get(res[0]);
-            int pos_y = res[1];
-            Board.add_npc(new Big_NPC(pos_x, pos_y, speed_big_npc, health_big_npc, path));
+        if (time<time_big_npc.size()){
+            for (int i=0; i<time_big_npc.get(time); i++){
+                int radius = Big_NPC.get_radius_static();
+                int pos_x = Board.get_dim_x()-radius;
+                int[] res = random_pos_npc(radius);
+                Path path = Board.get_paths().get(res[0]);
+                int pos_y = res[1];
+                Board.add_npc(new Big_NPC(pos_x, pos_y, speed_big_npc, health_big_npc, path));
+            }
         }
     }
 
@@ -138,4 +192,8 @@ public class Wave{
             if (pos[0]==0 || pos[1]==0) Board.remove_npc(npc);
         }
     }
+
+    public ArrayList<Integer> get_time_small_npc(){return time_small_npc;}
+    public boolean get_finished(){return finished;}
+    public int get_max_time(){return max_time;}
 }
