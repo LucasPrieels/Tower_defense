@@ -30,6 +30,10 @@ public class Map extends Parent {
     private static Map instance = null;
     private Image im_small_npc, im_med_npc, im_big_npc, level1, planet1, planet2, planet3, planet4, planet5, planet6, score_img, money_img;
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
+    private Update_tower_icon update_tower_icon;
+    private Buy_freezing_tower_icon buy_freezing_tower_icon;
+    private Buy_factory_tower_icon buy_factory_tower_icon;
+    private Buy_classic_tower_icon buy_classic_tower_icon;
 
     private Map(Stage stage) throws FileNotFoundException {
         canvas = new Canvas(stage.getWidth(),stage.getHeight());
@@ -40,19 +44,9 @@ public class Map extends Parent {
             init_canvas_level1();
         }
         drawScoreRectangle();
-        Update_tower_icon update_tower_icon = new Update_tower_icon();
+        create_shop();
 
-
-        //gridpane.getChildren().addAll(canvas, update_tower);
-        this.getChildren().addAll(canvas, update_tower_icon);
-
-
-        //update_tower_icon.setOnMouseClicked(new EventHandler<MouseEvent>() {
-        //    @Override
-        //    public void handle(MouseEvent mouseEvent) {
-        //            System.out.println("coucou");
-        //    }
-        //});
+        this.getChildren().addAll(canvas, update_tower_icon,buy_classic_tower_icon,buy_factory_tower_icon,buy_freezing_tower_icon);
 
         Game game = Game.get_instance();
     }
@@ -143,6 +137,20 @@ public class Map extends Parent {
         gc.setFont(new Font("Arial", 20)); //ecrire fct qui donne le score
         gc.setFill(Color.WHITE);
         gc.fillText(Integer.toString(money), 180,35);
+    }
+
+    private void create_shop() throws FileNotFoundException {
+        this.update_tower_icon = new Update_tower_icon();
+        this.buy_classic_tower_icon = new Buy_classic_tower_icon();
+        this.buy_factory_tower_icon = new Buy_factory_tower_icon();
+        this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
+
+        update_tower_icon.setOnMouseClicked(new ShopListener(gc,"tower"));
+        buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
+        buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
+        buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
+        canvas.setOnMouseClicked(new TowerListener(canvas));
+
     }
 
 }
