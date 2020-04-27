@@ -7,7 +7,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Background extends JPanel {
-/*
+
     public Background(){
     }
 
@@ -19,5 +19,5 @@ public class Background extends JPanel {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 }
