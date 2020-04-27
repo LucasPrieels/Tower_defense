@@ -1,9 +1,5 @@
 package View;
 
-
-
-
-
 import Model.Map;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
