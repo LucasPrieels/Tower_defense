@@ -11,7 +11,7 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game{
+public class Game implements Runnable{
     private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves;
     private static Game instance;
 
@@ -41,16 +41,16 @@ public class Game{
 
  */
         ArrayList<Integer> time_small_npc1 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        ArrayList<Integer> time_small_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        ArrayList<Integer> time_small_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+        ArrayList<Integer> time_small_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0));
+        ArrayList<Integer> time_small_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0));
 
         ArrayList<Integer> time_med_npc1 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        ArrayList<Integer> time_med_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        ArrayList<Integer> time_med_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0));
+        ArrayList<Integer> time_med_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+        ArrayList<Integer> time_med_npc3 = new ArrayList<>(List.of(0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0));
 
         ArrayList<Integer> time_big_npc1 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0));
         ArrayList<Integer> time_big_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-        ArrayList<Integer> time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
+        ArrayList<Integer> time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
         ArrayList<ArrayList<Integer>> time_small_npc = new ArrayList<>(List.of(time_small_npc1, time_small_npc2, time_small_npc3));
         ArrayList<ArrayList<Integer>> time_med_npc = new ArrayList<>(List.of(time_med_npc1, time_med_npc2, time_med_npc3));
@@ -66,7 +66,7 @@ public class Game{
         double proba = 0.5; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
 
-        time_between_waves = 10;
+        time_between_waves = 5;
 
         int start_path1 = 100, width1 = 8;
         int[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1);
@@ -79,7 +79,6 @@ public class Game{
 
         Level.get_instance(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc);
         Board.get_instance(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
-        begin();
     }
 
     public static Game get_instance(){
@@ -87,18 +86,19 @@ public class Game{
         return Game.instance;
     }
 
-    private void begin(){ //Appelé par un listener sur un bouton
+    public void run(){ //Appelé par un listener sur un bouton
         for (int i=0; i<Level.get_waves().size(); i++){
             Wave wave = Level.get_waves().get(i);
             Thread t = new Thread(wave);
             t.start();
-            /*
+
             try{
+                System.out.println(Thread.currentThread().getName());
                 t.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
             }catch(InterruptedException e){
                 System.out.println("Erreur dans le join de la méthode begin() de la classe Game");
             }
-            */
+            curr_wave++;
             /*
             Platform.setImplicitExit(false);
             wave.setDaemon(true);
@@ -130,7 +130,7 @@ public class Game{
 
     public static int get_npc_destroyed(){ return npc_destroyed;}
     public static int get_score(){ return score;}
-    public static int get_curr_wave() { return curr_wave;}
+    public static int get_curr_wave() { System.out.println("a" + curr_wave); return curr_wave;}
 
     public static void increment_curr_wave() { curr_wave++;}
     public static void increment_npc_destroyed(){ npc_destroyed++;}

@@ -1,5 +1,6 @@
 package View;
 
+import Model.Game;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
@@ -21,7 +22,7 @@ public class Menu extends Parent {
 
         Image image = new Image(new FileInputStream("Images/menu.jpg"));
         ImageView imageView = new ImageView(image);
-
+        theStage = Main.get_stage();
 
         Button button = new Button("Start Game");
         //je changerai la taille, position, et graphisme du bouton plus tard
@@ -32,16 +33,17 @@ public class Menu extends Parent {
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Stage theStage2 = new Stage();
                 Group root2 = new Group();
-                theStage2.setScene(new Scene(root2,1920,1080));
-                theStage2.show();
+                theStage.setScene(new Scene(root2,1920,1080));
+                theStage.show();
 
                 View.Map map = null;
 
                 try {
-                    Map.init(theStage2);
+                    Map.init(theStage);
                     map = Map.get_instance();
+                    Thread t = new Thread(Game.get_instance());
+                    t.start();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }

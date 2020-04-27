@@ -47,8 +47,6 @@ public class Map extends Parent {
         create_shop();
 
         this.getChildren().addAll(canvas, update_tower_icon,buy_classic_tower_icon,buy_factory_tower_icon,buy_freezing_tower_icon);
-
-        Game game = Game.get_instance();
     }
 
     //Singleton
@@ -121,7 +119,7 @@ public class Map extends Parent {
                 gc.drawImage(iv_big_npc.snapshot(params, null), pos_x, pos_y);
             }
         }
-        System.out.println("Updated");
+        //System.out.println("Updated");
     }
 
     private void drawScoreRectangle(){

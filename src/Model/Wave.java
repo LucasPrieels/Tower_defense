@@ -26,7 +26,6 @@ public class Wave implements Runnable{
         this.time_med_npc = time_med_npc;
         this.time_big_npc = time_big_npc;
         max_time = time_small_npc.size(); //ATTENTION exception si pas même taille que med et big
-        curr_wave = Game.get_curr_wave();
         /*
         Thread t = new Thread(this);
         t.start();
@@ -43,20 +42,6 @@ public class Wave implements Runnable{
 
     public void run(){
         /*
-        int sleep_time = 0;
-        for (int wave=0; wave<curr_wave; wave++){
-            sleep_time += Level.get_waves().get(wave).get_max_time();
-            sleep_time += Game.get_time_between_waves();
-            System.out.println(sleep_time);
-        }
-        try{
-            Thread.sleep(sleep_time*1000);
-        } catch(InterruptedException e){
-            System.out.println("Erreur dans le sleep du début du run() du thread d'une vague");
-        }
-        */
-
-        /*
         while (time<max_time){
             try{
                 add_new_npcs();
@@ -71,15 +56,16 @@ public class Wave implements Runnable{
         finish_wave();
          */
 
-        while (time<max_time){
+        while (time<max_time || Board.get_npcs().size() != 0){
             System.out.println(time);
             try{
-                add_new_npcs();
+                if (time<max_time) add_new_npcs();
+                //else System.out.println("ici2");
                 update_pos_npcs();
-                System.out.println("ici");
-                Platform.setImplicitExit(false);
+                //System.out.println("ici");
+                //Platform.setImplicitExit(false);
                 Platform.runLater( () -> {
-                    System.out.println("Updating");
+                    //System.out.println("Updating");
                     Controller.Update_manager.get_instance().update_window();
                 });
                 Thread.sleep(1000);
@@ -88,17 +74,7 @@ public class Wave implements Runnable{
                 System.out.println("Erreur dans le thread run de la classe Wave");
             }
         }
-        finish_wave();
-    }
-
-    private void finish_wave(){
-        System.out.println("Wave pre-finished");
-        while (Board.get_npcs().size() != 0){
-            update_pos_npcs();
-            time++;
-        }
         finished = true;
-        System.out.println("Wave finished");
     }
 
     /*
