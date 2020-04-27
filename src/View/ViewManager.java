@@ -5,6 +5,7 @@ package View;
 
 
 import Model.Map;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
@@ -12,7 +13,12 @@ import javafx.scene.layout.*;
 import javafx.scene.layout.Background;
 import javafx.stage.Stage;
 import Model.*;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,6 +45,7 @@ public class ViewManager {
     private int choosenDifficulty;
     private List<MapPicker> mapList;
     private Model.Map choosenMap;
+    private Stage stage;
 
 
 
@@ -148,12 +155,51 @@ public class ViewManager {
         MenuButton startButton = new MenuButton("START","red");
         startButton.setLayoutX(365);
         startButton.setLayoutY(300);
-    /*startButton.setOnAction(e->{
-     //ecrire ici  pour lancer le jeu
+    startButton.setOnAction(e->{
+        if (choosenMap != null){
+            Stage theStage2 = new Stage();
+            Group root2 = new Group();
+            theStage2.setScene(new Scene(root2,1920,1080));
+            theStage2.show();
+
+            View.Map map = null;
+
+            try {
+                View.Map.init(theStage2);
+                map = View.Map.get_instance();
+            } catch (FileNotFoundException a) {
+                a.printStackTrace();
+            }
+
+            root2.getChildren().add(map);
+
         }
-    });*/
-        return startButton;
+
+        //ecrire ici  pour lancer le jeu
+        }
+    );
+
+
+
+    return startButton;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private HBox createMapToPick(){
         HBox hBox = new HBox();

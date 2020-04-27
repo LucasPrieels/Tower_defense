@@ -35,22 +35,6 @@ public class Menu extends Parent {/*
 
         this.getChildren().addAll(imageView,button);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-         //Evenement Button
         button.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
