@@ -107,7 +107,7 @@ public class Map extends Parent {
         drawScoreRectangle();
         draw_paths();
         update_npc_canvas();
-        System.out.println("Updated");
+        //System.out.println("Updated");
     }
 
     public void update_npc_canvas(){
@@ -116,23 +116,24 @@ public class Map extends Parent {
         for (NPC npc: npcs){
             double pos_x = npc.get_pos_x()*canvas.getWidth()/Board.get_dim_x();
             double pos_y = npc.get_pos_y()*canvas.getHeight()/Board.get_dim_y();
+            //System.out.println(npc.get_pos_x() + " " + npc.get_pos_y() + " " + pos_x + " " + pos_y);
+            //System.out.println(canvas.getHeight()/Board.get_dim_y());
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
 
             //ATTENTION A CHANGER, ça ne permet pas d'ajouter facilement un nv type de PNJ
             //On peut garder les instanceof? Ou il faut faire un liste avec les petits une avec les grands etc dans Board?
             if (npc instanceof Small_NPC){
-                gc.drawImage(iv_small_npc.snapshot(params, null), pos_x, pos_y);
+                gc.drawImage(iv_small_npc.snapshot(params, null), pos_x - (double)size_small_npc/2, pos_y - (double)size_small_npc/2);
+                // Le moins est là pour que ça soit le centre de l'image sui soit à la position spécifiée et pas le coin supérieur gauche
             }
             else if (npc instanceof Medium_NPC){
-                gc.drawImage(iv_med_npc.snapshot(params, null), pos_x, pos_y);
+                gc.drawImage(iv_med_npc.snapshot(params, null), pos_x - (double)size_med_npc/2, pos_y - (double)size_med_npc/2);
             }
             else if (npc instanceof Big_NPC){
-                System.out.println(pos_x + " " + pos_y);
-                gc.drawImage(iv_big_npc.snapshot(params, null), pos_x, pos_y);
+                gc.drawImage(iv_big_npc.snapshot(params, null), pos_x - (double)size_big_npc/2, pos_y - (double)size_big_npc/2);
             }
         }
-        System.out.println();
     }
 
     public void draw_paths(){
