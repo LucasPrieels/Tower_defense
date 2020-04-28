@@ -1,153 +1,70 @@
 package View;
 
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import Model.Game;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.scene.layout.Background;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class Menu  {
-
-    private Stage mainStage;
-    private AnchorPane mainPane;
-    private Scene mainScene;
-    private VBox VboxButtons;
-
-    private Button StartButton;
-    private Button HelpButton;
-    private Button LevelButton;
-    private Button ExitButton;
-
-    public  Menu(){
-
-         mainStage = new Stage();
-         mainPane = new AnchorPane();
-         mainScene = new Scene(mainPane,1000,600);
-         VboxButtons = new VBox(20);
-
-         mainPane.getChildren().add(VboxButtons);
-         VboxButtons.setAlignment(Pos.CENTER);
-         VboxButtons.setPadding(new Insets(15,15,15,15));
-         mainStage.setScene(mainScene);
-
-        createbackground();
-        createButtons();
-
-    }
-
-    private void createButtons(){
-
-         StartButton = new Button("Start");
-         HelpButton = new Button("Help");
-         LevelButton = new Button("Level");
-         ExitButton = new Button("Exit");
-
-       addButton(StartButton);
-       addButton(HelpButton);
-       addButton(LevelButton);
-       addButton(ExitButton);
-
-        //action
-        actionbuttons();
-        //
-
-
-
-    }
-
-
-
-
-    private void actionbuttons(){
-        ExitButton.setOnAction(e-> {
-            mainStage.close();
-        });
-
-        StartButton.setOnAction(e-> {
-
-            Stage theStage2 = new Stage();
-            Group root2 = new Group();
-            theStage2.setScene(new Scene(root2, 1920, 1080));
-            theStage2.show();
-
-            View.Map map = null;
-
-            try {
-                View.Map.init(theStage2);
-                map = View.Map.get_instance();
-            } catch (FileNotFoundException a) {
-                a.printStackTrace();
-            }
-            mainStage.close();
-            root2.getChildren().add(map);
-
-        });
-    }
-
-private void addButton(Button button){
-        button.setLayoutX(100);
-        button.setLayoutY(100);
-        VboxButtons.getChildren().add(button);
-
-
-}
-
-
-
-private void createbackground(){
-    Image backgroundImage = new Image("/View/menu.jpg");
-    BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,null);
-    mainPane.setBackground(new Background(background));
-
-
-}
-
-public Stage getMainStage() { return mainStage; }
-
-}
-
-
-/*
+public class Menu extends Parent {
 
     private Stage theStage;
 
     public Menu() throws FileNotFoundException {
 
-
-
-
-
-        //Mise en page de l'image
-
         Image image = new Image(new FileInputStream("Images/menu.jpg"));
         ImageView imageView = new ImageView(image);
+        theStage = Main.get_stage();
 
+        Button button_play = new Button("Play");
+        button_play.setLayoutX(500);
+        button_play.setLayoutY(400);
+        Button button_help = new Button("Help");
+        button_help.setLayoutX(100);
+        button_help.setLayoutY(100);
+        Button button_level = new Button("Level");
+        button_level.setLayoutX(300);
+        button_level.setLayoutY(300);
+        Button button_exit = new Button("Exit");
+        button_exit.setLayoutX(10);
+        button_exit.setLayoutY(10);
 
+        //je changerai la taille, position, et graphisme du bouton plus tard
+        //c'est pas très important
 
-        Button button = new Button("Start Game");
+        this.getChildren().addAll(imageView,button_play,button_help,button_level,button_exit);
 
-
-        this.getChildren().addAll(imageView,button);
-
-        button.setOnMouseClicked(new EventHandler<MouseEvent>() {
+        button_exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                Stage theStage2 = new Stage();
+                theStage.close();
+
+            }
+        });
+
+        button_play.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
                 Group root2 = new Group();
-                theStage2.setScene(new Scene(root2,1920,1080));
-                theStage2.show();
+                theStage.setScene(new Scene(root2,1920,1080));
+                theStage.show();
 
                 View.Map map = null;
 
                 try {
-                    Map.init(theStage2);
+                    Map.init(theStage);
                     map = Map.get_instance();
+                    Thread t = new Thread(Game.get_instance());
+                    t.start();
                 } catch (FileNotFoundException e) {
                     e.printStackTrace();
                 }
@@ -156,4 +73,5 @@ public Stage getMainStage() { return mainStage; }
 
             }
         });
-    }*/
+    }
+}
