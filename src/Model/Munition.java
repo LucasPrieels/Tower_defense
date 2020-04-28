@@ -4,7 +4,7 @@ public  class Munition {
 
     private Tower tower;
     private NPC npc;
-    private int pos_x, pos_y;
+    private double pos_x, pos_y;
     private boolean hit = false;
     private int endpos_x,endpos_y;
 // faut amener le projectile sur le npc
@@ -28,8 +28,8 @@ public  class Munition {
 
     public NPC get_NPC(){return npc;}
 
-    public int get_pos_x(){return pos_x;}
-    public int get_pos_y(){return pos_y;}
+    public double get_pos_x(){return pos_x;}
+    public double get_pos_y(){return pos_y;}
 
 }
 

@@ -1,11 +1,12 @@
 package Model;
 
 public abstract class NPC{
-    private int pos_x, pos_y;
-    private int health, speed;
-    private Path path;
+    private double pos_x, pos_y;
+    private int health;
+    private double speed;
+    private Path2 path;
 
-    protected NPC(int pos_x, int pos_y, int speed, int health, Path path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
+    protected NPC(double pos_x, double pos_y, double speed, int health, Path2 path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.speed = speed;
@@ -13,11 +14,11 @@ public abstract class NPC{
         this.path = path;
     }
 
-    public int get_pos_x(){return pos_x;}
-    public int get_pos_y(){return pos_y;}
+    public double get_pos_x(){return pos_x;}
+    public double get_pos_y(){return pos_y;}
 
-    public void set_pos_x(int pos_x){this.pos_x = pos_x;}
-    public void set_pos_y(int pos_y){this.pos_y = pos_y;}
+    public void set_pos_x(double pos_x){this.pos_x = pos_x;}
+    public void set_pos_y(double pos_y){this.pos_y = pos_y;}
 
     private boolean is_shot(Munition munition){
         boolean res = false;
@@ -57,8 +58,8 @@ public abstract class NPC{
         }
     }
 
-    public Path get_path() {return path;}
-    public int get_speed() {return speed;}
+    public Path2 get_path() {return path;}
+    public double get_speed() {return speed;}
 
     public abstract int get_radius();
 }
