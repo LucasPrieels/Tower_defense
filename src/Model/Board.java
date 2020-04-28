@@ -39,6 +39,7 @@ public class Board {
 
     private static void create_asteroids_random(){
         for (int x=margin_x; x<dim_x-margin_x; x += size_asteroid){
+            //System.out.println(dim_x + margin_x + x);
             for (Path2 path : paths) {
                 if (Math.random() < proba) {
                     double y = path.get_ord(x);
@@ -48,6 +49,7 @@ public class Board {
                     else asteroid = new Asteroid(x, Math.max(y - (double)width_path / 2 - Map.get_size_asteroid()/2 + offset, margin_y + Map.get_size_asteroid()/2));
                     asteroids.get(x).add(asteroid);
                     x += size_asteroid; // On évite que deux asétroîdes soient trop proches
+                    if (x >= dim_x-margin_x) return;
                 }
             }
         }

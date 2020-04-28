@@ -149,6 +149,7 @@ public class Wave implements Runnable{
             path_chosen = (int) Math.floor(Math.max(Math.random()-0.0000001,0) * num_paths);
             width = Board.get_width_path(path_chosen)-2*radius;
             pos_y = Board.get_ord_path(path_chosen) + Math.random()*2*width - width;
+            //System.out.println("pos_y " + pos_y + " " + Board.get_ord_path(path_chosen));
         } while(!Board.empty(Board.get_dim_x(), pos_y, radius));
         return new double[]{path_chosen, pos_y};
     }
