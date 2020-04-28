@@ -101,35 +101,14 @@ private void addButton(Button button){
 
 
 private void createbackground(){
-
     Image backgroundImage = new Image("/View/menu.jpg");
     BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.NO_REPEAT,BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,null);
     mainPane.setBackground(new Background(background));
 
 
-
 }
 
-
-
-
-
-
-    public Stage getMainStage() { return mainStage; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+public Stage getMainStage() { return mainStage; }
 
 }
 
