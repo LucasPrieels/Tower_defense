@@ -46,7 +46,7 @@ public class Map extends Parent {
         gc = canvas.getGraphicsContext2D();
         this.stage = stage;
         create_images();
-        draw_paths();
+        //draw_paths();
         init_canvas();
         drawScoreRectangle();
         create_shop();
@@ -105,10 +105,10 @@ public class Map extends Parent {
 
     public void update_canvas(){
         init_canvas();
-        //drawScoreRectangle();
+        drawScoreRectangle();
         draw_paths();
         update_npc_canvas();
-        //System.out.println("Updated");
+        System.out.println("Updated");
     }
 
     public void update_npc_canvas(){
@@ -129,7 +129,7 @@ public class Map extends Parent {
                 gc.drawImage(iv_med_npc.snapshot(params, null), pos_x, pos_y);
             }
             else if (npc instanceof Big_NPC){
-                //System.out.println(pos_x + " " + pos_y);
+                System.out.println(pos_x + " " + pos_y);
                 gc.drawImage(iv_big_npc.snapshot(params, null), pos_x, pos_y);
             }
         }
@@ -167,7 +167,7 @@ public class Map extends Parent {
         buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
-        canvas.setOnMouseClicked(new TowerListener(canvas));
+        canvas.setOnMouseClicked(new TowerListener(canvas, pos_x_asteroid,pos_y_asteroid,num_asteroid.size()));
 
     }
 
