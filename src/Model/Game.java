@@ -18,8 +18,8 @@ public class Game implements Runnable{
 
     private Game(){ //All the parameters of the game are here
         // Level
-        int money = 1000;
-        int score = 2000;
+        this.money = 1000;
+        this.score = 2000;
         fps = 10;
 
         int[] health_small_npc = {3, 5, 8};
@@ -137,6 +137,7 @@ public class Game implements Runnable{
 
     public static int get_npc_destroyed(){ return npc_destroyed;}
     public static int get_score(){ return score;}
+    public static int get_money(){return money;}
     public static int get_fps(){ return fps;}
     public static int get_curr_wave() {return curr_wave;}
 

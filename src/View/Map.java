@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent {
-    private int level = 1, score = 1, money = 2;
+    private int level = 1, score = Game.get_score(), money = Game.get_money();
     private static double canvas_height, canvas_width;
     private Image background;
     private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8;
