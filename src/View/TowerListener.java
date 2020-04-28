@@ -41,22 +41,21 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
     }
     @Override
     public void handle(MouseEvent mouseEvent) {
-        for (int i = 0;i <= num_asteroid-1;i++) {
+        gc = canvas.getGraphicsContext2D();
+        for (int i = 0; i <= num_asteroid - 1; i++) {
             if (is_into_circle(pos_x_asteroid.get(i), pos_y_asteroid.get(i), mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
-                occupied = 1;
+                Image tower = null;
+                try {
+                    tower = new Image(new FileInputStream("Images/cerclejaune.png"));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                gc.drawImage(tower, pos_x_asteroid.get(i) + 10, pos_y_asteroid.get(i) + 10);
+            } else {
+                System.out.println("erreur");
             }
-            else {
-                occupied = 0;
-            }
-            occupation_asteroid.add(occupied);
+
         }
-        //System.out.println(occupation_asteroid);
-        try {
-            draw_asteroid();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        occupation_asteroid.clear();
     }
 
     private boolean is_into_circle(Double x, Double y, Double xCircle, Double yCircle, Double r) {
@@ -68,16 +67,6 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
         return res;
     }
 
-    private void draw_asteroid() throws FileNotFoundException {
-        gc = canvas.getGraphicsContext2D();
-        for(int i = 0; i<=num_asteroid-1; i++){
-            if(occupation_asteroid.get(i) == 1){
-                Image tower = new Image(new FileInputStream("Images/cerclejaune.png"));
-                gc.drawImage(tower, pos_x_asteroid.get(i)+10, pos_y_asteroid.get(i)+10);
-            }
-            else {System.out.println("erreur");}
-        }
-    }
 
 
 }
