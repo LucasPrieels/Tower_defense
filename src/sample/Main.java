@@ -1,7 +1,7 @@
 package sample;
 
 
-import View.ViewManager;
+import View.Menu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -9,8 +9,10 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        ViewManager viewManager = new ViewManager();
-        primaryStage = viewManager.getMainStage();
+
+
+        Menu menu = new Menu();
+        primaryStage =  menu.getMainStage();
         primaryStage.setResizable(false);
         primaryStage.setTitle("Tower defense");
 
