@@ -49,7 +49,6 @@ public class Map extends Parent {
         //draw_paths();
         init_canvas();
         drawScoreRectangle();
-        create_shop();
         for (int x = 0; x < Board.get_asteroids().size(); x++){
             for (Asteroid asteroid: Board.get_asteroids().get(x)){
                 num_asteroid.add((int)Math.floor(Math.random()*5.999999) + 1);
@@ -57,7 +56,7 @@ public class Map extends Parent {
                 pos_y_asteroid.add(asteroid.get_pos_y()*canvas.getHeight()/Board.get_dim_y());
             }
         }
-
+        create_shop();
         this.getChildren().addAll(canvas, update_tower_icon,buy_classic_tower_icon,buy_factory_tower_icon,buy_freezing_tower_icon);
     }
 
@@ -167,6 +166,7 @@ public class Map extends Parent {
         buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
+        System.out.println(pos_x_asteroid);
         canvas.setOnMouseClicked(new TowerListener(canvas, pos_x_asteroid,pos_y_asteroid,num_asteroid.size()));
 
     }

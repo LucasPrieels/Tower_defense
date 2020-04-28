@@ -27,6 +27,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
         this.pos_x_asteroid = pos_x_asteroid;
         this.pos_y_asteroid = pos_y_asteroid;
         this.occupation_asteroid = new ArrayList<Integer>();
+        this.num_asteroid = num_asteroid;
         //pos_x_asteroid.add(125.0);
         //pos_x_asteroid.add(525.0);
         //pos_x_asteroid.add(731.0);
@@ -40,8 +41,8 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
     }
     @Override
     public void handle(MouseEvent mouseEvent) {
-        for (int i = 0;(i <= num_asteroid-1);i++) {
-            if (is_into_circle(pos_x_asteroid.get(i), pos_y_asteroid.get(i), mouseEvent.getX(), mouseEvent.getY(), 33.0)) {
+        for (int i = 0;i <= num_asteroid-1;i++) {
+            if (is_into_circle(pos_x_asteroid.get(i), pos_y_asteroid.get(i), mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
                 occupied = 1;
             }
             else {
@@ -72,7 +73,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
         for(int i = 0; i<=num_asteroid-1; i++){
             if(occupation_asteroid.get(i) == 1){
                 Image tower = new Image(new FileInputStream("Images/cerclejaune.png"));
-                gc.drawImage(tower, pos_x_asteroid.get(i) - 13, pos_y_asteroid.get(i) - 13);
+                gc.drawImage(tower, pos_x_asteroid.get(i)+10, pos_y_asteroid.get(i)+10);
             }
             else {System.out.println("erreur");}
         }
