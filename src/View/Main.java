@@ -9,7 +9,31 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 
-public class Main extends Application {
+
+
+
+
+public class Main extends Application  {
+
+
+
+    @Override
+    public void start(Stage primaryStage) throws Exception{
+
+
+        Menu menu = new Menu();
+        primaryStage =  menu.getMainStage();
+        primaryStage.setResizable(false);
+        primaryStage.setTitle("Tower defense");
+
+        primaryStage.show();
+    }
+
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+    /*
 
     private static Stage theStage;
 
@@ -34,5 +58,5 @@ public class Main extends Application {
     public static void main(String[] args) {
         Game game = Game.get_instance();
         launch(args);
-    }
+    }*/
 }
