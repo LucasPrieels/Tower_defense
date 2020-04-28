@@ -3,7 +3,7 @@ package Model;
 public class Big_NPC extends NPC {
     private static int radius = 3;
 
-    public Big_NPC (int pos_x, int pos_y, int speed, int health, Path path){
+    public Big_NPC (double pos_x, double pos_y, double speed, int health, Path2 path){
         super(pos_x, pos_y, speed, health, path);
     }
 

@@ -8,6 +8,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -17,34 +18,45 @@ import javafx.scene.text.Font;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent {
-    private int level = 1;
-    private int score = 1;
-    private int money = 2;
+    private int level = 1, score = 1, money = 2;
+    private static double canvas_height, canvas_width;
     private Image background;
-    private int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70;
-    private Canvas canvas;
+    private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8;
+    private static Canvas canvas;
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private Image im_small_npc, im_med_npc, im_big_npc, level1, planet1, planet2, planet3, planet4, planet5, planet6, score_img, money_img;
+    private Image im_small_npc, im_med_npc, im_big_npc, level1, score_img, money_img;
+    private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
     private Update_tower_icon update_tower_icon;
     private Buy_freezing_tower_icon buy_freezing_tower_icon;
     private Buy_factory_tower_icon buy_factory_tower_icon;
     private Buy_classic_tower_icon buy_classic_tower_icon;
+    private ArrayList<Integer> num_asteroid = new ArrayList<>();
+    private ArrayList<Double>  pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
 
     private Map(Stage stage) throws FileNotFoundException {
-        canvas = new Canvas(stage.getWidth(),stage.getHeight());
+        canvas_width = stage.getWidth();
+        canvas_height = stage.getHeight();
+        canvas = new Canvas(canvas_width, canvas_height);
         gc = canvas.getGraphicsContext2D();
         this.stage = stage;
         create_images();
-        if (level == 1){
-            init_canvas_level1();
-        }
+        draw_paths();
+        init_canvas();
         drawScoreRectangle();
         create_shop();
+        for (int x = 0; x < Board.get_asteroids().size(); x++){
+            for (Asteroid asteroid: Board.get_asteroids().get(x)){
+                num_asteroid.add((int)Math.floor(Math.random()*5.999999) + 1);
+                pos_x_asteroid.add(asteroid.get_pos_x()*canvas.getWidth()/Board.get_dim_x());
+                pos_y_asteroid.add(asteroid.get_pos_y()*canvas.getHeight()/Board.get_dim_y());
+            }
+        }
 
         this.getChildren().addAll(canvas, update_tower_icon,buy_classic_tower_icon,buy_factory_tower_icon,buy_freezing_tower_icon);
     }
@@ -62,23 +74,19 @@ public class Map extends Parent {
         instance = new Map(stage);
     }
 
-    private void init_canvas_level1(){
+    private void init_canvas(){
         gc.drawImage(level1,0,0);
-        gc.drawImage(planet1,100,100);
-        gc.drawImage(planet2,700,200);
-        gc.drawImage(planet3,1100,450);
-        gc.drawImage(planet5,500,400);
-        gc.drawImage(planet6,1100,0);
+        for (int i=0; i<num_asteroid.size(); i++){
+            gc.drawImage(planets.get(num_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
+        }
     }
 
     public void create_images() throws FileNotFoundException {
         level1 = new Image(new FileInputStream("Images/level1.jpg"), stage.getWidth(), stage.getHeight(), false, false);
-        planet1 = new Image(new FileInputStream("Images/asteroid1.png"), size_asteroid,  size_asteroid,  false, false);
-        planet2 = new Image(new FileInputStream("Images/asteroid2.png"), size_asteroid,  size_asteroid,  false, false);
-        planet3 = new Image(new FileInputStream("Images/asteroid3.png"), size_asteroid,  size_asteroid,  false, false);
-        planet4 = new Image(new FileInputStream("Images/asteroid4.png"), size_asteroid,  size_asteroid,  false, false);
-        planet5 = new Image(new FileInputStream("Images/asteroid5.png"), size_asteroid,  size_asteroid,  false, false);
-        planet6 = new Image(new FileInputStream("Images/asteroid6.png"), size_asteroid,  size_asteroid,  false, false);
+        for (int i=0; i<num_diff_asteroid; i++){
+
+            planets.add(new Image(new FileInputStream("Images/asteroid" + (i+1) + ".png"), size_asteroid,  size_asteroid,  false, false));
+        }
 
         score_img = new Image(new FileInputStream("Images/score_img.png"));
         money_img = new Image(new FileInputStream("Images/money_img.png"));
@@ -95,15 +103,20 @@ public class Map extends Parent {
         iv_big_npc.setRotate(-90);
     }
 
+    public void update_canvas(){
+        init_canvas();
+        //drawScoreRectangle();
+        draw_paths();
+        update_npc_canvas();
+        //System.out.println("Updated");
+    }
+
     public void update_npc_canvas(){
-        gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
-        if (level==1){
-            init_canvas_level1();
-        }
-        drawScoreRectangle();
-        for (NPC npc: Board.get_npcs()){
-            int pos_x = (int)Math.round(npc.get_pos_x()*canvas.getWidth()/Board.get_dim_x());
-            int pos_y = (int)Math.round(npc.get_pos_y()*canvas.getHeight()/Board.get_dim_y());
+        CopyOnWriteArrayList<NPC> npcs = new CopyOnWriteArrayList<>(Board.get_npcs());
+        // Car on peut faire des suppressions d'éléments
+        for (NPC npc: npcs){
+            double pos_x = npc.get_pos_x()*canvas.getWidth()/Board.get_dim_x();
+            double pos_y = npc.get_pos_y()*canvas.getHeight()/Board.get_dim_y();
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
 
@@ -116,10 +129,17 @@ public class Map extends Parent {
                 gc.drawImage(iv_med_npc.snapshot(params, null), pos_x, pos_y);
             }
             else if (npc instanceof Big_NPC){
+                //System.out.println(pos_x + " " + pos_y);
                 gc.drawImage(iv_big_npc.snapshot(params, null), pos_x, pos_y);
             }
         }
-        //System.out.println("Updated");
+        System.out.println();
+    }
+
+    public void draw_paths(){
+        for (Path2 path2: Board.get_paths()){
+            this.getChildren().add(path2.get_path_ui());
+        }
     }
 
     private void drawScoreRectangle(){
@@ -151,4 +171,7 @@ public class Map extends Parent {
 
     }
 
+    public static double get_canvas_height(){return canvas.getHeight();}
+    public static double get_canvas_width(){return canvas.getWidth();}
+    public static double get_size_asteroid(){return size_asteroid;}
 }

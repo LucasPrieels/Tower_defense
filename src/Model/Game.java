@@ -1,5 +1,6 @@
 package Model;
 
+import View.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
@@ -12,20 +13,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements Runnable{
-    private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves;
+    private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps;
     private static Game instance;
 
     private Game(){ //All the parameters of the game are here
         // Level
         int money = 1000;
         int score = 2000;
+        fps = 10;
 
         int[] health_small_npc = {3, 5, 8};
         int[] health_med_npc = {5, 10, 15};
         int[] health_big_npc = {10, 20, 30};
-        int[] speed_small_npc = {15, 15, 15};
-        int[] speed_med_npc = {10, 10, 10};
-        int[] speed_big_npc = {7, 7, 7};
+        double[] speed_small_npc = {15, 15, 15};
+        double[] speed_med_npc = {10, 10, 10};
+        double[] speed_big_npc = {7, 7, 7};
+
+        for (int i=0; i<3; i++){
+            speed_small_npc[i]/=fps;
+            speed_med_npc[i]/=fps;
+            speed_big_npc[i]/=fps;
+        }
 /*
         ArrayList<Integer> time_small_npc1 = new ArrayList<>(List.of(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0));
         ArrayList<Integer> time_small_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1));
@@ -57,24 +65,24 @@ public class Game implements Runnable{
         ArrayList<ArrayList<Integer>> time_big_npc = new ArrayList<>(List.of(time_big_npc1, time_big_npc2, time_big_npc3));
 
         //Board
-        int dim_x = 200;
-        int dim_y = 150;
+        int dim_x = 500;
+        int dim_y = 300;
         int margin_x = 15;
         int margin_y = 15;
         int width_path = 7;
-        int size_asteroid = 10;
-        double proba = 0.5; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
+        double size_asteroid = Map.get_size_asteroid();
+        double proba = 0.8; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
 
         time_between_waves = 5;
 
-        int start_path1 = 100, width1 = 8;
-        int[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1);
-        int start_path2 = 20, width2 = 6;
-        int[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width2);
-        Path path1 = new Path(pos_path1, width1);
-        Path path2 = new Path(pos_path2, width2);
-        ArrayList<Path> paths = new ArrayList<>(List.of(path1, path2));
+        int start_path1 = 200, width1 = 15;
+        double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1);
+        int start_path2 = 70, width2 = 10;
+        double[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width2);
+        Path2 path1 = new Path2(pos_path1, width1);
+        Path2 path2 = new Path2(pos_path2, width2);
+        ArrayList<Path2> paths = new ArrayList<>(List.of(path1, path2));
         int num_waves = time_small_npc.size();
 
         Level.get_instance(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc);
@@ -93,7 +101,6 @@ public class Game implements Runnable{
             t.start();
 
             try{
-                System.out.println(Thread.currentThread().getName());
                 t.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
             }catch(InterruptedException e){
                 System.out.println("Erreur dans le join de la méthode begin() de la classe Game");
@@ -130,16 +137,17 @@ public class Game implements Runnable{
 
     public static int get_npc_destroyed(){ return npc_destroyed;}
     public static int get_score(){ return score;}
-    public static int get_curr_wave() { System.out.println("a" + curr_wave); return curr_wave;}
+    public static int get_fps(){ return fps;}
+    public static int get_curr_wave() {return curr_wave;}
 
     public static void increment_curr_wave() { curr_wave++;}
     public static void increment_npc_destroyed(){ npc_destroyed++;}
 
-    public int[] construct_path(int dim_x, int dim_y, int start, int width){
-        int[] tab = new int[dim_x];
+    public double[] construct_path(int dim_x, int dim_y, int start, int width){
+        double[] tab = new double[dim_x];
         tab[0] = start;
         for (int i=1; i<dim_x; i++){
-            int val = tab[0] + ((int)Math.round(Math.random()*4))-2;
+            double val = tab[0] + Math.random()*2-1;
             if (val+width > dim_y){
                 val = dim_y-width;
             }

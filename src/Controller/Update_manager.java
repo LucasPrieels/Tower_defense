@@ -19,8 +19,8 @@ public class Update_manager {
     }
 
     public void update_window(){
-        System.out.println("Updating");
+        //System.out.println("Updating");
         Map map = Map.get_instance();
-        map.update_npc_canvas();
+        map.update_canvas();
     }
 }
