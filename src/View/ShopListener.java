@@ -29,12 +29,6 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable {
     }
 
     private void message(GraphicsContext gc){
-        gc.setFill(Color.rgb(0,0,0,0.5)); //noir transparent
-        gc.fillRoundRect(890,550,330,45,15,25);
-
-        gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
-        gc.setFill(Color.WHITE);
-
         Thread thread = new Thread(this);
         thread.start();
     }
@@ -47,26 +41,15 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable {
         }
         TowerListener towerListener = new TowerListener(canvas, pos_x_asteroid, pos_y_asteroid, message);
         canvas.setOnMouseClicked(towerListener);
-        while (true){
-            if(message == "Classic_tower" || message == "Freezing_tower" || message == "Factory_tower"){
-                Platform.runLater( () -> {
-                    gc.fillText("Cliquez sur un asteroïde", 900,580);
-                });
-            }
-            else if(message == "Upgrade_tower"){
-                Platform.runLater( () -> {
-                    gc.fillText("Cliquez sur une tour", 900,580);
-                });
-            }
-            try{
-                Thread.sleep(200/ Game.get_fps());
-            } catch(InterruptedException e){
-                e.printStackTrace();
-            }
-            if (towerListener.get_constructed()){
-                break;
-            }
+        if(message == "Classic_tower" || message == "Freezing_tower" || message == "Factory_tower"){
+            Platform.runLater( () -> {
+                Map.get_instance().set_const_message("Cliquez sur un astéroïde");
+            });
         }
-        towerListener = null;
+        else if(message == "Upgrade_tower"){
+            Platform.runLater( () -> {
+                Map.get_instance().set_const_message("Cliquez sur une tour");
+            });
+        }
     }
 }

@@ -13,8 +13,8 @@ public class Update_tower_icon extends Parent {
     public Update_tower_icon() throws FileNotFoundException {
         Image tower = new Image(new FileInputStream("Images/update_tower.png"));
         ImageView imageView = new ImageView(tower);
-        imageView.setX(1150);
-        imageView.setY(600);
+        imageView.setX(Map.get_canvas_width()-tower.getWidth()-10);
+        imageView.setY(Map.get_canvas_height()-tower.getHeight()-40);
 
         this.getChildren().add(imageView);
     }
