@@ -26,17 +26,17 @@ public class Menu extends Parent {
         theStage = Main.get_stage();
 
         Button button_play = new Button("Play");
-        button_play.setLayoutX(500);
-        button_play.setLayoutY(400);
+        button_play.setLayoutX(100);
+        button_play.setLayoutY(100);
         Button button_help = new Button("Help");
         button_help.setLayoutX(100);
-        button_help.setLayoutY(100);
+        button_help.setLayoutY(200);
         Button button_level = new Button("Level");
-        button_level.setLayoutX(300);
+        button_level.setLayoutX(100);
         button_level.setLayoutY(300);
         Button button_exit = new Button("Exit");
-        button_exit.setLayoutX(10);
-        button_exit.setLayoutY(10);
+        button_exit.setLayoutX(100);
+        button_exit.setLayoutY(400);
 
         //je changerai la taille, position, et graphisme du bouton plus tard
         //c'est pas très important
