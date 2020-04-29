@@ -42,6 +42,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
     public void handle(MouseEvent mouseEvent) {
         if (constructed) return;
         gc = canvas.getGraphicsContext2D();
+        Map.get_instance().set_const_message("");
         for (int i = 0; i < pos_x_asteroid.size(); i++) {
             double fact_x = canvas.getWidth()/Board.get_dim_x();
             double fact_y = canvas.getHeight()/Board.get_dim_y();
@@ -55,32 +56,20 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                 }
                 //ATTENTION Faire une factory plutôt que des else if
                 if (Board.get_asteroids().get(i).is_occupied()){
-                    gc.fillText("Astéroide déjà occupé", 900, 580);
-                    System.out.println("Astéroide déjà occupé");
-                    try{
-                        Thread.sleep(2000);
-                    } catch(InterruptedException e){
-                        e.printStackTrace();
-                    }
-                    continue;
+                    Map.get_instance().set_temp_message("Astéroide déjà occupé");
                 }
                 else if (message == "Classic_tower"){
                     if (Game.pay(Game.get_price_classic_tower())){
                         Board.add_tower(new Classic_tower(Board.get_asteroids().get(i)));
-                        gc.fillText("Tour classique créée", 900, 580);
-                        System.out.println("Tour classique créée");
 
                     }
                     else{
-                        gc.fillText("Pas assez d'argent !", 900, 580);
-                        System.out.println("Pas assez d'argent");
+                        Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                     }
                 }
                 else if (message == "Freezing_tower"){
                     if (Game.pay(Game.get_price_freezing_tower())){
                         Board.add_tower(new Freezing_tower(Board.get_asteroids().get(i)));
-                        gc.fillText("Tour gelante créée", 900, 580);
-                        System.out.println("Tour gelante créée");
                     }
                     else{
                         gc.fillText("Pas assez d'argent !", 900, 580);
@@ -90,12 +79,9 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                 else if (message == "Factory_tower"){
                     if (Game.pay(Game.get_price_factory_tower())){
                         Board.add_tower(new Factory_tower(Board.get_asteroids().get(i)));
-                        gc.fillText("Usine créée", 900, 580);
-                        System.out.println("Usine créée");
                     }
                     else{
-                        gc.fillText("Pas assez d'argent !", 900, 580);
-                        System.out.println("Pas assez d'argent");
+                        Map.get_instance().set_temp_message("Pas assez d'argent");
                     }
                 }
                 else{

@@ -13,8 +13,8 @@ public class Buy_factory_tower_icon extends Parent {
     public Buy_factory_tower_icon() throws FileNotFoundException {
         Image icon = new Image(new FileInputStream("Images/factory_tower.png"));
         ImageView imageView = new ImageView(icon);
-        imageView.setX(1050);
-        imageView.setY(600);
+        imageView.setX(Map.get_canvas_width()-3*(icon.getWidth()+10));
+        imageView.setY(Map.get_canvas_height()-icon.getHeight()-40);
 
         this.getChildren().add(imageView);
     }
