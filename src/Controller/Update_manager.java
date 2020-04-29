@@ -18,7 +18,7 @@ public class Update_manager {
         return instance;
     }
 
-    public void update_window(){
+    public void update_window() throws FileNotFoundException {
         //System.out.println("Updating");
         Map map = Map.get_instance();
         map.update_canvas();

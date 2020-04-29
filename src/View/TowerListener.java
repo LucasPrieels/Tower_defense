@@ -101,7 +101,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                 else{
                     System.out.println("Erreur!!!");
                 }
-                gc.drawImage(tower_img, pos_x_asteroid.get(i) + 10, pos_y_asteroid.get(i) + 10);
+                gc.drawImage(tower_img, (pos_x_asteroid.get(i)*fact_x)+10, (pos_y_asteroid.get(i)*fact_y)+10);
                 constructed = true;
                 break;
             }

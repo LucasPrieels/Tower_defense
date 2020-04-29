@@ -21,7 +21,8 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent {
-    private int level = 1, score = Game.get_score(), money = Game.get_money();
+    private int level = 3, score = Game.get_score(), money = Game.get_money();
+    //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
     private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8;
@@ -29,7 +30,7 @@ public class Map extends Parent {
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private Image im_small_npc, im_med_npc, im_big_npc, level1, score_img, money_img;
+    private Image im_small_npc, im_med_npc, im_big_npc, level_background, score_img, money_img;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
     private Update_tower_icon update_tower_icon;
@@ -71,18 +72,37 @@ public class Map extends Parent {
         instance = new Map(stage);
     }
 
-    private void init_canvas(){
-        gc.drawImage(level1,0,0);
-        for (int i=0; i<type_asteroid.size(); i++){
-            gc.drawImage(planets.get(type_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
+
+    private void init_canvas() throws FileNotFoundException {
+        for (int j = 1; j < 4; j++) {
+            if (level == j) {
+                gc.drawImage(level_background, 0, 0); //modifier
+                for (int i = 0; i < type_asteroid.size(); i++) {
+                    gc.drawImage(planets.get(type_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
+                }
+            }
         }
     }
+    //private void init_canvas(){
+    //    gc.drawImage(level1,0,0);
+    //    for (int i=0; i<type_asteroid.size(); i++){
+    //        gc.drawImage(planets.get(type_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
+    //    }
+    //}
 
     public void create_images() throws FileNotFoundException {
-        level1 = new Image(new FileInputStream("Images/level1.jpg"), stage.getWidth(), stage.getHeight(), false, false);
-        for (int i=0; i<num_diff_asteroid; i++){
+        //level1 = new Image(new FileInputStream("Images/level1.jpg"), stage.getWidth(), stage.getHeight(), false, false);
+        //for (int i=0; i<num_diff_asteroid; i++){
 
-            planets.add(new Image(new FileInputStream("Images/asteroid" + (i+1) + ".png"), size_asteroid,  size_asteroid,  false, false));
+            //planets.add(new Image(new FileInputStream("Images/asteroid" + (i+1) + ".png"), size_asteroid,  size_asteroid,  false, false));
+        //}
+        for(int j = 1;j<4;j++) {
+            if (level == j) {
+                level_background = new Image(new FileInputStream("Images/level" + j + ".jpg"), stage.getWidth(), stage.getHeight(), false, false);
+                for (int i = 0; i < num_diff_asteroid; i++) {
+                    planets.add(new Image(new FileInputStream("Images/" + j +"planet" + (i + 1) + ".png"), size_asteroid, size_asteroid, false, false));
+                }
+            }
         }
 
         score_img = new Image(new FileInputStream("Images/score_img.png"));
@@ -100,7 +120,7 @@ public class Map extends Parent {
         iv_big_npc.setRotate(-90);
     }
 
-    public void update_canvas(){
+    public void update_canvas() throws FileNotFoundException {
         init_canvas();
         drawScoreRectangle();
         draw_paths();

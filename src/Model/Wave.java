@@ -8,6 +8,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Wave implements Runnable{
@@ -68,7 +69,11 @@ public class Wave implements Runnable{
                 //Platform.setImplicitExit(false);
                 Platform.runLater( () -> {
                     //System.out.println("Updating");
-                    Controller.Update_manager.get_instance().update_window();
+                    try {
+                        Controller.Update_manager.get_instance().update_window();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 });
                 Thread.sleep(1000/fps);
                 if (iter%fps == 0){
