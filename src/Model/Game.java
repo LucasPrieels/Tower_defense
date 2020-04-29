@@ -13,18 +13,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements Runnable{
-    private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps;
+    private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower;
     private static Game instance;
 
     private Game(){ //All the parameters of the game are here
         // Level
-        this.money = 1000;
-        this.score = 2000;
+        Game.money = 1000;
+        Game.score = 2000;
         fps = 10;
 
-        int[] health_small_npc = {3, 5, 8};
-        int[] health_med_npc = {5, 10, 15};
-        int[] health_big_npc = {10, 20, 30};
+        int[] health_small_npc = {10, 15, 20};
+        int[] health_med_npc = {15, 20, 30};
+        int[] health_big_npc = {20, 40, 50};
         double[] speed_small_npc = {15, 15, 15};
         double[] speed_med_npc = {10, 10, 10};
         double[] speed_big_npc = {7, 7, 7};
@@ -85,6 +85,10 @@ public class Game implements Runnable{
         ArrayList<Path2> paths = new ArrayList<>(List.of(path1, path2));
         int num_waves = time_small_npc.size();
 
+        price_classic_tower = 100;
+        price_factory_tower = 200;
+        price_freezing_tower = 300;
+
         Level.get_instance(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc);
         Board.get_instance(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
     }
@@ -138,6 +142,8 @@ public class Game implements Runnable{
     public static int get_npc_destroyed(){ return npc_destroyed;}
     public static int get_score(){ return score;}
     public static int get_money(){return money;}
+    public static void decrease_score(int a){ score -= a;}
+    public static void increase_money(int a){money += a;}
     public static int get_fps(){ return fps;}
     public static int get_curr_wave() {return curr_wave;}
 
@@ -161,4 +167,7 @@ public class Game implements Runnable{
     }
 
     public static int get_time_between_waves(){return time_between_waves;}
+    public static int get_price_classic_tower(){return price_classic_tower;}
+    public static int get_price_freezing_tower(){return price_freezing_tower;}
+    public static int get_price_factory_tower(){return price_factory_tower;}
 }

@@ -9,6 +9,7 @@ public abstract class Tower {
 
     protected Tower(Asteroid asteroid, int[] period, int[] price_upgrade, int max_level, int[] npc_destroyed_needed){
         this.asteroid = asteroid;
+        asteroid.occupy(this);
         this.period = period;
         this.price_upgrade = price_upgrade;
         this.max_level = max_level;

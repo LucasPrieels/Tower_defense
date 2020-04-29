@@ -36,7 +36,7 @@ public class Map extends Parent {
     private Buy_freezing_tower_icon buy_freezing_tower_icon;
     private Buy_factory_tower_icon buy_factory_tower_icon;
     private Buy_classic_tower_icon buy_classic_tower_icon;
-    private ArrayList<Integer> num_asteroid = new ArrayList<>();
+    private ArrayList<Integer> type_asteroid = new ArrayList<>();
     private ArrayList<Double>  pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
 
     private Map(Stage stage) throws FileNotFoundException {
@@ -49,12 +49,10 @@ public class Map extends Parent {
         //draw_paths();
         init_canvas();
         drawScoreRectangle();
-        for (int x = 0; x < Board.get_asteroids().size(); x++){
-            for (Asteroid asteroid: Board.get_asteroids().get(x)){
-                num_asteroid.add((int)Math.floor(Math.random()*5.999999) + 1);
-                pos_x_asteroid.add(asteroid.get_pos_x()*canvas.getWidth()/Board.get_dim_x());
-                pos_y_asteroid.add(asteroid.get_pos_y()*canvas.getHeight()/Board.get_dim_y());
-            }
+        for (Asteroid asteroid: Board.get_asteroids()){
+            type_asteroid.add((int)Math.floor(Math.random()*5.999999) + 1);
+            pos_x_asteroid.add(asteroid.get_pos_x()*canvas.getWidth()/Board.get_dim_x());
+            pos_y_asteroid.add(asteroid.get_pos_y()*canvas.getHeight()/Board.get_dim_y());
         }
         create_shop();
         this.getChildren().addAll(canvas, update_tower_icon,buy_classic_tower_icon,buy_factory_tower_icon,buy_freezing_tower_icon);
@@ -75,8 +73,8 @@ public class Map extends Parent {
 
     private void init_canvas(){
         gc.drawImage(level1,0,0);
-        for (int i=0; i<num_asteroid.size(); i++){
-            gc.drawImage(planets.get(num_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
+        for (int i=0; i<type_asteroid.size(); i++){
+            gc.drawImage(planets.get(type_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
         }
     }
 
@@ -148,6 +146,9 @@ public class Map extends Parent {
         gc.drawImage(score_img,15,15);
         gc.drawImage(money_img,130,15);
 
+        score = Game.get_score();
+        money = Game.get_money();
+
         gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
         gc.fillText(Integer.toString(score), 50,35);  //Integer.toString
@@ -163,13 +164,10 @@ public class Map extends Parent {
         this.buy_factory_tower_icon = new Buy_factory_tower_icon();
         this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
 
-        update_tower_icon.setOnMouseClicked(new ShopListener(gc,"tower"));
-        buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
-        buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
-        buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc,"asteroid"));
-        System.out.println(pos_x_asteroid);
-        canvas.setOnMouseClicked(new TowerListener(canvas, pos_x_asteroid,pos_y_asteroid,num_asteroid.size()));
-
+        update_tower_icon.setOnMouseClicked(new ShopListener(gc,"Upgrade_tower", canvas));
+        buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc,"Classic_tower", canvas));
+        buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc,"Factory_tower", canvas));
+        buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc,"Freezing_tower", canvas));
     }
 
     public static double get_canvas_height(){return canvas.getHeight();}

@@ -59,7 +59,6 @@ public class Menu extends Parent {
                 theStage.show();
 
                 View.Map map = null;
-
                 try {
                     Map.init(theStage);
                     map = Map.get_instance();
@@ -70,7 +69,6 @@ public class Menu extends Parent {
                 }
 
                 root2.getChildren().add(map);
-
             }
         });
     }

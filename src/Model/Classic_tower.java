@@ -11,6 +11,7 @@ public class Classic_tower extends Attack_tower{
 
     protected void shoot(NPC npc){
         Munition munition = new Classic_munition(this, npc);
+        System.out.println("Munition classique crée");
         add_munition(munition);
     }
 }

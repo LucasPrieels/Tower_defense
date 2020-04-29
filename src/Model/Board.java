@@ -10,7 +10,7 @@ public class Board {
     private static ArrayList<NPC> npcs = new ArrayList<>();
     private static ArrayList<Path2> paths;
     private static ArrayList<Tower> towers = new ArrayList<>();
-    private static ArrayList<ArrayList<Asteroid>> asteroids = new ArrayList<>();
+    private static ArrayList<Asteroid> asteroids = new ArrayList<>();
     private static ArrayList<Munition> munitions = new ArrayList<>();
     private static int dim_x, dim_y, margin_x, margin_y, width_path, max_offset;
     private static double proba, size_asteroid;
@@ -26,7 +26,6 @@ public class Board {
         Board.proba = proba;
         Board.max_offset = max_offset;
         Board.paths = paths; // Ne pas les créer aléatoirement car ça pourrait créer des conflits (croisements, bloquages de chemins etc)
-        for (int i=0; i<dim_x; i++){ asteroids.add(new ArrayList<>());}
         create_asteroids_random();
     }
 
@@ -47,7 +46,7 @@ public class Board {
                     Asteroid asteroid;
                     if (offset>0) asteroid = new Asteroid(x, Math.min(y + (double)width_path / 2 + Map.get_size_asteroid()/2 + offset, dim_y - margin_y - Map.get_size_asteroid()/2));
                     else asteroid = new Asteroid(x, Math.max(y - (double)width_path / 2 - Map.get_size_asteroid()/2 + offset, margin_y + Map.get_size_asteroid()/2));
-                    asteroids.get(x).add(asteroid);
+                    asteroids.add(asteroid);
                     x += size_asteroid; // On évite que deux asétroîdes soient trop proches
                     if (x >= dim_x-margin_x) return;
                 }
@@ -66,7 +65,7 @@ public class Board {
     public static ArrayList<NPC> get_npcs(){ return npcs;} // Utiliser polymorphisme pour éviter répétition? Sans instanceof?
     public static ArrayList<Path2> get_paths(){ return paths;}
     public static ArrayList<Tower> get_towers(){ return towers;}
-    public static ArrayList<ArrayList<Asteroid>> get_asteroids(){ return asteroids;}
+    public static ArrayList<Asteroid> get_asteroids(){ return asteroids;}
     public static ArrayList<Munition> get_munitions(){ return munitions;}
 
     public static int get_dim_x(){return dim_x;}

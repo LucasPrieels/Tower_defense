@@ -8,22 +8,19 @@ public class Factory_tower extends Tower implements Runnable{
 
     public Factory_tower(Asteroid asteroid) {
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
+        Thread thread = new Thread(this);
+        thread.start();
     }
 
     public void run(){
         while (true){
             try{
-                Thread.sleep(period[get_curr_level()]);
-                money_produced = true;
-                while (money_produced){ }
+                Thread.sleep(period[get_curr_level()]*1000);
+                Game.increase_money(prod_money[get_curr_level()]);
+                System.out.println("Argent produit par une usine");
             } catch(InterruptedException e){
                 System.out.println("Erreur dans le sleep du thread des Factory_tower");
             }
         }
-    }
-
-    public int get_money() {
-        money_produced = false;
-        return prod_money[get_curr_level()];
     }
 }
