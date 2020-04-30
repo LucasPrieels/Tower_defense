@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable {
-    private int level = 2, score, money, wave, timer;
+    private int level = 3, score, money, wave, timer;
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
@@ -270,7 +270,6 @@ public class Map extends Parent implements Runnable {
         String message = curr_message;
         double t = 0;
         while (t < 3000) {
-            System.out.println(t + " " + Thread.currentThread().getName() + " " + curr_message);
             Platform.runLater(() -> show_message_displayed());
             try {
                 Thread.sleep((long) (50.0 / Game.get_fps()));

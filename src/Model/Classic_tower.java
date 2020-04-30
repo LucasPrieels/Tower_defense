@@ -1,8 +1,10 @@
 package Model;
 
+import java.util.ArrayList;
+
 public class Classic_tower extends Attack_tower{
-    private static double[] range = {40.0, 100.0, 200.0};
-    private static int[] period = {3000, 2000, 1000}, power = {5, 10, 20}, npc_destroyed_needed = {5, 15}, price_upgrade = {50, 200};
+    private static double[] range = {70.0, 100.0, 200.0};
+    private static int[] period = {2000, 1500, 700}, power = {4, 7, 10}, npc_destroyed_needed = {5, 15}, price_upgrade = {50, 200};
     private static int max_level = 3;
 
     public Classic_tower(Asteroid asteroid){
@@ -13,5 +15,18 @@ public class Classic_tower extends Attack_tower{
         Munition munition = new Classic_munition(this, npc);
         System.out.println("Munition classique crée");
         add_munition(munition);
+    }
+
+    public boolean fire(){
+        ArrayList<NPC> npcs = Board.get_npcs();
+        for (NPC npc: npcs){
+            if (npc_in_tower_area(npc)){
+                System.out.println("FIRE!");
+                shoot(npc); // On s'arrête dès que le premier PNJ dans la zone d'attaque a été trouvé car c'est dans l'ordre
+                // le premier a avoir été tiré donc celui qui est le plus loin sur la plateau
+                return true;
+            }
+        }
+        return false;
     }
 }

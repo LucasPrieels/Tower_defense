@@ -1,14 +1,16 @@
 package Model;
 
-public  class Munition {
+public abstract class Munition {
     private NPC npc;
+    private Attack_tower tower;
     private double pos_x, pos_y, dir_x, dir_y, speed;
 
-    public Munition(Tower tower, NPC npc, double speed){
+    public Munition(Attack_tower tower, NPC npc, double speed){
         this.npc = npc;
         this.pos_x = tower.get_asteroid().get_pos_x();
         this.pos_y = tower.get_asteroid().get_pos_y();
         this.speed = speed;
+        this.tower = tower;
     }
 
     public void update(){
@@ -27,6 +29,8 @@ public  class Munition {
     public NPC get_npc(){return npc;}
     public double get_pos_x(){return pos_x;}
     public double get_pos_y(){return pos_y;}
+    public Attack_tower get_tower(){return tower;}
 
+    public abstract boolean check_shot();
 }
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public abstract class Attack_tower extends Tower implements Runnable{
     private double[] range;
     private int[] power,  npc_destroyed_needed;
-    private boolean shot = false;
 
     protected Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
@@ -38,18 +37,9 @@ public abstract class Attack_tower extends Tower implements Runnable{
         }
     }
 
-    private boolean fire(){
-        ArrayList<NPC> npcs = Board.get_npcs();
-        for (NPC npc: npcs){
-            if (npc_in_tower_area(npc)){
-                System.out.println("FIRE!");
-                shoot(npc); // On s'arrête dès que le premier PNJ dans la zone d'attaque a été trouvé car c'est dans l'ordre
-                // le premier a avoir été tiré donc celui qui est le plus loin sur la plateau
-                return true;
-            }
-        }
-        return false;
-    }
+    public abstract boolean fire();
 
     protected abstract void shoot(NPC npc);
+
+    public int get_power(){return power[get_curr_level()];}
 }

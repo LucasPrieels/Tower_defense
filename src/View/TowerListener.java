@@ -53,7 +53,6 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                 else if (message == "Classic_tower"){
                     if (Game.pay(Game.get_price_classic_tower())){
                         Board.add_tower(new Classic_tower(Board.get_asteroids().get(i)));
-
                     }
                     else{
                         Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");

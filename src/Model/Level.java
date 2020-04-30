@@ -32,7 +32,7 @@ public class Level {
 
     public static void create_waves(){
         for (int i=0; i<num_waves; i++){
-            Wave wave = new Wave(health_small_npc[i], speed_small_npc[i], health_small_npc[i], speed_med_npc[i], health_med_npc[i], speed_big_npc[i], time_small_npc.get(i), time_med_npc.get(i), time_big_npc.get(i));
+            Wave wave = new Wave(health_small_npc[i], speed_small_npc[i], health_med_npc[i], speed_med_npc[i], health_big_npc[i], speed_big_npc[i], time_small_npc.get(i), time_med_npc.get(i), time_big_npc.get(i));
             waves.add(wave);
         }
     }

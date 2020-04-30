@@ -1,6 +1,7 @@
 package Model;
 
 import View.Map;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
@@ -64,9 +65,8 @@ public class Board implements Runnable{
         }
     }
 
-    public static void remove_npc(NPC npc){
-        npcs.remove(npc);
-    }
+    public static void remove_npc(NPC npc){npcs.remove(npc);}
+    public static void remove_munition(Munition munition){npcs.remove(munition);}
 
     public static void add_npc(NPC npc){ npcs.add(npc);}
     public static void add_tower(Tower tower){ towers.add(tower);}
@@ -101,9 +101,15 @@ public class Board implements Runnable{
         while (true){
             for (Munition munition: munitions){
                 munition.update();
+                if (munition.check_shot()){
+                    System.out.println("Munition détruite");
+                    Platform.runLater( () -> {
+                        munitions.remove(munition);
+                    });
+                }
             }
             try{
-                Thread.sleep(100);
+                Thread.sleep(1000/Game.get_fps());
             } catch(InterruptedException e){
                 e.printStackTrace();
             }
