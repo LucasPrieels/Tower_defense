@@ -26,12 +26,12 @@ public class Map extends Parent implements Runnable {
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
-    private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8;
+    private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8, size_munitions = 10;
     private static Canvas canvas;
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private Image im_small_npc, im_med_npc, im_big_npc, level_background, score_img, money_img;
+    private Image im_small_npc, im_med_npc, im_big_npc, level_background, score_img, money_img, tower_img, classic_munition_img, freezing_munition_img;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
     private Update_tower_icon update_tower_icon;
@@ -41,6 +41,7 @@ public class Map extends Parent implements Runnable {
     private ArrayList<Integer> type_asteroid = new ArrayList<>();
     private ArrayList<Double> pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
     private static String curr_message;
+    private double fact_x, fact_y;
 
     private Map(Stage stage) throws FileNotFoundException {
         canvas_width = stage.getWidth();
@@ -58,6 +59,8 @@ public class Map extends Parent implements Runnable {
             pos_y_asteroid.add(asteroid.get_pos_y() * canvas.getHeight() / Board.get_dim_y());
         }
         create_shop();
+        fact_x = Map.get_canvas_width()/Board.get_dim_x();
+        fact_y = Map.get_canvas_height()/Board.get_dim_y();
         this.getChildren().addAll(canvas, update_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon);
     }
 
@@ -76,7 +79,6 @@ public class Map extends Parent implements Runnable {
         instance = new Map(stage);
     }
 
-
     private void init_canvas() throws FileNotFoundException {
         for (int j = 1; j < 4; j++) {
             if (level == j) {
@@ -87,19 +89,8 @@ public class Map extends Parent implements Runnable {
             }
         }
     }
-    //private void init_canvas(){
-    //    gc.drawImage(level1,0,0);
-    //    for (int i=0; i<type_asteroid.size(); i++){
-    //        gc.drawImage(planets.get(type_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
-    //    }
-    //}
 
     public void create_images() throws FileNotFoundException {
-        //level1 = new Image(new FileInputStream("Images/level1.jpg"), stage.getWidth(), stage.getHeight(), false, false);
-        //for (int i=0; i<num_diff_asteroid; i++){
-
-        //planets.add(new Image(new FileInputStream("Images/asteroid" + (i+1) + ".png"), size_asteroid,  size_asteroid,  false, false));
-        //}
         for (int j = 1; j < 4; j++) {
             if (level == j) {
                 level_background = new Image(new FileInputStream("Images/level" + j + ".jpg"), stage.getWidth(), stage.getHeight(), false, false);
@@ -122,6 +113,11 @@ public class Map extends Parent implements Runnable {
         iv_med_npc.setRotate(-90);
         iv_big_npc = new ImageView(im_big_npc);
         iv_big_npc.setRotate(-90);
+
+        tower_img = new Image(new FileInputStream("Images/cerclejaune.png"));
+
+        classic_munition_img = new Image(new FileInputStream("Images/Classic_munition.png"), size_munitions, size_munitions, false, false);
+        freezing_munition_img = new Image(new FileInputStream("Images/Freezing_munition.png"), size_munitions, size_munitions, false, false);
     }
 
     public void update_canvas() throws FileNotFoundException {
@@ -129,17 +125,50 @@ public class Map extends Parent implements Runnable {
         drawScoreRectangle();
         draw_paths();
         update_npc_canvas();
-        update_message_displayed();
+        update_munitions_canvas();
+        show_message_displayed();
+        show_towers();
         //System.out.println("Updated");
     }
 
-    private void update_message_displayed() {
+    public void update_munitions_canvas(){
+        for (Munition munition: Board.get_munitions()){
+            double pos_x = munition.get_pos_x(), pos_y = munition.get_pos_y();
+            if (munition instanceof Classic_munition){
+                gc.drawImage(classic_munition_img, pos_x*fact_x, pos_y*fact_y);
+            }
+            else if (munition instanceof Freezing_munition){
+                gc.drawImage(freezing_munition_img, pos_x*fact_x, pos_y*fact_y);
+            }
+            else{
+                System.out.println("ERREUR !!! Essaye d'imprimer une munition n'existant pas dans update_munitions_canvas");
+            }
+        }
+    }
+
+    private void show_towers(){
+        for (Tower tower: Board.get_towers()){
+            if (tower instanceof Classic_tower){
+                gc.drawImage(/*Classic_*/tower_img, (tower.get_asteroid().get_pos_x()*fact_x)+(double)/*Classic_*/tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)+(double)/*Classic_*/tower_img.getWidth()/2);
+            }
+            else if (tower instanceof Freezing_tower){
+                gc.drawImage(/*Freezing_*/tower_img, (tower.get_asteroid().get_pos_x()*fact_x)+(double)/*Freezing_*/tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)+(double)/*Freezing_*/tower_img.getWidth()/2);
+            }
+            else if (tower instanceof Factory_tower){
+                gc.drawImage(/*Factory_*/tower_img, (tower.get_asteroid().get_pos_x()*fact_x)+(double)/*Factory_*/tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)+(double)/*Factory_*/tower_img.getWidth()/2);
+            }
+            else{
+                System.out.println("ERREUR !!! Essaye d'imprimer une tour n'existant pas dans show_towers");
+            }
+        }
+    }
+
+    private void show_message_displayed() {
         gc.setFill(Color.rgb(0,0,0,0.5)); //noir transparent
         gc.fillRoundRect(canvas.getWidth()-330,canvas.getHeight()-160,330,45,15,25);
         gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
         gc.fillText(curr_message, canvas.getWidth()-300, canvas.getHeight()-130);
-        System.out.println("Updated");
     }
 
     public void update_npc_canvas() {
@@ -229,7 +258,7 @@ public class Map extends Parent implements Runnable {
         double t = 0;
         while (t < 3000) {
             System.out.println(t + " " + Thread.currentThread().getName() + " " + curr_message);
-            Platform.runLater(() -> update_message_displayed());
+            Platform.runLater(() -> show_message_displayed());
             try {
                 Thread.sleep((long) (50.0 / Game.get_fps()));
             } catch (InterruptedException e) {
@@ -239,4 +268,7 @@ public class Map extends Parent implements Runnable {
         }
         if (curr_message == message) curr_message = ""; //Si le message n'a pas changé entretemps, on l'efface
     }
+
+    public double get_fact_x(){return fact_x;}
+    public double get_fact_y(){return fact_y;}
 }

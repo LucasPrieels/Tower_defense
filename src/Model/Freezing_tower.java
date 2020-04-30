@@ -1,8 +1,8 @@
 package Model;
 
 public class Freezing_tower extends Attack_tower{
-    private static double[] range = {20.0, 50.0, 100.0};
-    private static int[] power = {2, 5, 10}, npc_destroyed_needed = {10, 30}, period = {3000, 2000, 1000}, price_upgrade = {200, 500};
+    private static double[] range = {30.0, 50.0, 100.0};
+    private static int[] power = {2, 5, 10}, npc_destroyed_needed = {10, 30}, period = {5000, 3000, 1500}, price_upgrade = {200, 500};
     private static int max_level = 3;
 
     public Freezing_tower(Asteroid asteroid){

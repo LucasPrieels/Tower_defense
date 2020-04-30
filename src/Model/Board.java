@@ -1,10 +1,12 @@
 package Model;
 
 import View.Map;
+import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
-public class Board {
+public class Board implements Runnable{
     private static Board instance = null;
 
     private static ArrayList<NPC> npcs = new ArrayList<>();
@@ -30,9 +32,17 @@ public class Board {
     }
 
     //Singleton
-    //Attention, le return ne sert à rien car la classe est tout le temps utilisée en static mais la fonction est utile pour initialiser les valeurs
-    public static Board get_instance(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, double size_asteroid, double proba, int max_offset, ArrayList<Path2> paths){
-        if (Board.instance==null){Board.instance = new Board(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);}
+    public static void init(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, double size_asteroid, double proba, int max_offset, ArrayList<Path2> paths){
+        if (Board.instance != null){
+            throw new AssertionError("Board can't be initalized twice");
+        }
+        Board.instance = new Board(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
+    }
+
+    public static Board get_instance(){
+        if (Board.instance == null){
+            throw new AssertionError("Board has to be initialized before getting accessed");
+        }
         return Board.instance;
     }
 
@@ -85,5 +95,18 @@ public class Board {
 
     private static double distance(double pos_x1, double pos_y1, double pos_x2, double pos_y2) {
         return Math.sqrt(Math.pow(pos_x1-pos_x2, 2)+Math.pow(pos_y1-pos_y2, 2));
+    }
+
+    public void run(){
+        while (true){
+            for (Munition munition: munitions){
+                munition.update();
+            }
+            try{
+                Thread.sleep(100);
+            } catch(InterruptedException e){
+                e.printStackTrace();
+            }
+        }
     }
 }

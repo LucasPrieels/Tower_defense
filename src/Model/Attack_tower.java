@@ -6,7 +6,6 @@ public abstract class Attack_tower extends Tower implements Runnable{
     private double[] range;
     private int[] power,  npc_destroyed_needed;
     private boolean shot = false;
-    private ArrayList<Munition> munitions = new ArrayList<>();
 
     protected Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
@@ -18,7 +17,7 @@ public abstract class Attack_tower extends Tower implements Runnable{
     }
 
     public void add_munition(Munition munition){
-        munitions.add(munition);
+        Board.add_munition(munition);
     }
 
     public boolean npc_in_tower_area(NPC npc){

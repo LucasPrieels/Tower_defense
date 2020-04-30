@@ -44,16 +44,8 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
         gc = canvas.getGraphicsContext2D();
         Map.get_instance().set_const_message("");
         for (int i = 0; i < pos_x_asteroid.size(); i++) {
-            double fact_x = canvas.getWidth()/Board.get_dim_x();
-            double fact_y = canvas.getHeight()/Board.get_dim_y();
+            double fact_x = Map.get_canvas_width()/Board.get_dim_x(), fact_y = Map.get_canvas_height()/Board.get_dim_y();
             if (is_into_circle(pos_x_asteroid.get(i)*fact_x, pos_y_asteroid.get(i)*fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
-                Image tower_img = null;
-                try {
-                    tower_img = new Image(new FileInputStream("Images/cerclejaune.png"));
-                } catch (FileNotFoundException e) {
-                    System.out.println("Erreur de création de l'image tower");
-                    e.printStackTrace();
-                }
                 //ATTENTION Faire une factory plutôt que des else if
                 if (Board.get_asteroids().get(i).is_occupied()){
                     Map.get_instance().set_temp_message("Astéroide déjà occupé");
@@ -72,8 +64,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                         Board.add_tower(new Freezing_tower(Board.get_asteroids().get(i)));
                     }
                     else{
-                        gc.fillText("Pas assez d'argent !", 900, 580);
-                        System.out.println("Pas assez d'argent");
+                        Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                     }
                 }
                 else if (message == "Factory_tower"){
@@ -81,13 +72,12 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                         Board.add_tower(new Factory_tower(Board.get_asteroids().get(i)));
                     }
                     else{
-                        Map.get_instance().set_temp_message("Pas assez d'argent");
+                        Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                     }
                 }
                 else{
                     System.out.println("Erreur!!!");
                 }
-                gc.drawImage(tower_img, (pos_x_asteroid.get(i)*fact_x)+10, (pos_y_asteroid.get(i)*fact_y)+10);
                 constructed = true;
                 break;
             }

@@ -24,7 +24,7 @@ public class Path2 {
     public int get_width(){return width;}
 
     public Path get_path_ui(){
-        double fact_x = Map.get_canvas_width()/Board.get_dim_x(), fact_y = Map.get_canvas_height()/Board.get_dim_y();
+        double fact_x = Map.get_instance().get_fact_x(), fact_y = Map.get_instance().get_fact_y();
         Path path = new Path();
 
         MoveTo moveTo = new MoveTo();
