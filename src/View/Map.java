@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable {
-    private int level = 1, score = Game.get_score(), money = Game.get_money();
+    private int level = 2, score = Game.get_score(), money = Game.get_money();
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
@@ -31,7 +31,7 @@ public class Map extends Parent implements Runnable {
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private Image im_small_npc, im_med_npc, im_big_npc, level_background, score_img, money_img, tower_img, classic_munition_img, freezing_munition_img;
+    private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
     private Update_tower_icon update_tower_icon;
@@ -114,10 +114,13 @@ public class Map extends Parent implements Runnable {
         iv_big_npc = new ImageView(im_big_npc);
         iv_big_npc.setRotate(-90);
 
-        tower_img = new Image(new FileInputStream("Images/cerclejaune.png"));
+        classic_tower_img = new Image(new FileInputStream("Images/classic_tower.png"));
+        freezing_tower_img = new Image(new FileInputStream("Images/freezing_tower.png"));
+        factory_tower_img = new Image(new FileInputStream("Images/factory_tower.png"));
 
         classic_munition_img = new Image(new FileInputStream("Images/Classic_munition.png"), size_munitions, size_munitions, false, false);
         freezing_munition_img = new Image(new FileInputStream("Images/Freezing_munition.png"), size_munitions, size_munitions, false, false);
+
     }
 
     public void update_canvas() throws FileNotFoundException {
@@ -149,13 +152,13 @@ public class Map extends Parent implements Runnable {
     private void show_towers(){
         for (Tower tower: Board.get_towers()){
             if (tower instanceof Classic_tower){
-                gc.drawImage(/*Classic_*/tower_img, (tower.get_asteroid().get_pos_x()*fact_x)+(double)/*Classic_*/tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)+(double)/*Classic_*/tower_img.getWidth()/2);
+                gc.drawImage(classic_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getWidth()/2);
             }
             else if (tower instanceof Freezing_tower){
-                gc.drawImage(/*Freezing_*/tower_img, (tower.get_asteroid().get_pos_x()*fact_x)+(double)/*Freezing_*/tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)+(double)/*Freezing_*/tower_img.getWidth()/2);
+                gc.drawImage(freezing_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)freezing_tower_img.getWidth()/2+(double)freezing_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)freezing_tower_img.getWidth()/2+(double)freezing_tower_img.getWidth()/2);
             }
             else if (tower instanceof Factory_tower){
-                gc.drawImage(/*Factory_*/tower_img, (tower.get_asteroid().get_pos_x()*fact_x)+(double)/*Factory_*/tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)+(double)/*Factory_*/tower_img.getWidth()/2);
+                gc.drawImage(factory_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)factory_tower_img.getWidth()/2+(double)factory_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)factory_tower_img.getWidth()/2+(double)factory_tower_img.getWidth()/2);
             }
             else{
                 System.out.println("ERREUR !!! Essaye d'imprimer une tour n'existant pas dans show_towers");
