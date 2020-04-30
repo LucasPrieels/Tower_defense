@@ -34,7 +34,7 @@ public class Map extends Parent implements Runnable {
     private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
-    private Update_tower_icon update_tower_icon;
+    private Upgrade_tower_icon upgrade_tower_icon;
     private Buy_freezing_tower_icon buy_freezing_tower_icon;
     private Buy_factory_tower_icon buy_factory_tower_icon;
     private Buy_classic_tower_icon buy_classic_tower_icon;
@@ -61,7 +61,7 @@ public class Map extends Parent implements Runnable {
         create_shop();
         fact_x = Map.get_canvas_width()/Board.get_dim_x();
         fact_y = Map.get_canvas_height()/Board.get_dim_y();
-        this.getChildren().addAll(canvas, update_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon);
+        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon);
     }
 
     //Singleton
@@ -209,36 +209,36 @@ public class Map extends Parent implements Runnable {
     private void drawScoreRectangle() {
         for(int i = 8;i<=128;i=i+40){
             gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
-            gc.fillRoundRect(8, i, 100, 35, 15, 25);
+            gc.fillRoundRect(8, i, 120, 35, 15, 25);
         }
 
-        gc.drawImage(score_img, 10, 17.5,20,20);
-        gc.drawImage(money_img, 10, 57.5,25,20);
-        gc.drawImage(wave_img, 10, 97.5,30,25);
-        gc.drawImage(timer_img, 10, 130,30,25);
+        gc.drawImage(score_img, 15, 17.5,20,20);
+        gc.drawImage(money_img, 15, 57.5,25,20);
+        gc.drawImage(wave_img, 13, 97.5,30,25);
+        gc.drawImage(timer_img, 13, 130,30,25);
 
 
         this.score = Game.get_score();
         this.money = Game.get_money();
-        this.wave = 1;
+        this.wave = Game.get_curr_wave()+1;
         this.timer = 1;
 
         gc.setFont(new Font("Arial", 18)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
         gc.fillText(Integer.toString(score), 50, 33);
         gc.fillText(Integer.toString(money), 50, 73);
-        gc.fillText(Integer.toString(wave), 50, 113);
+        gc.fillText("Wave " + Integer.toString(wave), 50, 113);
         gc.fillText(Integer.toString(timer), 50, 153);
 
     }
 
     private void create_shop() throws FileNotFoundException {
-        this.update_tower_icon = new Update_tower_icon();
+        this.upgrade_tower_icon = new Upgrade_tower_icon();
         this.buy_classic_tower_icon = new Buy_classic_tower_icon();
         this.buy_factory_tower_icon = new Buy_factory_tower_icon();
         this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
 
-        update_tower_icon.setOnMouseClicked(new ShopListener(gc, "Upgrade_tower", canvas));
+        upgrade_tower_icon.setOnMouseClicked(new ShopListener(gc, "Upgrade_tower", canvas));
         buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas));

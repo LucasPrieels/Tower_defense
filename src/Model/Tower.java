@@ -49,4 +49,6 @@ public abstract class Tower {
         }
         return false;
     }
+
+    public int get_npc_destroyed_needed(){return npc_destroyed_needed[curr_level];}
 }

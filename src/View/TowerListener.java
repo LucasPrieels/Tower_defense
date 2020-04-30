@@ -19,7 +19,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
     private ArrayList<Double> pos_x_asteroid;
     private ArrayList<Double> pos_y_asteroid;
     private GraphicsContext gc;
-    private boolean constructed = false;
+    private boolean handle_finished = false;
     private String message;
 
     public TowerListener(Canvas canvas, ArrayList<Double> pos_x_asteroid, ArrayList<Double> pos_y_asteroid, String message){
@@ -27,58 +27,74 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
         this.pos_x_asteroid = pos_x_asteroid;
         this.pos_y_asteroid = pos_y_asteroid;
         this.message = message;
-        //pos_x_asteroid.add(125.0);
-        //pos_x_asteroid.add(525.0);
-        //pos_x_asteroid.add(731.0);
-        //pos_x_asteroid.add(1126.0);
-        //pos_x_asteroid.add(1125.0);
-        //pos_y_asteroid.add(127.0);
-        //pos_y_asteroid.add(424.0);
-        //pos_y_asteroid.add(228.0);
-        //pos_y_asteroid.add(22.0);
-        //pos_y_asteroid.add(471.0);
     }
     @Override
     public void handle(MouseEvent mouseEvent) {
-        if (constructed) return;
+        if (handle_finished){
+            return;
+        }
         gc = canvas.getGraphicsContext2D();
         Map.get_instance().set_const_message("");
-        for (int i = 0; i < pos_x_asteroid.size(); i++) {
-            double fact_x = Map.get_canvas_width()/Board.get_dim_x(), fact_y = Map.get_canvas_height()/Board.get_dim_y();
-            if (is_into_circle(pos_x_asteroid.get(i)*fact_x, pos_y_asteroid.get(i)*fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
-                //ATTENTION Faire une factory plutôt que des else if
-                if (Board.get_asteroids().get(i).is_occupied()){
-                    Map.get_instance().set_temp_message("Astéroide déjà occupé");
-                }
-                else if (message == "Classic_tower"){
-                    if (Game.pay(Game.get_price_classic_tower())){
-                        Board.add_tower(new Classic_tower(Board.get_asteroids().get(i)));
+        double fact_x = Map.get_canvas_width()/Board.get_dim_x(), fact_y = Map.get_canvas_height()/Board.get_dim_y();
+        if (message == "Upgrade_tower"){
+            for (Tower tower: Board.get_towers()){
+                if (is_into_circle(tower.get_asteroid().get_pos_x()*fact_x, tower.get_asteroid().get_pos_y()*fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
+                    if (Game.pay(tower.get_price_upgrade())){
+                        if (Game.get_npc_destroyed() >= tower.get_npc_destroyed_needed()){
+                            if (tower.get_curr_level() != tower.get_max_level()){
+                                tower.upgrade();
+                            }
+                            else{
+                                Map.get_instance().set_temp_message("La tour est déjà à son niveau maximal");
+                            }
+                        }
+                        else{
+                            Map.get_instance().set_temp_message("Vous n'avez pas tué assez de PNJs");
+                        }
                     }
                     else{
                         Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                     }
                 }
-                else if (message == "Freezing_tower"){
-                    if (Game.pay(Game.get_price_freezing_tower())){
-                        Board.add_tower(new Freezing_tower(Board.get_asteroids().get(i)));
+            }
+        }
+        else{
+            for (int i = 0; i < pos_x_asteroid.size(); i++) {
+                if (is_into_circle(pos_x_asteroid.get(i)*fact_x, pos_y_asteroid.get(i)*fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
+                    //ATTENTION Faire une factory plutôt que des else if
+                    if (Board.get_asteroids().get(i).is_occupied()){
+                        Map.get_instance().set_temp_message("Astéroide déjà occupé");
+                    }
+                    else if (message == "Classic_tower"){
+                        if (Game.pay(Game.get_price_classic_tower())){
+                            Board.add_tower(new Classic_tower(Board.get_asteroids().get(i)));
+                        }
+                        else{
+                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                        }
+                    }
+                    else if (message == "Freezing_tower"){
+                        if (Game.pay(Game.get_price_freezing_tower())){
+                            Board.add_tower(new Freezing_tower(Board.get_asteroids().get(i)));
+                        }
+                        else{
+                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                        }
+                    }
+                    else if (message == "Factory_tower"){
+                        if (Game.pay(Game.get_price_factory_tower())){
+                            Board.add_tower(new Factory_tower(Board.get_asteroids().get(i)));
+                        }
+                        else{
+                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                        }
                     }
                     else{
-                        Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                        System.out.println("Erreur!!!");
                     }
+                    handle_finished = true;
+                    break;
                 }
-                else if (message == "Factory_tower"){
-                    if (Game.pay(Game.get_price_factory_tower())){
-                        Board.add_tower(new Factory_tower(Board.get_asteroids().get(i)));
-                    }
-                    else{
-                        Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
-                    }
-                }
-                else{
-                    System.out.println("Erreur!!!");
-                }
-                constructed = true;
-                break;
             }
         }
     }
@@ -92,5 +108,4 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
         return res;
     }
 
-    public boolean get_constructed(){return constructed;}
 }
