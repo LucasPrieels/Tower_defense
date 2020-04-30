@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable {
-    private int level = 2, score = Game.get_score(), money = Game.get_money();
+    private int level = 2, score, money, wave, timer;
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
@@ -31,7 +31,7 @@ public class Map extends Parent implements Runnable {
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img;
+    private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
     private Update_tower_icon update_tower_icon;
@@ -100,8 +100,10 @@ public class Map extends Parent implements Runnable {
             }
         }
 
-        score_img = new Image(new FileInputStream("Images/score_img.png"));
-        money_img = new Image(new FileInputStream("Images/money_img.png"));
+        score_img = new Image(new FileInputStream("Images/score_rectangle_1.png"));
+        money_img = new Image(new FileInputStream("Images/score_rectangle_2.png"));
+        wave_img = new Image(new FileInputStream("Images/score_rectangle_3.png"));
+        timer_img = new Image(new FileInputStream("Images/score_rectangle_4.png"));
 
         im_small_npc = new Image(new FileInputStream("Images/small_npc.png"), size_small_npc, size_small_npc, false, false);
         im_med_npc = new Image(new FileInputStream("Images/medium_npc.png"), size_med_npc, size_med_npc, false, false);
@@ -205,21 +207,29 @@ public class Map extends Parent implements Runnable {
     }
 
     private void drawScoreRectangle() {
-        gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
-        gc.fillRoundRect(8, 8, 250, 45, 15, 25);
-        gc.drawImage(score_img, 15, 15);
-        gc.drawImage(money_img, 130, 15);
+        for(int i = 8;i<=128;i=i+40){
+            gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
+            gc.fillRoundRect(8, i, 100, 35, 15, 25);
+        }
 
-        score = Game.get_score();
-        money = Game.get_money();
+        gc.drawImage(score_img, 10, 17.5,20,20);
+        gc.drawImage(money_img, 10, 57.5,25,20);
+        gc.drawImage(wave_img, 10, 97.5,30,25);
+        gc.drawImage(timer_img, 10, 130,30,25);
 
-        gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
+
+        this.score = Game.get_score();
+        this.money = Game.get_money();
+        this.wave = 1;
+        this.timer = 1;
+
+        gc.setFont(new Font("Arial", 18)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
-        gc.fillText(Integer.toString(score), 50, 35);  //Integer.toString
+        gc.fillText(Integer.toString(score), 50, 33);
+        gc.fillText(Integer.toString(money), 50, 73);
+        gc.fillText(Integer.toString(wave), 50, 113);
+        gc.fillText(Integer.toString(timer), 50, 153);
 
-        gc.setFont(new Font("Arial", 20)); //ecrire fct qui donne le score
-        gc.setFill(Color.WHITE);
-        gc.fillText(Integer.toString(money), 180, 35);
     }
 
     private void create_shop() throws FileNotFoundException {
