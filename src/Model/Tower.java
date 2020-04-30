@@ -14,7 +14,7 @@ public abstract class Tower {
         this.price_upgrade = price_upgrade;
         this.max_level = max_level;
         this.npc_destroyed_needed = npc_destroyed_needed;
-        curr_level = 1;
+        curr_level = 0;
     }
 
 

@@ -3,7 +3,7 @@ package Model;
 public abstract class NPC{
     private double pos_x, pos_y;
     private int health;
-    private double speed;
+    private double speed, freezed = 0.0;
     private Path2 path;
 
     protected NPC(double pos_x, double pos_y, double speed, int health, Path2 path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
@@ -20,46 +20,42 @@ public abstract class NPC{
     public void set_pos_x(double pos_x){this.pos_x = pos_x;}
     public void set_pos_y(double pos_y){this.pos_y = pos_y;}
 
-    private boolean is_shot(Munition munition){
-        boolean res = false;
-        double munition_pos_x = munition.get_pos_x();
-        double munition_pos_y = munition.get_pos_y();
-        if(munition_pos_x == pos_x && munition_pos_y == pos_y) {
-            res = true;
+    public boolean is_shot(Classic_munition munition){
+        boolean res = check_shot(munition);
+        if (res){
+            health -= munition.get_tower().get_power();
+            if (health <= 0) Board.remove_npc(this);
         }
         return res;
     }
 
-    private void is_damaged(int damage){
-        if(health-damage > 0){
-            health -= damage;
+    public boolean is_shot(Freezing_munition munition){
+        boolean res = check_shot(munition);
+        if (res) set_freezed(munition.get_tower().get_power());
+        return res;
+    }
+
+    private void set_freezed(double time){
+        freezed = time;
+    }
+
+    public void decrease_freezed(double time){
+        if (freezed>0){
+            freezed -= time;
+            freezed = Math.max(freezed, 0);
         }
     }
 
-    private void is_destroyed(){
-        if(health<=0){
-            Board.remove_npc(this);
-            Game.increment_npc_destroyed();
-        }
+    private boolean check_shot(Munition munition){
+        double munition_pos_x = munition.get_pos_x();
+        double munition_pos_y = munition.get_pos_y();
+        if(Math.sqrt(Math.pow(munition_pos_x - pos_x, 2)+ Math.pow(munition_pos_y - pos_y, 2))<10) return true;
+        return false;
     }
 
-    private void is_frozen(int time){
-        //trouver moyen de gérer le temps
-    }
-
-    private void npc_evolution(NPC npc, Munition munition, int damage){
-        if(npc.is_shot(munition)){
-            if(health - damage > 0){
-                npc.is_damaged(damage);
-            }
-            else{
-                npc.is_destroyed();
-            }
-        }
-    }
-
-    public Path2 get_path() {return path;}
-    public double get_speed() {return speed;}
+    public Path2 get_path(){ return path;}
+    public double get_speed(){ return speed;}
+    public double is_frozen(){ return freezed;}
 
     public abstract int get_radius();
 }

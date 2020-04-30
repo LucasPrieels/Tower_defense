@@ -90,7 +90,7 @@ public class Game implements Runnable{
         price_freezing_tower = 300;
 
         Level.get_instance(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc);
-        Board.get_instance(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
+        Board.init(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
     }
 
     public static Game get_instance(){
@@ -99,6 +99,8 @@ public class Game implements Runnable{
     }
 
     public void run(){ //Appelé par un listener sur un bouton
+        Thread thread_munition = new Thread(Board.get_instance());
+        thread_munition.start();
         for (int i=0; i<Level.get_waves().size(); i++){
             Wave wave = Level.get_waves().get(i);
             Thread t = new Thread(wave);

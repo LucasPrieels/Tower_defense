@@ -162,21 +162,18 @@ public class Wave implements Runnable{
     private void update_pos_npcs(){
         for (int i=0; i<Board.get_npcs().size(); i++){
             NPC npc = Board.get_npcs().get(i);
-            double[] pos = npc.get_path().next_pos(npc.get_pos_x(), npc.get_pos_y(), npc.get_speed());
-            /*
-            System.out.print(npc.get_pos_x());
-            System.out.print(" ");
-            System.out.print(npc.get_pos_y());
-            System.out.print(" ");
-            System.out.print(npc.get_speed());
-            System.out.print(" ");
-            System.out.print(pos[0]);
-            System.out.print(" ");
-            System.out.println(pos[1]);
-             */
+            double speed = npc.get_speed();
+            if (npc.is_frozen()>0){
+                speed /= 3;
+                npc.decrease_freezed(1.0/Game.get_fps());
+            }
+            double[] pos = npc.get_path().next_pos(npc.get_pos_x(), npc.get_pos_y(), speed);
             npc.set_pos_x(pos[0]);
             npc.set_pos_y(pos[1]);
-            if (pos[0]==0 || pos[1]==0) Board.remove_npc(npc);
+            if (pos[0]==0 || pos[1]==0){
+                Board.remove_npc(npc);
+                Game.decrease_score(100);
+            }
         }
     }
 
