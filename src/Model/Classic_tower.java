@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Classic_tower extends Attack_tower{
     private static double[] range = {70.0, 100.0, 200.0};
     private static int[] period = {2000, 1500, 700}, power = {4, 7, 10}, npc_destroyed_needed = {5, 15}, price_upgrade = {50, 200};
-    private static int max_level = 3;
+    private static int max_level = 2; //On compte àpd 0
 
     public Classic_tower(Asteroid asteroid){
         super(asteroid, range, power, npc_destroyed_needed, period, price_upgrade, max_level);

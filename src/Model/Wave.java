@@ -172,7 +172,7 @@ public class Wave implements Runnable{
             npc.set_pos_y(pos[1]);
             if (pos[0]==0 || pos[1]==0){
                 Board.remove_npc(npc);
-                Game.decrease_score(100);
+                Game.decrease_score(Game.get_score_lost());
             }
         }
     }

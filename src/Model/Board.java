@@ -65,8 +65,20 @@ public class Board implements Runnable{
         }
     }
 
-    public static void remove_npc(NPC npc){npcs.remove(npc);}
-    public static void remove_munition(Munition munition){npcs.remove(munition);}
+    public static void remove_npc(NPC npc){
+        for (Munition munition: munitions){
+            if (munition.get_npc() == npc){
+                Platform.runLater( () -> {
+                    remove_munition(munition); // On retiree les autres munitions qui visaient le PNJ détruit sinon elles restent sur place
+                });
+            }
+        }
+        Platform.runLater( () -> {
+            npcs.remove(npc);
+        });
+        Game.increment_npc_destroyed();
+    }
+    public static void remove_munition(Munition munition){munitions.remove(munition);}
 
     public static void add_npc(NPC npc){ npcs.add(npc);}
     public static void add_tower(Tower tower){ towers.add(tower);}
@@ -100,13 +112,13 @@ public class Board implements Runnable{
     public void run(){
         while (true){
             for (Munition munition: munitions){
-                munition.update();
-                if (munition.check_shot()){
-                    System.out.println("Munition détruite");
-                    Platform.runLater( () -> {
-                        munitions.remove(munition);
-                    });
-                }
+                Platform.runLater( () -> {
+                    munition.update();
+                    if (munition.check_shot()){
+                        System.out.println("Munition détruite");
+                        remove_munition(munition);
+                    }
+                });
             }
             try{
                 Thread.sleep(1000/Game.get_fps());
