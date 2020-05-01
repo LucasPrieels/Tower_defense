@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable {
-    private int level = 3, score, money, wave, timer;
+    private int level = 1, score, money, wave, timer;
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
@@ -31,9 +31,9 @@ public class Map extends Parent implements Runnable {
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img;
+    private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button;
     private ArrayList<Image> planets = new ArrayList<>();
-    private ImageView iv_small_npc, iv_med_npc, iv_big_npc;
+    private ImageView iv_small_npc, iv_med_npc, iv_big_npc,iv_start_wave_button;
     private Upgrade_tower_icon upgrade_tower_icon;
     private Buy_freezing_tower_icon buy_freezing_tower_icon;
     private Buy_factory_tower_icon buy_factory_tower_icon;
@@ -61,7 +61,7 @@ public class Map extends Parent implements Runnable {
         create_shop();
         fact_x = Map.get_canvas_width()/Board.get_dim_x();
         fact_y = Map.get_canvas_height()/Board.get_dim_y();
-        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon);
+        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,iv_start_wave_button);
     }
 
     //Singleton
@@ -104,6 +104,7 @@ public class Map extends Parent implements Runnable {
         money_img = new Image(new FileInputStream("Images/score_rectangle_2.png"));
         wave_img = new Image(new FileInputStream("Images/score_rectangle_3.png"));
         timer_img = new Image(new FileInputStream("Images/score_rectangle_4.png"));
+        start_wave_button = new Image(new FileInputStream("Images/start_wave.png"));
 
         im_small_npc = new Image(new FileInputStream("Images/small_npc.png"), size_small_npc, size_small_npc, false, false);
         im_med_npc = new Image(new FileInputStream("Images/medium_npc.png"), size_med_npc, size_med_npc, false, false);
@@ -230,6 +231,14 @@ public class Map extends Parent implements Runnable {
         gc.fillText("Wave " + Integer.toString(wave), 50, 113);
         gc.fillText(Integer.toString(timer), 50, 153);
 
+        //this.iv_start_wave_button = new ImageView(start_wave_button);
+        //iv_start_wave_button.setX(15);
+        //iv_start_wave_button.setY(170);
+        //iv_start_wave_button.setFitHeight(40);
+        //iv_start_wave_button.setFitWidth(40);
+
+
+
     }
 
     private void create_shop() throws FileNotFoundException {
@@ -237,11 +246,18 @@ public class Map extends Parent implements Runnable {
         this.buy_classic_tower_icon = new Buy_classic_tower_icon();
         this.buy_factory_tower_icon = new Buy_factory_tower_icon();
         this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
+        this.iv_start_wave_button = new ImageView(start_wave_button);
+
+        iv_start_wave_button.setX(canvas_width-5*(iv_start_wave_button.getFitWidth()+80));
+        iv_start_wave_button.setY(canvas_height-iv_start_wave_button.getFitHeight()-100);
+        iv_start_wave_button.setFitHeight(70);
+        iv_start_wave_button.setFitWidth(70);
 
         upgrade_tower_icon.setOnMouseClicked(new ShopListener(gc, "Upgrade_tower", canvas));
         buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas));
+        iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
     }
 
     public static double get_canvas_height() {

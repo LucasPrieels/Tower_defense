@@ -14,7 +14,9 @@ public class Upgrade_tower_icon extends Parent {
         Image tower = new Image(new FileInputStream("Images/upgrade_tower.png"));
         ImageView imageView = new ImageView(tower);
         imageView.setX(Map.get_canvas_width()-tower.getWidth()-10);
-        imageView.setY(Map.get_canvas_height()-tower.getHeight()-40);
+        imageView.setY(Map.get_canvas_height()-imageView.getFitHeight()-100);
+        imageView.setFitHeight(70);
+        imageView.setFitWidth(70);
 
         this.getChildren().add(imageView);
     }
