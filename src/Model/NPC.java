@@ -24,7 +24,9 @@ public abstract class NPC{
         boolean res = check_shot(munition);
         if (res){
             health -= munition.get_tower().get_power();
-            if (health <= 0) Board.remove_npc(this);
+            if (health <= 0){
+                Board.remove_npc(this);
+            }
         }
         return res;
     }

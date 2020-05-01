@@ -12,7 +12,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Wave implements Runnable{
-    private int health_small_npc, health_med_npc, health_big_npc, time, max_time, curr_wave; //time since beginning of the wave
+    private int health_small_npc, health_med_npc, health_big_npc, time, max_time; //time since beginning of the wave
     private double speed_small_npc, speed_med_npc, speed_big_npc;
     private ArrayList<Integer> time_small_npc, time_med_npc, time_big_npc;
     private boolean finished = false;
@@ -27,7 +27,7 @@ public class Wave implements Runnable{
         this.time_small_npc = time_small_npc;
         this.time_med_npc = time_med_npc;
         this.time_big_npc = time_big_npc;
-        max_time = time_small_npc.size(); //ATTENTION exception si pas même taille que med et big
+        max_time = time_small_npc.size() + Game.get_time_between_waves(); //ATTENTION exception si pas même taille que med et big
         /*
         Thread t = new Thread(this);
         t.start();
@@ -58,11 +58,13 @@ public class Wave implements Runnable{
         finish_wave();
          */
         int iter = 0, fps = Game.get_fps();
-        while (time<max_time || Board.get_npcs().size() != 0){
+        Map.get_instance().set_temp_message("Lancement de la vague " + (Game.get_curr_wave() + 1));
+        while (time<max_time){
+            if (time > max_time - Game.get_time_between_waves() && Board.get_npcs().size() == 0) return;
             iter++;
             //System.out.println(time);
             try{
-                if (time<max_time && iter%fps == 0) add_new_npcs();
+                if (iter%fps == 0) add_new_npcs();
                 //else System.out.println("ici2");
                 update_pos_npcs();
                 //System.out.println("ici");
@@ -180,4 +182,5 @@ public class Wave implements Runnable{
     public ArrayList<Integer> get_time_small_npc(){return time_small_npc;}
     public boolean get_finished(){return finished;}
     public int get_max_time(){return max_time;}
+    public int get_time(){return time;}
 }

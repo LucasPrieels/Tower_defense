@@ -15,11 +15,12 @@ import java.util.List;
 public class Game implements Runnable{
     private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
     private static Game instance;
+    private static ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
 
     private Game(){ //All the parameters of the game are here
         // Level
         Game.money = 1000;
-        Game.score = 2000;
+        Game.score = 1000;
         fps = 10;
 
         int[] health_small_npc = {10, 15, 20};
@@ -60,9 +61,9 @@ public class Game implements Runnable{
         ArrayList<Integer> time_big_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
         ArrayList<Integer> time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 
-        ArrayList<ArrayList<Integer>> time_small_npc = new ArrayList<>(List.of(time_small_npc1, time_small_npc2, time_small_npc3));
-        ArrayList<ArrayList<Integer>> time_med_npc = new ArrayList<>(List.of(time_med_npc1, time_med_npc2, time_med_npc3));
-        ArrayList<ArrayList<Integer>> time_big_npc = new ArrayList<>(List.of(time_big_npc1, time_big_npc2, time_big_npc3));
+        time_small_npc = new ArrayList<>(List.of(time_small_npc1, time_small_npc2, time_small_npc3));
+        time_med_npc = new ArrayList<>(List.of(time_med_npc1, time_med_npc2, time_med_npc3));
+        time_big_npc = new ArrayList<>(List.of(time_big_npc1, time_big_npc2, time_big_npc3));
 
         //Board
         int dim_x = 500;
@@ -74,7 +75,7 @@ public class Game implements Runnable{
         double proba = 0.8; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
 
-        time_between_waves = 5;
+        time_between_waves = 20;
 
         int start_path1 = 200, width1 = 15;
         double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1);
@@ -107,7 +108,6 @@ public class Game implements Runnable{
             Wave wave = Level.get_waves().get(i);
             Thread t = new Thread(wave);
             t.start();
-
             try{
                 t.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
             }catch(InterruptedException e){
@@ -149,11 +149,10 @@ public class Game implements Runnable{
     public static void decrease_score(int a){ score -= a;}
     public static void increase_money(int a){money += a;}
     public static int get_fps(){ return fps;}
-    public static int get_curr_wave() {return curr_wave;}
+    public static int get_curr_wave(){ return curr_wave;}
 
-    public static void increment_curr_wave() { curr_wave++;}
+    public static void increment_curr_wave(){ curr_wave++;}
     public static void increment_npc_destroyed(){
-        System.out.println(npc_destroyed);
         npc_destroyed++;
     }
 
@@ -178,4 +177,5 @@ public class Game implements Runnable{
     public static int get_price_freezing_tower(){return price_freezing_tower;}
     public static int get_price_factory_tower(){return price_factory_tower;}
     public static int get_score_lost(){return score_lost;}
+    public static int get_time_wave(int wave){ return time_small_npc.get(wave).size();}
 }

@@ -47,7 +47,6 @@ public class Menu extends Parent {
             @Override
             public void handle(MouseEvent mouseEvent) {
                 theStage.close();
-
             }
         });
 

@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Board implements Runnable{
     private static Board instance = null;
@@ -66,15 +67,15 @@ public class Board implements Runnable{
     }
 
     public static void remove_npc(NPC npc){
-        for (Munition munition: munitions){
-            if (munition.get_npc() == npc){
-                Platform.runLater( () -> {
-                    remove_munition(munition); // On retiree les autres munitions qui visaient le PNJ détruit sinon elles restent sur place
-                });
-            }
-        }
         Platform.runLater( () -> {
-            npcs.remove(npc);
+            for (Munition munition: munitions){
+                if (munition.get_npc() == npc){
+                    Platform.runLater( () -> {
+                        remove_munition(munition); // On retiree les autres munitions qui visaient le PNJ détruit sinon elles restent sur place
+                    });
+                }
+            }
+            Board.get_npcs().remove(npc);
         });
         Game.increment_npc_destroyed();
     }
@@ -111,7 +112,8 @@ public class Board implements Runnable{
 
     public void run(){
         while (true){
-            for (Munition munition: munitions){
+            CopyOnWriteArrayList<Munition> copyMunitions = new CopyOnWriteArrayList<>(Board.get_munitions());
+            for (Munition munition: copyMunitions){
                 Platform.runLater( () -> {
                     munition.update();
                     if (munition.check_shot()){

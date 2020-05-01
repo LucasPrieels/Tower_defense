@@ -180,22 +180,23 @@ public class Map extends Parent implements Runnable {
         CopyOnWriteArrayList<NPC> npcs = new CopyOnWriteArrayList<>(Board.get_npcs());
         // Car on peut faire des suppressions d'éléments
         for (NPC npc : npcs) {
-            double pos_x = npc.get_pos_x() * canvas.getWidth() / Board.get_dim_x();
-            double pos_y = npc.get_pos_y() * canvas.getHeight() / Board.get_dim_y();
             //System.out.println(npc.get_pos_x() + " " + npc.get_pos_y() + " " + pos_x + " " + pos_y);
             //System.out.println(canvas.getHeight()/Board.get_dim_y());
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
 
+            double pos_x = npc.get_pos_x()*fact_x;
+            double pos_y = npc.get_pos_y()*fact_x;
+
             //ATTENTION A CHANGER, ça ne permet pas d'ajouter facilement un nv type de PNJ
             //On peut garder les instanceof? Ou il faut faire un liste avec les petits une avec les grands etc dans Board?
             if (npc instanceof Small_NPC) {
-                gc.drawImage(iv_small_npc.snapshot(params, null), pos_x - (double) size_small_npc / 2, pos_y - (double) size_small_npc / 2);
+                gc.drawImage(iv_small_npc.snapshot(params, null), pos_x/* - (double) size_small_npc / 2*/, pos_y/* - (double) size_small_npc / 2*/);
                 // Le moins est là pour que ça soit le centre de l'image qui soit à la position spécifiée et pas le coin supérieur gauche
             } else if (npc instanceof Medium_NPC) {
-                gc.drawImage(iv_med_npc.snapshot(params, null), pos_x - (double) size_med_npc / 2, pos_y - (double) size_med_npc / 2);
+                gc.drawImage(iv_med_npc.snapshot(params, null), pos_x/* - (double) size_med_npc / 2*/, pos_y/* - (double) size_med_npc / 2*/);
             } else if (npc instanceof Big_NPC) {
-                gc.drawImage(iv_big_npc.snapshot(params, null), pos_x - (double) size_big_npc / 2, pos_y - (double) size_big_npc / 2);
+                gc.drawImage(iv_big_npc.snapshot(params, null), pos_x/* - (double) size_big_npc / 2*/, pos_y/* - (double) size_big_npc / 2*/);
             }
         }
     }
@@ -217,11 +218,10 @@ public class Map extends Parent implements Runnable {
         gc.drawImage(wave_img, 13, 97.5,30,25);
         gc.drawImage(timer_img, 13, 130,30,25);
 
-
         this.score = Game.get_score();
         this.money = Game.get_money();
-        this.wave = Game.get_curr_wave()+1;
-        this.timer = 1;
+        this.wave = Game.get_curr_wave() + 1;
+        this.timer = Game.get_time_wave(Game.get_curr_wave()) + Game.get_time_between_waves() - Level.get_waves().get(Game.get_curr_wave()).get_time();
 
         gc.setFont(new Font("Arial", 18)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);

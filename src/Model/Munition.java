@@ -17,10 +17,11 @@ public abstract class Munition {
         //Direction is updated because the PNJ has moved since
         dir_x = npc.get_pos_x()-pos_x;
         dir_y = npc.get_pos_y()-pos_y;
+        double old_dir_x = dir_x;
         dir_x /= Math.sqrt(dir_x*dir_x+dir_y*dir_y); //Direction normée
-        dir_y /= Math.sqrt(dir_x*dir_x+dir_y*dir_y);
-        dir_x *= speed/10;
-        dir_y *= speed/10;
+        dir_y /= Math.sqrt(old_dir_x*old_dir_x+dir_y*dir_y);
+        dir_x *= speed/Game.get_fps();
+        dir_y *= speed/Game.get_fps();
 
         pos_x += dir_x;
         pos_y += dir_y;
