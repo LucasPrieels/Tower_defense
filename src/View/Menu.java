@@ -72,7 +72,7 @@ public class Menu extends Parent {
 
     //play
     private Group root_play;
-
+    private int level = 1; // Niveau sélectionné si on n'en sélectionne pas d'autre
 
 
 
@@ -225,27 +225,7 @@ public class Menu extends Parent {
         button_play.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
-                root_play = new Group();
-                //theStage.setScene(new Scene(root2,1920,1080));
-                theStage.setScene(new Scene(root_play,1000,700));
-                theStage.show();
-
-                //View.Map map = null;
-
-
-
-                try {
-                    Map.init(theStage);
-
-                    map = Map.get_instance();
-
-                    Thread t = new Thread(Game.get_instance());
-                    t.start();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-
-                root_play.getChildren().add(map);
+                launch_game();
             }
         });
 
@@ -285,32 +265,19 @@ public class Menu extends Parent {
 
                 root.getChildren().add(canvasBorderPane);
 
-
-
+                level1.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                    @Override
+                    public void handle(MouseEvent mouseEvent) {level = 1; launch_game();}
+                });
 
                 level2.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
-
-
-
-
-
-                    }
-                });
-
-                level1.setOnMouseClicked(new EventHandler<MouseEvent>() {
-                    @Override
-                    public void handle(MouseEvent mouseEvent) {
-
-                    }
+                    public void handle(MouseEvent mouseEvent) {level = 2; launch_game();}
                 });
 
                 level3.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {
-
-                    }
+                    public void handle(MouseEvent mouseEvent) {level = 3; launch_game();}
                 });
 
 
@@ -399,5 +366,28 @@ public class Menu extends Parent {
 
 
 
+    }
+    public void launch_game(){
+        root_play = new Group();
+        //theStage.setScene(new Scene(root2,1920,1080));
+        theStage.setScene(new Scene(root_play,1000,700));
+        theStage.show();
+
+        //View.Map map = null;
+
+
+
+        try {
+            Map.init(theStage, level);
+
+            map = Map.get_instance();
+
+            Thread t = new Thread(Game.get_instance());
+            t.start();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        root_play.getChildren().add(map);
     }
 }

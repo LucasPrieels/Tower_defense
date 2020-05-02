@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable {
-    private int level = 1, score, money, wave, timer;
+    private int level, score, money, wave, timer;
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
@@ -43,7 +43,9 @@ public class Map extends Parent implements Runnable {
     private static String curr_message;
     private double fact_x, fact_y;
 
-    private Map(Stage stage) throws FileNotFoundException {
+    private Map(Stage stage, int level) throws FileNotFoundException {
+        System.out.println(level);
+        this.level = level;
         canvas_width = stage.getWidth();
         canvas_height = stage.getHeight();
         canvas = new Canvas(canvas_width, canvas_height);
@@ -72,11 +74,11 @@ public class Map extends Parent implements Runnable {
         return instance;
     }
 
-    public static void init(Stage stage) throws FileNotFoundException {
+    public static void init(Stage stage, int level) throws FileNotFoundException {
         if (instance != null) {
             throw new AssertionError("Map can't be initialized twice");
         }
-        instance = new Map(stage);
+        instance = new Map(stage, level);
     }
 
     private void init_canvas() throws FileNotFoundException {
@@ -299,4 +301,5 @@ public class Map extends Parent implements Runnable {
 
     public double get_fact_x(){return fact_x;}
     public double get_fact_y(){return fact_y;}
+    public void set_level(int level) {this.level = level;}
 }
