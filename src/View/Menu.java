@@ -179,7 +179,7 @@ public class Menu extends Parent {
                 canvas.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
                 canvas.setCenter(label);
 
-
+                vbox_rules.setVisible(true);
 
                 vbox_rules.getChildren().add(canvas);
                 vbox_rules.setPrefSize(800,800);
