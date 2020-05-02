@@ -8,8 +8,8 @@ public class Factory_tower extends Tower implements Runnable{
 
     public Factory_tower(Asteroid asteroid) {
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
-        Thread thread = new Thread(this);
-        thread.start();
+        Thread thread_factory_tower = new Thread(this);
+        thread_factory_tower.start();
     }
 
     public void run(){

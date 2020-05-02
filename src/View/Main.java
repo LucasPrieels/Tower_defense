@@ -22,14 +22,12 @@ public class Main extends Application {
         Scene scene = new Scene(root, 1920, 1080, Color.LIGHTGRAY);
         //Canvas canvas = new Canvas(1920,1080);
 
-        Menu menu = new Menu();
+        Menu menu = new Menu(theStage);
         root.getChildren().add(menu);
 
         Main.theStage.setScene(scene);
         Main.theStage.show();
     }
-
-    public static Stage get_stage(){return theStage;}
 
     public static void main(String[] args) {
         Game game = Game.get_instance();

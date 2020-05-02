@@ -24,9 +24,7 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable {
         this.canvas = canvas;
     }
 
-    public void handle(MouseEvent mouseEvent){
-        message(gc);
-    }
+    public void handle(MouseEvent mouseEvent) {message(gc);}
 
     private void message(GraphicsContext gc){
         Thread thread = new Thread(this);

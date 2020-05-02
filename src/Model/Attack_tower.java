@@ -11,8 +11,8 @@ public abstract class Attack_tower extends Tower implements Runnable{
         this.range = range;
         this.power = power;
         this.npc_destroyed_needed = npc_destroyed_needed;
-        Thread thread = new Thread(this);
-        thread.start();
+        Thread thread_attack_tower = new Thread(this);
+        thread_attack_tower.start();
     }
 
     public void add_munition(Munition munition){

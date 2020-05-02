@@ -241,9 +241,6 @@ public class Map extends Parent implements Runnable {
         //iv_start_wave_button.setY(170);
         //iv_start_wave_button.setFitHeight(40);
         //iv_start_wave_button.setFitWidth(40);
-
-
-
     }
 
     private void create_shop() throws FileNotFoundException {
@@ -282,9 +279,9 @@ public class Map extends Parent implements Runnable {
     }
 
     public void set_temp_message(String message) {
-        Thread thread = new Thread(this);
+        Thread thread_message = new Thread(this);
         curr_message = message;
-        thread.start();
+        thread_message.start();
     }
 
     public void run() {

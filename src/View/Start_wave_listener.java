@@ -7,9 +7,12 @@ import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
 public class Start_wave_listener implements EventHandler<MouseEvent> {
+    boolean launched = false;
     @Override
     public void handle(MouseEvent mouseEvent) {
+        if (launched) return;
         Thread t = new Thread(Game.get_instance());
         t.start();
+        launched = true;
     }
 }

@@ -65,7 +65,7 @@ public class Game implements Runnable{
         int margin_y = 15;
         int width_path = 7;
         double size_asteroid = Map.get_size_asteroid();
-        double proba = 0.8; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
+        double proba = 1; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
 
         time_between_waves = 20;
@@ -99,10 +99,10 @@ public class Game implements Runnable{
         thread_munition.start();
         for (int i=0; i<Level.get_waves().size(); i++){
             Wave wave = Level.get_waves().get(i);
-            Thread t = new Thread(wave);
-            t.start();
+            Thread thread_wave = new Thread(wave);
+            thread_wave.start();
             try{
-                t.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
+                thread_wave.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
             }catch(InterruptedException e){
                 System.out.println("Erreur dans le join de la méthode begin() de la classe Game");
             }
