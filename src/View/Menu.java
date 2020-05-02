@@ -155,6 +155,9 @@ public class Menu extends Parent {
         button_rules.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                vbox.getChildren().clear();
+                vbox_rules.getChildren().clear();
+                root.getChildren().clear();
                  texte =  "Tower Defense :\n\n"+"Player start with an appropriate amount of currency and is able to obtain more money during game by defeating waves of  enemies and also by building a Factory tower."+"There are\n 3  waves on each level  and  each wave of enemies spawns with a short pause\n in between waves.\n\n The player  buy towers through currency pieces and than he should  place the tower\n on a asteroid location." +
                         " Towers can be upgraded at least three times to have more range, or damage.\n \n" +
                         " The player win the  game when his score is higher than  0 or lose   when his \n score is  0.\n" +
@@ -183,7 +186,9 @@ public class Menu extends Parent {
         button_help.setOnAction(new EventHandler<ActionEvent>() {
                                     @Override
                                     public void handle(ActionEvent actionEvent) {
-
+                                            vbox.getChildren().clear();
+                                        vbox_rules.getChildren().clear();
+                                        root.getChildren().clear();
                                          text = "HELP:\n\n"+"Press the  play button to start the game.\n\n" +
                                                 "Change the difficulty on level mode tab.\n\n" +
                                                 "Press the exit button if you want to quit the game."
@@ -223,7 +228,9 @@ public class Menu extends Parent {
 
 
 
-
+                vbox.getChildren().clear();
+                vbox_rules.getChildren().clear();
+                root.getChildren().clear();
 
                 HBox menulevels = new HBox(10);
                 menulevels.setPadding(new Insets(15));
@@ -295,57 +302,6 @@ public class Menu extends Parent {
                 button_help.setEffect(new DropShadow());
             }
         });
-
-
-
-     button_help.setOnMouseExited(new EventHandler<MouseEvent>() {
-         @Override
-         public void handle(MouseEvent mouseEvent) {
-             //vbox.setTranslateX(-1400);
-
-             vbox.setVisible(false);
-
-
-             System.out.println("boutonhelp ca marche ");
-
-
-
-         }
-     });
-
-
-     button_rules.setOnMouseExited(new EventHandler<MouseEvent>() {
-         @Override
-         public void handle(MouseEvent mouseEvent) {
-             vbox_rules.setVisible(false);
-            System.out.println("boutonrules ca marche");
-
-
-
-
-         }
-     });
-
-
-     root.setOnMouseExited(new EventHandler<MouseEvent>() {
-         @Override
-         public void handle(MouseEvent mouseEvent) {
-             root.setVisible(false);
-             System.out.println(" marche");
-         }
-     });
-
-
-
-
-
-
-
-
-
-
-
-
     }
     public void launch_game(){
         root_play = new Group();
