@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
 
@@ -76,11 +77,26 @@ public class Menu extends Parent {
     private int level = 1; // Niveau sélectionné si on n'en sélectionne pas d'autre
 
 
+    // COLOR
+    BorderPane border ;
+
 
 
 
 
     public Menu() throws FileNotFoundException {
+
+
+
+
+
+
+
+
+
+
+
+
 
          image = new Image(new FileInputStream("Images/menu.jpg"));
          imageView = new ImageView(image);
@@ -124,9 +140,22 @@ public class Menu extends Parent {
 
 
 
+         border = new BorderPane();
+        border.setPadding(new Insets(20));
+        border.setBackground(new Background(new BackgroundFill(Color.LIGHTGOLDENRODYELLOW, new CornerRadii(0), Insets.EMPTY)));
+
+
+
         vbox = new Group();
 
+
         this.getChildren().addAll(imageView,button_rules,button_help,button_level,button_exit,vbox);
+
+
+
+
+
+
 
         button_exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -161,9 +190,11 @@ public class Menu extends Parent {
 
 
                 vbox.setVisible(true);
+                border.getChildren().clear();
 
+                border.setCenter(canvas);
 
-                vbox.getChildren().add(canvas);
+                vbox.getChildren().add(border);
 
 
             }
@@ -196,9 +227,15 @@ public class Menu extends Parent {
                                         canvasBorderPane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
                                         canvasBorderPane.setCenter(label_help);
 
+                                        border.getChildren().clear();
+                                        border.setCenter(canvasBorderPane);
+
+
+
 
                                         vbox.setVisible(true);
-                                        vbox.getChildren().add(canvasBorderPane);
+                                        //vbox.getChildren().add(canvasBorderPane);
+                                        vbox.getChildren().add(border);
 
 
 
@@ -246,8 +283,21 @@ public class Menu extends Parent {
                 canvasBorderPane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
                 canvasBorderPane.setCenter(menulevels);
 
+                border.getChildren().clear();
+                border.setCenter(canvasBorderPane);
+
+
+
+
                 //root.getChildren().add(canvasBorderPane);
-                vbox.getChildren().add(canvasBorderPane);
+                vbox.getChildren().add(border);
+
+
+
+
+
+
+
 
                 level1.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
