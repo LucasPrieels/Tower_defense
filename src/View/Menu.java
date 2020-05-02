@@ -50,7 +50,7 @@ public class Menu extends Parent {
    private Image image;
    private ImageView imageView;
 
-    private Button button_play ;
+
     private Button button_rules;
     private Button button_help;
     private Button button_level;
@@ -87,18 +87,9 @@ public class Menu extends Parent {
 
 
 
-
-
-        button_play = new Button("Play");
-        button_play.setLayoutX(100);
-        button_play.setLayoutY(100);
-        button_play.setPrefWidth(190);
-        button_play.setPrefHeight(49);
-        button_play.setStyle("-fx-background-color:  #ffd700");
-
         button_rules = new Button("Rules");
         button_rules.setLayoutX(100);
-        button_rules.setLayoutY(200);
+        button_rules.setLayoutY(100);
         button_rules.setPrefWidth(190);
         button_rules.setPrefHeight(49);
         button_rules.setStyle("-fx-background-color:  #DC143C");
@@ -106,7 +97,7 @@ public class Menu extends Parent {
 
         button_help = new Button("Help");
         button_help.setLayoutX(100);
-        button_help.setLayoutY(300);
+        button_help.setLayoutY(200);
         button_help.setPrefWidth(190);
         button_help.setPrefHeight(49);
         button_help.setStyle("-fx-background-color:  #7fff00");
@@ -118,14 +109,14 @@ public class Menu extends Parent {
 
         button_level = new Button("Level");
         button_level.setLayoutX(100);
-        button_level.setLayoutY(400);
+        button_level.setLayoutY(300);
         button_level.setPrefHeight(49);
         button_level.setPrefWidth(190);
         button_level.setStyle("-fx-background-color:  #ffd700");
 
         button_exit = new Button("Exit");
         button_exit.setLayoutX(100);
-        button_exit.setLayoutY(500);
+        button_exit.setLayoutY(400);
         button_exit.setPrefWidth(190);
         button_exit.setPrefHeight(49);
         button_exit.setStyle("-fx-background-color:  #ffd700");
@@ -146,12 +137,12 @@ public class Menu extends Parent {
 
         root = new VBox();
         root.setLayoutX(400);
-        root.setLayoutY(400);
+        root.setLayoutY(300);
         root.setPrefSize(400,200);
 
 
 
-        this.getChildren().addAll(imageView,button_play,button_rules,button_help,button_level,button_exit,vbox,root,vbox_rules);
+        this.getChildren().addAll(imageView,button_rules,button_help,button_level,button_exit,vbox,root,vbox_rules);
 
         button_exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -222,12 +213,6 @@ public class Menu extends Parent {
         );
 
 
-        button_play.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                launch_game();
-            }
-        });
 
 
 
@@ -289,12 +274,7 @@ public class Menu extends Parent {
 
 
 
-        button_play.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                button_play.setEffect(new DropShadow());
-            }
-        });
+
         button_exit.setOnMouseExited(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
