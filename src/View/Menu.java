@@ -149,6 +149,8 @@ public class Menu extends Parent {
         root.setLayoutY(400);
         root.setPrefSize(400,200);
 
+
+
         this.getChildren().addAll(imageView,button_play,button_rules,button_help,button_level,button_exit,vbox,root,vbox_rules);
 
         button_exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -210,6 +212,7 @@ public class Menu extends Parent {
                                         canvasBorderPane.setCenter(label_help);
 
 
+                                        vbox.setVisible(true);
                                         vbox.getChildren().add(canvasBorderPane);
                                         vbox.setPrefSize(540,410);
 
@@ -351,6 +354,11 @@ public class Menu extends Parent {
      button_help.setOnMouseExited(new EventHandler<MouseEvent>() {
          @Override
          public void handle(MouseEvent mouseEvent) {
+             //vbox.setTranslateX(-1400);
+
+             vbox.setVisible(false);
+
+
              System.out.println("boutonhelp ca marche ");
 
 
@@ -362,6 +370,7 @@ public class Menu extends Parent {
      button_rules.setOnMouseExited(new EventHandler<MouseEvent>() {
          @Override
          public void handle(MouseEvent mouseEvent) {
+             vbox_rules.setVisible(false);
             System.out.println("boutonrules ca marche");
 
 
