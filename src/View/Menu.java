@@ -248,7 +248,7 @@ public class Menu extends Parent {
                 label_level.setTextFill(Color.web("#000000"));
                 menulevels.getChildren().add(label_level);
 
-
+                root.setVisible(true);
                 level1  = new Button("Level 1");
                 level2  = new Button("Level 2");
                 level3  = new Button("Level 3");
