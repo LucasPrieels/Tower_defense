@@ -360,8 +360,12 @@ public class Menu extends Parent {
 
             map = Map.get_instance();
 
-            Thread t = new Thread(Game.get_instance());
-            t.start();
+            try{
+                Controller.Update_manager.get_instance().update_window();
+            } catch(FileNotFoundException e){}
+
+            //Thread t = new Thread(Game.get_instance());
+            //t.start();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
