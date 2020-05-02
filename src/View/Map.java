@@ -262,7 +262,7 @@ public class Map extends Parent implements Runnable {
         buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas));
-        //iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
+        iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
     }
 
     public static double get_canvas_height() {
