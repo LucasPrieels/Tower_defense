@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable {
-    private int level, score, money, wave, timer;
+    private int level, score, money, wave, timer, npc_destroyed;
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
@@ -211,7 +211,7 @@ public class Map extends Parent implements Runnable {
     }
 
     private void drawScoreRectangle() {
-        for(int i = 8;i<=128;i=i+40){
+        for(int i = 8;i<=168;i=i+40){
             gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
             gc.fillRoundRect(8, i, 120, 35, 15, 25);
         }
@@ -220,11 +220,13 @@ public class Map extends Parent implements Runnable {
         gc.drawImage(money_img, 15, 57.5,25,20);
         gc.drawImage(wave_img, 13, 97.5,30,25);
         gc.drawImage(timer_img, 13, 130,30,25);
+        gc.drawImage(im_big_npc, 13, 175,30,25);
 
         this.score = Game.get_score();
         this.money = Game.get_money();
         this.wave = Game.get_curr_wave() + 1;
         this.timer = Game.get_time_wave(Game.get_curr_wave()) + Game.get_time_between_waves() - Level.get_waves().get(Game.get_curr_wave()).get_time();
+        this.npc_destroyed = Game.get_npc_destroyed();
 
         gc.setFont(new Font("Arial", 18)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
@@ -232,6 +234,7 @@ public class Map extends Parent implements Runnable {
         gc.fillText(Integer.toString(money), 50, 73);
         gc.fillText("Wave " + Integer.toString(wave), 50, 113);
         gc.fillText(Integer.toString(timer), 50, 153);
+        gc.fillText(Integer.toString(npc_destroyed) + " PNJ", 50, 193);
 
         //this.iv_start_wave_button = new ImageView(start_wave_button);
         //iv_start_wave_button.setX(15);
@@ -259,7 +262,7 @@ public class Map extends Parent implements Runnable {
         buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas));
-        iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
+        //iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
     }
 
     public static double get_canvas_height() {
