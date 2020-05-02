@@ -380,6 +380,14 @@ public class Menu extends Parent {
      });
 
 
+     root.setOnMouseExited(new EventHandler<MouseEvent>() {
+         @Override
+         public void handle(MouseEvent mouseEvent) {
+             root.setVisible(false);
+             System.out.println(" marche");
+         }
+     });
+
 
 
 
