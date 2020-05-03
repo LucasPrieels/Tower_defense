@@ -22,7 +22,6 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
     private GraphicsContext gc;
     private boolean handle_finished = false;
     private String message;
-    private Image star;
 
     public TowerListener(Canvas canvas, ArrayList<Double> pos_x_asteroid, ArrayList<Double> pos_y_asteroid, String message){
         this.canvas = canvas;
@@ -45,7 +44,13 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                         if (Game.get_npc_destroyed() >= tower.get_npc_destroyed_needed()){
                             if (tower.get_curr_level() != tower.get_max_level()){
                                 tower.upgrade();
+                                if (tower.get_curr_level() == 1){
+                                    System.out.println("SALUT");
 
+                                }
+                                else if (tower.get_curr_level() == 2) {
+                                    System.out.println("AH");
+                                }
                             }
                             else{
                                 Map.get_instance().set_temp_message("La tour est déjà à son niveau maximal");
@@ -116,8 +121,5 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
         return res;
     }
 
-    private void create_img() throws FileNotFoundException {
-        Image star = new Image(new FileInputStream("Images/star.png"));
-    }
 
 }

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable {
-    private int level, score, money, wave, timer, npc_destroyed;
+    private int level, score, money, wave, timer, npc_destroyed, npc_destroyed_needed;
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
@@ -31,7 +31,7 @@ public class Map extends Parent implements Runnable {
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button;
+    private Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button,star_1,star_2, star_3;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_small_npc, iv_med_npc, iv_big_npc,iv_start_wave_button;
     private Upgrade_tower_icon upgrade_tower_icon;
@@ -122,6 +122,9 @@ public class Map extends Parent implements Runnable {
         classic_tower_img = new Image(new FileInputStream("Images/classic_tower.png"));
         freezing_tower_img = new Image(new FileInputStream("Images/freezing_tower.png"));
         factory_tower_img = new Image(new FileInputStream("Images/factory_tower.png"));
+        star_1 = new Image(new FileInputStream("Images/1star.png"));
+        star_2 = new Image(new FileInputStream("Images/2star.png"));
+        star_3 = new Image(new FileInputStream("Images/3star.png"));
 
         classic_munition_img = new Image(new FileInputStream("Images/Classic_munition.png"), size_munitions, size_munitions, false, false);
         freezing_munition_img = new Image(new FileInputStream("Images/Freezing_munition.png"), size_munitions, size_munitions, false, false);
@@ -158,6 +161,8 @@ public class Map extends Parent implements Runnable {
         for (Tower tower: Board.get_towers()){
             if (tower instanceof Classic_tower){
                 gc.drawImage(classic_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getWidth()/2);
+
+                //gc.drawImage(star, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
             }
             else if (tower instanceof Freezing_tower){
                 gc.drawImage(freezing_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)freezing_tower_img.getWidth()/2+(double)freezing_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)freezing_tower_img.getWidth()/2+(double)freezing_tower_img.getWidth()/2);
@@ -167,6 +172,17 @@ public class Map extends Parent implements Runnable {
             }
             else{
                 System.out.println("ERREUR !!! Essaye d'imprimer une tour n'existant pas dans show_towers");
+            }
+            for(int k = 0; k<= tower.get_max_level(); k++){
+                if(tower.get_curr_level() == 0){
+                    gc.drawImage(star_1, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
+                }
+                else if(tower.get_curr_level() == 1){
+                    gc.drawImage(star_2, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
+                }
+                else if(tower.get_curr_level() == 2){
+                    gc.drawImage(star_3, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
+                }
             }
         }
     }
@@ -228,13 +244,14 @@ public class Map extends Parent implements Runnable {
         this.timer = Game.get_time_wave(Game.get_curr_wave()) + Game.get_time_between_waves() - Level.get_waves().get(Game.get_curr_wave()).get_time();
         this.npc_destroyed = Game.get_npc_destroyed();
 
+
         gc.setFont(new Font("Arial", 18)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
         gc.fillText(Integer.toString(score), 50, 33);
         gc.fillText(Integer.toString(money), 50, 73);
         gc.fillText("Wave " + Integer.toString(wave), 50, 113);
         gc.fillText(Integer.toString(timer), 50, 153);
-        gc.fillText(Integer.toString(npc_destroyed) + " PNJ", 50, 193);
+        gc.fillText(Integer.toString(npc_destroyed) + " PNJ" , 50, 193);
 
         //this.iv_start_wave_button = new ImageView(start_wave_button);
         //iv_start_wave_button.setX(15);
