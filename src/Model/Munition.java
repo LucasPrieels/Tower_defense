@@ -1,6 +1,8 @@
 package Model;
 
-public abstract class Munition {
+import java.io.Serializable;
+
+public abstract class Munition implements Serializable {
     private NPC npc;
     private Attack_tower tower;
     private double pos_x, pos_y, dir_x, dir_y, speed;
@@ -20,8 +22,8 @@ public abstract class Munition {
         double old_dir_x = dir_x;
         dir_x /= Math.sqrt(dir_x*dir_x+dir_y*dir_y); //Direction normée
         dir_y /= Math.sqrt(old_dir_x*old_dir_x+dir_y*dir_y);
-        dir_x *= speed/Game.get_fps();
-        dir_y *= speed/Game.get_fps();
+        dir_x *= speed/Game.get_instance().get_fps();
+        dir_y *= speed/Game.get_instance().get_fps();
 
         pos_x += dir_x;
         pos_y += dir_y;
@@ -32,6 +34,6 @@ public abstract class Munition {
     public double get_pos_y(){return pos_y;}
     public Attack_tower get_tower(){return tower;}
 
-    public abstract boolean check_shot();
+    public abstract boolean check_shot_npc();
 }
 

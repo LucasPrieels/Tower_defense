@@ -18,7 +18,7 @@ public class Classic_tower extends Attack_tower{
     }
 
     public boolean fire(){
-        ArrayList<NPC> npcs = Board.get_npcs();
+        ArrayList<NPC> npcs = Board.get_instance().get_npcs();
         for (NPC npc: npcs){
             if (npc_in_tower_area(npc)){
                 System.out.println("FIRE!");

@@ -1,5 +1,9 @@
 package View;
 
+import Model.Board;
+import Model.Game;
+import Model.Save;
+import Model.Tower;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -18,13 +22,13 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
+
+import java.io.*;
 
 
-public class Menu extends Parent {
+public class Menu extends Parent implements Serializable{
     private Stage theStage;
-    private Button level1, level2, level3, button_rules, button_help, button_start, button_exit;
+    private Button level1, level2, level3, button_rules, button_help, button_start, button_exit, button_load;
     private Image image;
     private ImageView imageView;
     private Group vbox;
@@ -39,7 +43,7 @@ public class Menu extends Parent {
     private Group root_play;
     private int level = 1; // Niveau sélectionné si on n'en sélectionne pas d'autre
     // COLOR
-    BorderPane border ;
+    BorderPane border;
     public Menu(Stage theStage) throws FileNotFoundException {
         image = new Image(new FileInputStream("Images/menu.jpg"));
         imageView = new ImageView(image);
@@ -48,37 +52,44 @@ public class Menu extends Parent {
         button_start = new Button("Start");
         button_start.setLayoutX(100);
         button_start.setLayoutY(100);
-        button_start.setPrefHeight(49);
-        button_start.setPrefWidth(190);
-        button_start.setStyle("-fx-background-color:  #ffd700");
+        button_start.setPrefWidth(120);
+        button_start.setPrefHeight(30);
+        button_start.setStyle("-fx-background-color:  #ffffff");
 
         button_rules = new Button("Rules");
         button_rules.setLayoutX(100);
         button_rules.setLayoutY(200);
-        button_rules.setPrefWidth(190);
-        button_rules.setPrefHeight(49);
-        button_rules.setStyle("-fx-background-color:  #ffd700");
+        button_rules.setPrefWidth(120);
+        button_rules.setPrefHeight(30);
+        button_rules.setStyle("-fx-background-color:  #ffffff");
+
+        button_load = new Button("Load last game");
+        button_load.setLayoutX(100);
+        button_load.setLayoutY(300);
+        button_load.setPrefWidth(120);
+        button_load.setPrefHeight(30);
+        button_load.setStyle("-fx-background-color:  #ffffff");
          
         button_help = new Button("Help");
         button_help.setLayoutX(100);
-        button_help.setLayoutY(300);
-        button_help.setPrefWidth(190);
-        button_help.setPrefHeight(49);
-        button_help.setStyle("-fx-background-color:  #ffd700");
+        button_help.setLayoutY(400);
+        button_help.setPrefWidth(120);
+        button_help.setPrefHeight(30);
+        button_help.setStyle("-fx-background-color:  #ffffff");
          
         button_exit = new Button("Exit");
         button_exit.setLayoutX(100);
-        button_exit.setLayoutY(400);
-        button_exit.setPrefWidth(190);
-        button_exit.setPrefHeight(49);
-        button_exit.setStyle("-fx-background-color:  #ffd700");
+        button_exit.setLayoutY(500);
+        button_exit.setPrefWidth(120);
+        button_exit.setPrefHeight(30);
+        button_exit.setStyle("-fx-background-color:  #ffffff");
 
         border = new BorderPane();
-        border.setPadding(new Insets(20));
-        border.setBackground(new Background(new BackgroundFill(Color.LIGHTGOLDENRODYELLOW, new CornerRadii(0), Insets.EMPTY)));
+        border.setPadding(new Insets(5));
+        border.setBackground(new Background(new BackgroundFill(Color.GREY, new CornerRadii(0), Insets.EMPTY)));
          
         vbox = new Group();
-        this.getChildren().addAll(imageView,button_rules,button_help,button_start,button_exit,vbox);
+        this.getChildren().addAll(imageView, button_rules, button_help, button_start, button_exit, button_load, vbox);
          
         button_exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -104,7 +115,7 @@ public class Menu extends Parent {
                 label.setWrapText(true);
 
                 canvas = new BorderPane();
-                canvas.setPadding(new Insets(10));
+                canvas.setPadding(new Insets(5));
                 canvas.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
                 canvas.setCenter(label);
 
@@ -133,7 +144,7 @@ public class Menu extends Parent {
                 label_help.setWrapText(true);
                 
                 canvasBorderPane = new BorderPane();
-                canvasBorderPane.setPadding(new Insets(10));
+                canvasBorderPane.setPadding(new Insets(5));
                 canvasBorderPane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
                 canvasBorderPane.setCenter(label_help);
                 
@@ -141,6 +152,18 @@ public class Menu extends Parent {
                 border.setCenter(canvasBorderPane);
 
                 vbox.getChildren().add(border); 
+            }
+        });
+
+        button_load.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                level = load_data();
+                for (Tower tower: Board.get_instance().get_towers()){
+                    Thread thread_tower = new Thread(tower);
+                    thread_tower.start();
+                }
+                launch_game();
             }
         });
 
@@ -167,7 +190,7 @@ public class Menu extends Parent {
                 menulevels.getChildren().addAll(level1,level2,level3);
 
                 BorderPane canvasBorderPane = new BorderPane();
-                canvasBorderPane.setPadding(new Insets(10));
+                canvasBorderPane.setPadding(new Insets(5));
                 canvasBorderPane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(0), Insets.EMPTY)));
                 canvasBorderPane.setCenter(menulevels);
 
@@ -198,7 +221,7 @@ public class Menu extends Parent {
     public void launch_game(){
         root_play = new Group();
         //theStage.setScene(new Scene(root2,1920,1080));
-        theStage.setScene(new Scene(root_play,theStage.getWidth(),theStage.getHeight()));
+        theStage.setScene(new Scene(root_play, theStage.getWidth(), theStage.getHeight()));
         theStage.show();
         View.Map map = null;
 
@@ -214,5 +237,28 @@ public class Menu extends Parent {
             e.printStackTrace();
         }
         root_play.getChildren().add(map);
+    }
+
+    public static void save_data(){
+        try{
+            System.out.println("Saving...");
+            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("towerDefense.serial"));
+            Save save = new Save();
+            oos.writeObject(save);
+            oos.flush();
+            oos.close();
+        } catch (Exception e) {e.printStackTrace();}
+    }
+
+    public static int load_data(){
+        Save save = null;
+        try{
+            System.out.println("Loading...");
+            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("towerDefense.serial"));
+            save = (Save) ois.readObject();
+            save.init();
+            ois.close();
+        } catch (Exception e) {e.printStackTrace();}
+        return save.get_level();
     }
 }

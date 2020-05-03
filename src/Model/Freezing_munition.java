@@ -9,8 +9,8 @@ public class Freezing_munition extends Munition {
         this.freezing_time=freezing_time;
     }
 
-    public boolean check_shot(){
-        for (NPC npc: Board.get_npcs()){
+    public boolean check_shot_npc(){
+        for (NPC npc: Board.get_instance().get_npcs()){
             if (npc.is_shot(this)){
                 return true;
             }

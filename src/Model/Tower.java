@@ -1,8 +1,9 @@
 package Model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Tower {
+public abstract class Tower implements Runnable, Serializable {
     private Asteroid asteroid;
     private int curr_level, max_level;
     private int[] period, price_upgrade, npc_destroyed_needed;
@@ -43,7 +44,7 @@ public abstract class Tower {
     }
 
     public boolean upgrade() {
-        if (get_curr_level() != get_max_level() && Game.get_npc_destroyed() >= npc_destroyed_needed[get_curr_level()] && Game.pay(get_price_upgrade())) {
+        if (get_curr_level() != get_max_level() && Game.get_instance().get_npc_destroyed() >= npc_destroyed_needed[get_curr_level()] && Game.get_instance().pay(get_price_upgrade())) {
             increment_curr_level();
             return true;
         }

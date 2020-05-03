@@ -5,7 +5,9 @@ import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
-public class Path2 {
+import java.io.Serializable;
+
+public class Path2 implements Serializable {
     private int width;
     private double[] pos;
 
@@ -32,14 +34,14 @@ public class Path2 {
         moveTo.setY(pos[0]*fact_y);
         path.getElements().add(moveTo);
 
-        for (int i=1; i<Board.get_dim_x(); i += Math.round((double)Board.get_dim_x()/50)){
+        for (int i=1; i<Board.get_instance().get_dim_x(); i += Math.round((double)Board.get_instance().get_dim_x()/50)){
             LineTo lineTo = new LineTo();
             lineTo.setX(i*fact_x);
             lineTo.setY(pos[i]*fact_y);
             //System.out.println("Path " + i + " " + pos[i] + " " + i*fact_x + " " + pos[i]*fact_y);
             path.getElements().add(lineTo);
         }
-        int last_x = Board.get_dim_x()-1;
+        int last_x = Board.get_instance().get_dim_x()-1;
         LineTo lineTo = new LineTo();
         lineTo.setX(last_x*fact_x);
         lineTo.setY(pos[last_x]*fact_y);

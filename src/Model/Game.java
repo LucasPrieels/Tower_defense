@@ -2,18 +2,19 @@ package Model;
 
 import View.Map;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Game implements Runnable{
-    private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
+public class Game implements Runnable, Serializable {
+    private int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
     private static Game instance;
-    private static ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
+    private ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
 
     private Game(){ //All the parameters of the game are here
         // Level
-        Game.money = 1000;
-        Game.score = 1000;
+        money = 1000;
+        score = 1000;
         fps = 10;
 
         int[] health_small_npc = {10, 15, 20};
@@ -85,20 +86,21 @@ public class Game implements Runnable{
 
         score_lost = 100; //Score lost when a PNJ is at the end of the window
 
-        Level.get_instance(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc);
+        Level.init(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc, time_between_waves);
         Board.init(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
     }
 
     public static Game get_instance(){
-        if (Game.instance==null){Game.instance = new Game();}
+        if (Game.instance == null) Game.instance = new Game();
         return Game.instance;
     }
 
     public void run(){ //Appelé par un listener sur un bouton
         Thread thread_munition = new Thread(Board.get_instance());
         thread_munition.start();
-        for (int i=0; i<Level.get_waves().size(); i++){
-            Wave wave = Level.get_waves().get(i);
+        for (int i=0; i<Level.get_instance().get_waves().size(); i++){
+            curr_wave = i;
+            Wave wave = Level.get_instance().get_waves().get(i);
             Thread thread_wave = new Thread(wave);
             thread_wave.start();
             try{
@@ -106,27 +108,21 @@ public class Game implements Runnable{
             }catch(InterruptedException e){
                 System.out.println("Erreur dans le join de la méthode begin() de la classe Game");
             }
-            curr_wave++;
-            /*
-            Platform.setImplicitExit(false);
-            wave.setDaemon(true);
-            Platform.runLater(wave);
-             */
         }
 
         if (score>=0) won();
         else game_over();
     }
 
-    public static void won(){
+    public void won(){
         //...
     }
 
-    public static void game_over(){
+    public void game_over(){
         //...
     }
 
-    public static boolean pay(int paid){
+    public boolean pay(int paid){
         if (money>=paid){
             money -= paid;
             return true;
@@ -136,16 +132,15 @@ public class Game implements Runnable{
         }
     }
 
-    public static int get_npc_destroyed(){ return npc_destroyed;}
-    public static int get_score(){ return score;}
-    public static int get_money(){return money;}
-    public static void decrease_score(int a){ score -= a;}
-    public static void increase_money(int a){money += a;}
-    public static int get_fps(){ return fps;}
-    public static int get_curr_wave(){ return curr_wave;}
+    public int get_npc_destroyed(){ return npc_destroyed;}
+    public int get_score(){ return score;}
+    public int get_money(){return money;}
+    public void decrease_score(int a){ score -= a;}
+    public void increase_money(int a){money += a;}
+    public int get_fps(){ return fps;}
+    public int get_curr_wave(){ return curr_wave;}
 
-    public static void increment_curr_wave(){ curr_wave++;}
-    public static void increment_npc_destroyed(){
+    public void increment_npc_destroyed(){
         npc_destroyed++;
     }
 
@@ -165,10 +160,14 @@ public class Game implements Runnable{
         return tab;
     }
 
-    public static int get_time_between_waves(){return time_between_waves;}
-    public static int get_price_classic_tower(){return price_classic_tower;}
-    public static int get_price_freezing_tower(){return price_freezing_tower;}
-    public static int get_price_factory_tower(){return price_factory_tower;}
-    public static int get_score_lost(){return score_lost;}
-    public static int get_time_wave(int wave){ return time_small_npc.get(wave).size();}
+    public int get_time_between_waves(){return time_between_waves;}
+    public int get_price_classic_tower(){return price_classic_tower;}
+    public int get_price_freezing_tower(){return price_freezing_tower;}
+    public int get_price_factory_tower(){return price_factory_tower;}
+    public int get_score_lost(){return score_lost;}
+    public int get_time_wave(int wave){ return time_small_npc.get(wave).size();}
+    
+    public static void set_instance(Game instance){
+        Game.instance = instance;
+    }
 }

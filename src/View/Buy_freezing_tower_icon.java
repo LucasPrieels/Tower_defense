@@ -8,6 +8,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 
 public class Buy_freezing_tower_icon extends Parent {
     public Buy_freezing_tower_icon() throws FileNotFoundException {
