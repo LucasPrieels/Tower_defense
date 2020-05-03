@@ -1,6 +1,7 @@
 package View;
 
 import Model.*;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -21,6 +22,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
     private GraphicsContext gc;
     private boolean handle_finished = false;
     private String message;
+    private Image star;
 
     public TowerListener(Canvas canvas, ArrayList<Double> pos_x_asteroid, ArrayList<Double> pos_y_asteroid, String message){
         this.canvas = canvas;
@@ -43,6 +45,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                         if (Game.get_npc_destroyed() >= tower.get_npc_destroyed_needed()){
                             if (tower.get_curr_level() != tower.get_max_level()){
                                 tower.upgrade();
+
                             }
                             else{
                                 Map.get_instance().set_temp_message("La tour est déjà à son niveau maximal");
@@ -92,6 +95,11 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
                     else{
                         System.out.println("Erreur!!!");
                     }
+                        try {
+                            Controller.Update_manager.get_instance().update_window();
+                        } catch (FileNotFoundException e) {
+                            e.printStackTrace();
+                        }
                     handle_finished = true;
                     break;
                 }
@@ -106,6 +114,10 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent> {
             res = true;
         }
         return res;
+    }
+
+    private void create_img() throws FileNotFoundException {
+        Image star = new Image(new FileInputStream("Images/star.png"));
     }
 
 }

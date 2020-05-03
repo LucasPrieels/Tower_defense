@@ -154,7 +154,7 @@ public class Map extends Parent implements Runnable {
         }
     }
 
-    private void show_towers(){
+    private void show_towers() throws FileNotFoundException {
         for (Tower tower: Board.get_towers()){
             if (tower instanceof Classic_tower){
                 gc.drawImage(classic_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getWidth()/2);

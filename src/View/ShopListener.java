@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class ShopListener implements EventHandler<MouseEvent>, Runnable {
@@ -49,5 +50,13 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable {
                 Map.get_instance().set_const_message("Cliquez sur une tour");
             });
         }
+        Platform.runLater( () -> {
+            //System.out.println("Updating");
+            try {
+                Controller.Update_manager.get_instance().update_window();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
     }
 }
