@@ -12,7 +12,10 @@ public class Start_wave_listener implements EventHandler<MouseEvent> {
     boolean launched = false;
     @Override
     public void handle(MouseEvent mouseEvent) {
-        if (launched) return;
+        if (launched){
+            Menu.save_data();
+            return;
+        }
         Thread t = new Thread(Game.get_instance());
         t.start();
         launched = true;
