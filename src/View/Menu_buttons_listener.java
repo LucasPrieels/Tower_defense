@@ -19,7 +19,6 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
         //if(message == "menu"){ }
-        //else if(message =="play"){}
         if(message == "exit"){
             stage.close();
         }

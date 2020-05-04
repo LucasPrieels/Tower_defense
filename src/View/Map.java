@@ -24,9 +24,9 @@ public class Map extends Parent implements Runnable, Serializable {
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private transient Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button,star_1,star_2, star_3, play_button,menu_button,exit_button ;
+    private transient Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button,star_1,star_2, star_3,menu_button,exit_button ;
     private ArrayList<Image> planets = new ArrayList<>();
-    private ImageView iv_small_npc, iv_med_npc, iv_big_npc,iv_start_wave_button, iv_play_button, iv_menu_button, iv_exit_button;
+    private ImageView iv_small_npc, iv_med_npc, iv_big_npc,iv_start_wave_button, iv_menu_button, iv_exit_button;
     private transient Upgrade_tower_icon upgrade_tower_icon;
     private transient Buy_freezing_tower_icon buy_freezing_tower_icon;
     private transient Buy_factory_tower_icon buy_factory_tower_icon;
@@ -56,7 +56,7 @@ public class Map extends Parent implements Runnable, Serializable {
         create_shop();
         fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x();
         fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
-        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,iv_start_wave_button,iv_exit_button,iv_play_button,iv_menu_button);
+        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
     }
 
     //Singleton
@@ -118,7 +118,6 @@ public class Map extends Parent implements Runnable, Serializable {
         classic_munition_img = new Image(new FileInputStream("Images/Classic_munition.png"), size_munitions, size_munitions, false, false);
         freezing_munition_img = new Image(new FileInputStream("Images/Freezing_munition.png"), size_munitions, size_munitions, false, false);
 
-        play_button = new Image(new FileInputStream("Images/play.png"));
         menu_button = new Image(new FileInputStream("Images/back_to_menu.png"));
         exit_button = new Image(new FileInputStream("Images/exit.png"));
 
@@ -258,12 +257,8 @@ public class Map extends Parent implements Runnable, Serializable {
         iv_exit_button.setX(canvas_width - exit_button.getWidth()-10);
         iv_exit_button.setY(10);
 
-        iv_play_button = new ImageView(play_button);
-        iv_play_button.setX(canvas_width - 2*play_button.getWidth()-20);
-        iv_play_button.setY(10);
-
         iv_menu_button = new ImageView(menu_button);
-        iv_menu_button.setX(canvas_width - 3*menu_button.getWidth()-30);
+        iv_menu_button.setX(canvas_width - 2*menu_button.getWidth()-20);
         iv_menu_button.setY(10);
 
         iv_exit_button.setOnMouseClicked(new Menu_buttons_listener(stage, "exit"));
