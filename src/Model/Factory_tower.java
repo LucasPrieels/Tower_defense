@@ -10,19 +10,20 @@ public class Factory_tower extends Tower {
     public Factory_tower(Asteroid asteroid) {
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
         Thread thread_factory_tower = new Thread(this);
+        Game.get_instance().add_thread(thread_factory_tower);
         thread_factory_tower.start();
     }
 
     public void run(){
         while (true){
-            synchronized (key){
-                try{
+            try{
+                synchronized (key){
                     Thread.sleep(period[get_curr_level()]*1000);
                     Game.get_instance().increase_money(prod_money[get_curr_level()]);
                     System.out.println("Argent produit par une usine");
-                } catch(InterruptedException e){
-                    System.out.println("Erreur dans le sleep du thread des Factory_tower");
                 }
+            } catch (InterruptedException e){
+                e.printStackTrace();
             }
         }
     }

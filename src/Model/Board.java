@@ -126,11 +126,11 @@ public class Board implements Runnable, Serializable {
                         }
                     });
                 }
-            }
-            try{
-                Thread.sleep(1000/Game.get_instance().get_fps());
-            } catch(InterruptedException e){
-                e.printStackTrace();
+                try{
+                    Thread.sleep(1000/Game.get_instance().get_fps());
+                } catch(InterruptedException e){
+                    return;
+                }
             }
         }
     }

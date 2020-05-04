@@ -5,7 +5,7 @@ import View.Map;
 import java.io.Serializable;
 
 public class Save implements Serializable {
-    private static final long serialVersionUID = 7L;
+    private static final long serialVersionUID = 8L;
     Game game;
     Level level;
     Board board;

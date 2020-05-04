@@ -35,6 +35,7 @@ public class Map extends Parent implements Runnable, Serializable {
     private ArrayList<Double> pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
     private static String curr_message;
     private double fact_x, fact_y;
+    private static Object key = new Object();
 
     private Map(Stage stage, int level) throws FileNotFoundException {
         this.level = level;
@@ -257,12 +258,13 @@ public class Map extends Parent implements Runnable, Serializable {
         iv_exit_button.setX(canvas_width - exit_button.getWidth()-10);
         iv_exit_button.setY(10);
 
+        iv_exit_button.setOnMouseClicked(new Menu_buttons_listener(stage, "exit"));
+
         iv_menu_button = new ImageView(menu_button);
         iv_menu_button.setX(canvas_width - 2*menu_button.getWidth()-20);
         iv_menu_button.setY(10);
 
-        iv_exit_button.setOnMouseClicked(new Menu_buttons_listener(stage, "exit"));
-
+        iv_menu_button.setOnMouseClicked(new Menu_buttons_listener(stage, "menu"));
     }
 
     private void create_shop() throws FileNotFoundException {
@@ -302,6 +304,7 @@ public class Map extends Parent implements Runnable, Serializable {
 
     public void set_temp_message(String message) {
         Thread thread_message = new Thread(this);
+        Game.get_instance().add_thread(thread_message);
         curr_message = message;
         thread_message.start();
     }
@@ -310,13 +313,15 @@ public class Map extends Parent implements Runnable, Serializable {
         String message = curr_message;
         double t = 0;
         while (t < 3000) {
-            Platform.runLater(() -> show_message_displayed());
             try {
-                Thread.sleep((long) (1000.0 / Game.get_instance().get_fps()));
+                synchronized (key){
+                    Platform.runLater(() -> show_message_displayed());
+                        Thread.sleep((long) (1000.0 / Game.get_instance().get_fps()));
+                    t += 1000.0 / Game.get_instance().get_fps();
+                }
             } catch (InterruptedException e) {
-                System.out.println("Erreur dans le thread d'affichage du message");
+                return;
             }
-            t += 1000.0 / Game.get_instance().get_fps();
         }
         if (curr_message == message) curr_message = ""; //Si le message n'a pas changé entretemps, on l'efface
     }

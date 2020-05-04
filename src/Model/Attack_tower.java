@@ -13,6 +13,7 @@ public abstract class Attack_tower extends Tower{
         this.power = power;
         this.npc_destroyed_needed = npc_destroyed_needed;
         Thread thread_attack_tower = new Thread(this);
+        Game.get_instance().add_thread(thread_attack_tower);
         thread_attack_tower.start();
     }
 
@@ -26,17 +27,17 @@ public abstract class Attack_tower extends Tower{
     }
 
     public void run(){
-        try{
-            while (true) {
+        while (true) {
+            try{
                 synchronized (key){
                     if (fire()) {
                         Thread.sleep(get_period());
                     }
+                    Thread.sleep(200/Game.get_instance().get_fps());
                 }
-                Thread.sleep(200/Game.get_instance().get_fps());
+            } catch(InterruptedException | AssertionError e){
+                return;
             }
-        } catch(InterruptedException e){
-            System.out.println("Erreur dans le sleep du thread des Attack_tower");
         }
     }
 

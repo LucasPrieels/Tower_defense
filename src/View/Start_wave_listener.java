@@ -17,6 +17,7 @@ public class Start_wave_listener implements EventHandler<MouseEvent> {
             return;
         }
         Thread t = new Thread(Game.get_instance());
+        Game.get_instance().add_thread(t);
         t.start();
         launched = true;
     }

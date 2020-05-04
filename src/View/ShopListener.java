@@ -31,6 +31,7 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
 
     private void message(GraphicsContext gc){
         Thread thread_message = new Thread(this);
+        Game.get_instance().add_thread(thread_message);
         thread_message.start();
     }
 

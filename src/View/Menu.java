@@ -44,8 +44,12 @@ public class Menu extends Parent implements Serializable{
     private int level = 1; // Niveau sélectionné si on n'en sélectionne pas d'autre
     // COLOR
     BorderPane border;
-    public Menu(Stage theStage) throws FileNotFoundException {
-        image = new Image(new FileInputStream("Images/menu.jpg"));
+    public Menu(Stage theStage){
+        try{
+            image = new Image(new FileInputStream("Images/menu.jpg"));
+        } catch(FileNotFoundException e){
+            e.printStackTrace();
+        }
         imageView = new ImageView(image);
         this.theStage = theStage;
 
@@ -161,6 +165,7 @@ public class Menu extends Parent implements Serializable{
                 level = load_data();
                 for (Tower tower: Board.get_instance().get_towers()){
                     Thread thread_tower = new Thread(tower);
+                    Game.get_instance().add_thread(thread_tower);
                     thread_tower.start();
                 }
                 launch_game();
@@ -224,7 +229,7 @@ public class Menu extends Parent implements Serializable{
         theStage.setScene(new Scene(root_play, theStage.getWidth(), theStage.getHeight()));
         theStage.show();
         View.Map map = null;
-
+        System.out.println("Launching");
         try {
             Map.init(theStage, level);
             map = Map.get_instance();

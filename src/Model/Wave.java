@@ -50,22 +50,23 @@ public class Wave implements Runnable, Serializable {
                         try {
                             Controller.Update_manager.get_instance().update_window();
                         } catch (FileNotFoundException e) {
+                            System.out.println("Erreur");
                             e.printStackTrace();
                         }
                     });
+                    Thread.sleep(1000 / fps);
+                    if (iter % fps == 0) {
+                        time++;
+                    }
                 }
-                Thread.sleep(1000/fps);
-                if (iter%fps == 0){
-                    time++;
-                }
-            } catch(InterruptedException e){
-                System.out.println("Erreur dans le thread run de la classe Wave");
+            } catch(InterruptedException | AssertionError e){
+                return;
             }
         }
         if (Game.get_instance().get_curr_wave() == Level.get_instance().get_num_waves() - 1){
             while (Board.get_instance().get_npcs().size() > 0){
-                try{
-                    synchronized (key) {
+                synchronized (key) {
+                    try{
                         update_pos_npcs();
                         Platform.runLater(() -> {
                             try {
@@ -74,10 +75,10 @@ public class Wave implements Runnable, Serializable {
                                 e.printStackTrace();
                             }
                         });
-                    }
                     Thread.sleep(1000/fps);
-                } catch(InterruptedException e){
-                    System.out.println("Erreur dans le thread run de la classe Wave");
+                    } catch(InterruptedException e) {
+                        return;
+                    }
                 }
             }
         }

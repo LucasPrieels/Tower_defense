@@ -10,6 +10,8 @@ public class Game implements Runnable, Serializable {
     private int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
     private static Game instance;
     private ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
+    private transient ArrayList<Thread> threads = new ArrayList<>();
+    private static Object key = new Object();
 
     private Game(){ //All the parameters of the game are here
         // Level
@@ -97,20 +99,24 @@ public class Game implements Runnable, Serializable {
 
     public void run(){ //Appelé par un listener sur un bouton
         Thread thread_munition = new Thread(Board.get_instance());
+        Game.get_instance().add_thread(thread_munition);
         thread_munition.start();
         for (int i=0; i<Level.get_instance().get_waves().size(); i++){
-            curr_wave = i;
-            Wave wave = Level.get_instance().get_waves().get(i);
-            Thread thread_wave = new Thread(wave);
-            thread_wave.start();
             try{
-                thread_wave.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
-            }catch(InterruptedException e){
-                System.out.println("Erreur dans le join de la méthode begin() de la classe Game");
+                synchronized (key){
+                    curr_wave = i;
+                    Wave wave = Level.get_instance().get_waves().get(i);
+                    Thread thread_wave = new Thread(wave);
+                    Game.get_instance().add_thread(thread_wave);
+                    thread_wave.start();
+                    thread_wave.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
+                }
+            } catch(InterruptedException e){
+                return;
             }
         }
 
-        if (score>=0) won();
+        if (score >= 0) won();
         else game_over();
     }
 
@@ -169,5 +175,15 @@ public class Game implements Runnable, Serializable {
     
     public static void set_instance(Game instance){
         Game.instance = instance;
+        if (instance != null) instance.set_threads(new ArrayList<>());
     }
+    public void add_thread(Thread thread){threads.add(thread);}
+    public void stop_threads(){
+        for (Thread t: threads){
+            t.interrupt();
+        }
+    }
+
+    public ArrayList<Thread> get_threads(){return threads;}
+    public void set_threads(ArrayList<Thread> threads){this.threads = threads;}
 }
