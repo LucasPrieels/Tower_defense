@@ -116,8 +116,11 @@ public class Game implements Runnable, Serializable {
             }
         }
 
-        if (score >= 0) won();
-        else game_over();
+
+        Map.get_instance().game_win(score);
+
+        /*if (score >= 0) won();
+        else game_over();*/
     }
 
     public void won(){
