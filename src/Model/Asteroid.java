@@ -1,6 +1,8 @@
 package Model;
 
-public class Asteroid {
+import java.io.Serializable;
+
+public class Asteroid implements Serializable {
     private double pos_x, pos_y;
     private boolean occupied;
     private Tower tower;

@@ -6,8 +6,8 @@ public class Classic_munition extends Munition {
         super(tower, npc, speed);
     }
 
-    public boolean check_shot(){
-        for (NPC npc: Board.get_npcs()){
+    public boolean check_shot_npc(){
+        for (NPC npc: Board.get_instance().get_npcs()){
             if (npc.is_shot(this)){
                 return true;
             }

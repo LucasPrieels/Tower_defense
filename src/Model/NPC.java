@@ -1,6 +1,8 @@
 package Model;
 
-public abstract class NPC{
+import java.io.Serializable;
+
+public abstract class NPC implements Serializable {
     private double pos_x, pos_y;
     private int health;
     private double speed, freezed = 0.0;
@@ -21,18 +23,18 @@ public abstract class NPC{
     public void set_pos_y(double pos_y){this.pos_y = pos_y;}
 
     public boolean is_shot(Classic_munition munition){
-        boolean res = check_shot(munition);
+        boolean res = check_shot_by_munition(munition);
         if (res){
             health -= munition.get_tower().get_power();
             if (health <= 0){
-                Board.remove_npc(this);
+                if (Board.get_instance().remove_npc(this)) Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
             }
         }
         return res;
     }
 
     public boolean is_shot(Freezing_munition munition){
-        boolean res = check_shot(munition);
+        boolean res = check_shot_by_munition(munition);
         if (res) set_freezed(munition.get_tower().get_power());
         return res;
     }
@@ -48,7 +50,7 @@ public abstract class NPC{
         }
     }
 
-    private boolean check_shot(Munition munition){
+    private boolean check_shot_by_munition(Munition munition){
         double munition_pos_x = munition.get_pos_x();
         double munition_pos_y = munition.get_pos_y();
         if(Math.sqrt(Math.pow(munition_pos_x - pos_x, 2)+ Math.pow(munition_pos_y - pos_y, 2))<10) return true;

@@ -2,9 +2,10 @@ package Model;
 
 import java.util.ArrayList;
 
-public abstract class Attack_tower extends Tower implements Runnable{
+public abstract class Attack_tower extends Tower{
     private double[] range;
     private int[] power,  npc_destroyed_needed;
+    public static Object key = new Object();
 
     protected Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
@@ -12,11 +13,12 @@ public abstract class Attack_tower extends Tower implements Runnable{
         this.power = power;
         this.npc_destroyed_needed = npc_destroyed_needed;
         Thread thread_attack_tower = new Thread(this);
+        Game.get_instance().add_thread(thread_attack_tower);
         thread_attack_tower.start();
     }
 
     public void add_munition(Munition munition){
-        Board.add_munition(munition);
+        Board.get_instance().add_munition(munition);
     }
 
     public boolean npc_in_tower_area(NPC npc){
@@ -25,15 +27,17 @@ public abstract class Attack_tower extends Tower implements Runnable{
     }
 
     public void run(){
-        try{
-            while (true) {
-                if (fire()) {
-                    Thread.sleep(get_period());
+        while (true) {
+            try{
+                synchronized (key){
+                    if (fire()) {
+                        Thread.sleep(get_period());
+                    }
+                    Thread.sleep(200/Game.get_instance().get_fps());
                 }
-                Thread.sleep(200/Game.get_fps());
+            } catch(InterruptedException | AssertionError e){
+                return;
             }
-        } catch(InterruptedException e){
-            System.out.println("Erreur dans le sleep du thread des Attack_tower");
         }
     }
 

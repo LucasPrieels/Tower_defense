@@ -12,12 +12,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
 import java.io.FileNotFoundException;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ShopListener implements EventHandler<MouseEvent>, Runnable {
+public class ShopListener implements EventHandler<MouseEvent>, Runnable, Serializable {
     private GraphicsContext gc;
     private String message;
     private Canvas canvas;
+    public static Object key = new Object();
 
     public ShopListener(GraphicsContext gc, String message, Canvas canvas){
         this.gc = gc;
@@ -28,15 +30,18 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable {
     public void handle(MouseEvent mouseEvent) {message(gc);}
 
     private void message(GraphicsContext gc){
-        Thread thread = new Thread(this);
-        thread.start();
+        Thread thread_message = new Thread(this);
+        Game.get_instance().add_thread(thread_message);
+        thread_message.start();
     }
 
     public void run(){
         ArrayList<Double> pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
-        for (Asteroid asteroid: Board.get_asteroids()){
-            pos_x_asteroid.add(asteroid.get_pos_x());
-            pos_y_asteroid.add(asteroid.get_pos_y());
+        synchronized (key) {
+            for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
+                pos_x_asteroid.add(asteroid.get_pos_x());
+                pos_y_asteroid.add(asteroid.get_pos_y());
+            }
         }
         TowerListener towerListener = new TowerListener(canvas, pos_x_asteroid, pos_y_asteroid, message);
         canvas.setOnMouseClicked(towerListener);

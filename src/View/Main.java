@@ -10,16 +10,11 @@ import javafx.stage.Stage;
 import java.io.FileNotFoundException;
 
 public class Main extends Application {
-
     private static Stage theStage;
 
-    public void start(Stage theStage) throws FileNotFoundException {
-        Main.theStage = theStage;
-        Main.theStage.setWidth(1920);
-        Main.theStage.setHeight(1080);
-        Main.theStage.setTitle("Nom du jeu");
+    public static void start_static(Stage theStage){
         Group root = new Group();
-        Scene scene = new Scene(root, 1920, 1080, Color.LIGHTGRAY);
+        Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
         //Canvas canvas = new Canvas(1920,1080);
 
         Menu menu = new Menu(theStage);
@@ -29,8 +24,16 @@ public class Main extends Application {
         Main.theStage.show();
     }
 
-    public static void main(String[] args) {
+    public void start(Stage theStage){
+        Main.theStage = theStage;
+        Main.theStage.setWidth(1920);
+        Main.theStage.setHeight(1080);
+        Main.theStage.setTitle("Nom du jeu");
+        start_static(theStage);
+    }
+
+    public static void main() {
         Game game = Game.get_instance();
-        launch(args);
+        launch();
     }
 }
