@@ -4,11 +4,14 @@ import Model.*;
 import javafx.application.Platform;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.shape.*;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
@@ -26,6 +29,16 @@ public class Map extends Parent implements Runnable {
     //changez de niveau pour voir les autres cartes :)
     private static double canvas_height, canvas_width;
     private Image background;
+
+
+
+
+    private Button button_menu =new Button("Click here to return to the menu");
+
+
+    private Image win,gameover;
+
+
     private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8, size_munitions = 10;
     private static Canvas canvas;
     private GraphicsContext gc;
@@ -49,6 +62,7 @@ public class Map extends Parent implements Runnable {
         canvas_width = stage.getWidth();
         canvas_height = stage.getHeight();
         canvas = new Canvas(canvas_width, canvas_height);
+
         gc = canvas.getGraphicsContext2D();
         this.stage = stage;
         create_images();
@@ -101,6 +115,12 @@ public class Map extends Parent implements Runnable {
                 }
             }
         }
+
+
+
+        win = new Image(new FileInputStream("Images/win.png"));
+        gameover = new Image(new FileInputStream("Images/gameover.jpg"));
+
 
         score_img = new Image(new FileInputStream("Images/score_rectangle_1.png"));
         money_img = new Image(new FileInputStream("Images/score_rectangle_2.png"));
@@ -156,6 +176,13 @@ public class Map extends Parent implements Runnable {
             }
         }
     }
+
+
+
+
+
+
+
 
     private void show_towers() throws FileNotFoundException {
         for (Tower tower: Board.get_towers()){
@@ -314,6 +341,21 @@ public class Map extends Parent implements Runnable {
             t += 50.0 / Game.get_fps();
         }
         if (curr_message == message) curr_message = ""; //Si le message n'a pas changé entretemps, on l'efface
+
+
+    }
+
+
+    public  void game_win(int score){
+        if (score>=0){
+            gc.drawImage(win,300,290);
+
+
+        }
+        else gc.drawImage(gameover,300,290);
+
+
+
     }
 
     public double get_fact_x(){return fact_x;}

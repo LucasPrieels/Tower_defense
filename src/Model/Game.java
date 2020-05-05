@@ -1,14 +1,23 @@
 package Model;
 
+import View.Main;
 import View.Map;
+import javafx.scene.image.Image;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Game implements Runnable{
-    private static int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
+    private static int money, npc_destroyed = 0,score,  curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
     private static Game instance;
     private static ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
+
+
+
+
 
     private Game(){ //All the parameters of the game are here
         // Level
@@ -94,16 +103,23 @@ public class Game implements Runnable{
         return Game.instance;
     }
 
-    public void run(){ //Appelé par un listener sur un bouton
+
+
+
+
+
+
+
+    public void run() { //Appelé par un listener sur un bouton
         Thread thread_munition = new Thread(Board.get_instance());
         thread_munition.start();
-        for (int i=0; i<Level.get_waves().size(); i++){
+        for (int i = 0; i < Level.get_waves().size(); i++) {
             Wave wave = Level.get_waves().get(i);
             Thread thread_wave = new Thread(wave);
             thread_wave.start();
-            try{
+            try {
                 thread_wave.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
-            }catch(InterruptedException e){
+            } catch (InterruptedException e) {
                 System.out.println("Erreur dans le join de la méthode begin() de la classe Game");
             }
             curr_wave++;
@@ -114,17 +130,45 @@ public class Game implements Runnable{
              */
         }
 
-        if (score>=0) won();
-        else game_over();
+
+         Map.get_instance().game_win(score);
+        /*if (score>=0)  won();
+        else game_over();*/
+        System.out.println("premier");
+        Thread thread = new Thread();
+        thread.start();
+        try {
+            thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        //return to menu
+
+        System.out.println("deuxieme");
+
+
+
     }
 
+
+
     public static void won(){
+
+        System.out.println("you win");
         //...
+
     }
 
     public static void game_over(){
+
+
+
+        System.out.println("Game over");
         //...
     }
+
+
 
     public static boolean pay(int paid){
         if (money>=paid){
@@ -171,4 +215,5 @@ public class Game implements Runnable{
     public static int get_price_factory_tower(){return price_factory_tower;}
     public static int get_score_lost(){return score_lost;}
     public static int get_time_wave(int wave){ return time_small_npc.get(wave).size();}
+    public int getScore(){return score;}
 }
