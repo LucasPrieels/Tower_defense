@@ -101,6 +101,7 @@ public class Game implements Runnable, Serializable {
         Thread thread_munition = new Thread(Board.get_instance());
         Game.get_instance().add_thread(thread_munition);
         thread_munition.start();
+
         for (int i=0; i<Level.get_instance().get_waves().size(); i++){
             try{
                 synchronized (key){
@@ -109,15 +110,24 @@ public class Game implements Runnable, Serializable {
                     Thread thread_wave = new Thread(wave);
                     Game.get_instance().add_thread(thread_wave);
                     thread_wave.start();
-                    thread_wave.join(); // Normalement il faut le mettre mais ça fonctionne plus si je le mets
+                    thread_wave.join();// Normalement il faut le mettre mais ça fonctionne plus si je le mets
+                    if(score<0){
+                        Map.get_instance().game_over();
+                        i=4;
+
+
+                    }
+
                 }
             } catch(InterruptedException e){
                 return;
             }
+
+
         }
 
 
-        Map.get_instance().game_win(score);
+       Map.get_instance().game_win(score);
 
         /*if (score >= 0) won();
         else game_over();*/

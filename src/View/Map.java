@@ -26,12 +26,10 @@ public class Map extends Parent implements Runnable, Serializable {
     private Image background;
 
 
+    private Button button_menu = new Button("Click here to return to the menu");
 
 
-    private Button button_menu =new Button("Click here to return to the menu");
-
-
-    private Image win,gameover;
+    private Image win, gameover;
 
 
     private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8, size_munitions = 10;
@@ -39,9 +37,9 @@ public class Map extends Parent implements Runnable, Serializable {
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private transient Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img,wave_img,timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button,star_1,star_2, star_3,menu_button,exit_button ;
+    private transient Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img, wave_img, timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button, star_1, star_2, star_3, menu_button, exit_button;
     private ArrayList<Image> planets = new ArrayList<>();
-    private ImageView iv_small_npc, iv_med_npc, iv_big_npc,iv_start_wave_button, iv_menu_button, iv_exit_button;
+    private ImageView iv_small_npc, iv_med_npc, iv_big_npc, iv_start_wave_button, iv_menu_button, iv_exit_button;
     private transient Upgrade_tower_icon upgrade_tower_icon;
     private transient Buy_freezing_tower_icon buy_freezing_tower_icon;
     private transient Buy_factory_tower_icon buy_factory_tower_icon;
@@ -71,9 +69,9 @@ public class Map extends Parent implements Runnable, Serializable {
             pos_y_asteroid.add(asteroid.get_pos_y() * canvas.getHeight() / Board.get_instance().get_dim_y());
         }
         create_shop();
-        fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x();
-        fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
-        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
+        fact_x = Map.get_canvas_width() / Board.get_instance().get_dim_x();
+        fact_y = Map.get_canvas_height() / Board.get_instance().get_dim_y();
+        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon, iv_start_wave_button, iv_exit_button, iv_menu_button);
     }
 
     //Singleton
@@ -107,7 +105,6 @@ public class Map extends Parent implements Runnable, Serializable {
                 }
             }
         }
-
 
 
         win = new Image(new FileInputStream("Images/win.png"));
@@ -157,64 +154,51 @@ public class Map extends Parent implements Runnable, Serializable {
         //System.out.println("Updated");
     }
 
-    public void update_munitions_canvas(){
-        for (Munition munition: Board.get_instance().get_munitions()){
+    public void update_munitions_canvas() {
+        for (Munition munition : Board.get_instance().get_munitions()) {
             double pos_x = munition.get_pos_x(), pos_y = munition.get_pos_y();
-            if (munition instanceof Classic_munition){
-                gc.drawImage(classic_munition_img, pos_x*fact_x, pos_y*fact_y);
-            }
-            else if (munition instanceof Freezing_munition){
-                gc.drawImage(freezing_munition_img, pos_x*fact_x, pos_y*fact_y);
-            }
-            else{
+            if (munition instanceof Classic_munition) {
+                gc.drawImage(classic_munition_img, pos_x * fact_x, pos_y * fact_y);
+            } else if (munition instanceof Freezing_munition) {
+                gc.drawImage(freezing_munition_img, pos_x * fact_x, pos_y * fact_y);
+            } else {
                 System.out.println("ERREUR !!! Essaye d'imprimer une munition n'existant pas dans update_munitions_canvas");
             }
         }
     }
 
 
-
-
-
-
-
-
     private void show_towers() throws FileNotFoundException {
-        for (Tower tower: Board.get_instance().get_towers()){
-            if (tower instanceof Classic_tower){
-                gc.drawImage(classic_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getWidth()/2);
+        for (Tower tower : Board.get_instance().get_towers()) {
+            if (tower instanceof Classic_tower) {
+                gc.drawImage(classic_tower_img, (tower.get_asteroid().get_pos_x() * fact_x) - (double) classic_tower_img.getWidth() / 2 + (double) classic_tower_img.getHeight() / 2, (tower.get_asteroid().get_pos_y() * fact_y) - (double) classic_tower_img.getWidth() / 2 + (double) classic_tower_img.getWidth() / 2);
 
                 //gc.drawImage(star, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
-            }
-            else if (tower instanceof Freezing_tower){
-                gc.drawImage(freezing_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)freezing_tower_img.getWidth()/2+(double)freezing_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)freezing_tower_img.getWidth()/2+(double)freezing_tower_img.getWidth()/2);
-            }
-            else if (tower instanceof Factory_tower){
-                gc.drawImage(factory_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)factory_tower_img.getWidth()/2+(double)factory_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)factory_tower_img.getWidth()/2+(double)factory_tower_img.getWidth()/2);
-            }
-            else{
+            } else if (tower instanceof Freezing_tower) {
+                gc.drawImage(freezing_tower_img, (tower.get_asteroid().get_pos_x() * fact_x) - (double) freezing_tower_img.getWidth() / 2 + (double) freezing_tower_img.getHeight() / 2, (tower.get_asteroid().get_pos_y() * fact_y) - (double) freezing_tower_img.getWidth() / 2 + (double) freezing_tower_img.getWidth() / 2);
+            } else if (tower instanceof Factory_tower) {
+                gc.drawImage(factory_tower_img, (tower.get_asteroid().get_pos_x() * fact_x) - (double) factory_tower_img.getWidth() / 2 + (double) factory_tower_img.getHeight() / 2, (tower.get_asteroid().get_pos_y() * fact_y) - (double) factory_tower_img.getWidth() / 2 + (double) factory_tower_img.getWidth() / 2);
+            } else {
                 System.out.println("ERREUR !!! Essaye d'imprimer une tour n'existant pas dans show_towers");
             }
-            for(int k = 0; k<= tower.get_max_level(); k++){
-                if(tower.get_curr_level() == 0){
-                    gc.drawImage(star_1, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
-                }
-                else if(tower.get_curr_level() == 1){
-                    gc.drawImage(star_2, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
-                }
-                else if(tower.get_curr_level() == 2){
-                    gc.drawImage(star_3, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
+            for (int k = 0; k <= tower.get_max_level(); k++) {
+                if (tower.get_curr_level() == 0) {
+                    gc.drawImage(star_1, tower.get_asteroid().get_pos_x() * fact_x, tower.get_asteroid().get_pos_y() * fact_y, 20, 15);
+                } else if (tower.get_curr_level() == 1) {
+                    gc.drawImage(star_2, tower.get_asteroid().get_pos_x() * fact_x, tower.get_asteroid().get_pos_y() * fact_y, 20, 15);
+                } else if (tower.get_curr_level() == 2) {
+                    gc.drawImage(star_3, tower.get_asteroid().get_pos_x() * fact_x, tower.get_asteroid().get_pos_y() * fact_y, 20, 15);
                 }
             }
         }
     }
 
     private void show_message_displayed() {
-        gc.setFill(Color.rgb(0,0,0,0.5)); //noir transparent
-        gc.fillRoundRect(canvas.getWidth()-330,canvas.getHeight()-160,330,45,15,25);
+        gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
+        gc.fillRoundRect(canvas.getWidth() - 330, canvas.getHeight() - 160, 330, 45, 15, 25);
         gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
-        gc.fillText(curr_message, canvas.getWidth()-300, canvas.getHeight()-130);
+        gc.fillText(curr_message, canvas.getWidth() - 300, canvas.getHeight() - 130);
     }
 
     public void update_npc_canvas() {
@@ -226,8 +210,8 @@ public class Map extends Parent implements Runnable, Serializable {
             SnapshotParameters params = new SnapshotParameters();
             params.setFill(Color.TRANSPARENT);
 
-            double pos_x = npc.get_pos_x()*fact_x;
-            double pos_y = npc.get_pos_y()*fact_x;
+            double pos_x = npc.get_pos_x() * fact_x;
+            double pos_y = npc.get_pos_y() * fact_x;
 
             //ATTENTION A CHANGER, ça ne permet pas d'ajouter facilement un nv type de PNJ
             //On peut garder les instanceof? Ou il faut faire un liste avec les petits une avec les grands etc dans Board?
@@ -249,16 +233,16 @@ public class Map extends Parent implements Runnable, Serializable {
     }
 
     private void drawScoreRectangle() {
-        for(int i = 8;i<=168;i=i+40){
+        for (int i = 8; i <= 168; i = i + 40) {
             gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
             gc.fillRoundRect(8, i, 120, 35, 15, 25);
         }
 
-        gc.drawImage(score_img, 15, 17.5,20,20);
-        gc.drawImage(money_img, 15, 57.5,25,20);
-        gc.drawImage(wave_img, 13, 97.5,30,25);
-        gc.drawImage(timer_img, 13, 130,30,25);
-        gc.drawImage(im_big_npc, 13, 175,30,25);
+        gc.drawImage(score_img, 15, 17.5, 20, 20);
+        gc.drawImage(money_img, 15, 57.5, 25, 20);
+        gc.drawImage(wave_img, 13, 97.5, 30, 25);
+        gc.drawImage(timer_img, 13, 130, 30, 25);
+        gc.drawImage(im_big_npc, 13, 175, 30, 25);
 
         this.score = Game.get_instance().get_score();
         this.money = Game.get_instance().get_money();
@@ -273,7 +257,7 @@ public class Map extends Parent implements Runnable, Serializable {
         gc.fillText(Integer.toString(money), 50, 73);
         gc.fillText("Wave " + Integer.toString(wave), 50, 113);
         gc.fillText(Integer.toString(timer), 50, 153);
-        gc.fillText(Integer.toString(npc_destroyed) + " PNJ" , 50, 193);
+        gc.fillText(Integer.toString(npc_destroyed) + " PNJ", 50, 193);
 
         //this.iv_start_wave_button = new ImageView(start_wave_button);
         //iv_start_wave_button.setX(15);
@@ -282,15 +266,15 @@ public class Map extends Parent implements Runnable, Serializable {
         //iv_start_wave_button.setFitWidth(40);
     }
 
-    private void draw_menu_buttons(){
+    private void draw_menu_buttons() {
         iv_exit_button = new ImageView(exit_button);
-        iv_exit_button.setX(canvas_width - exit_button.getWidth()-10);
+        iv_exit_button.setX(canvas_width - exit_button.getWidth() - 10);
         iv_exit_button.setY(10);
 
         iv_exit_button.setOnMouseClicked(new Menu_buttons_listener(stage, "exit"));
 
         iv_menu_button = new ImageView(menu_button);
-        iv_menu_button.setX(canvas_width - 2*menu_button.getWidth()-20);
+        iv_menu_button.setX(canvas_width - 2 * menu_button.getWidth() - 20);
         iv_menu_button.setY(10);
 
         iv_menu_button.setOnMouseClicked(new Menu_buttons_listener(stage, "menu"));
@@ -303,8 +287,8 @@ public class Map extends Parent implements Runnable, Serializable {
         this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
         this.iv_start_wave_button = new ImageView(start_wave_button);
 
-        iv_start_wave_button.setX(canvas_width-5*(iv_start_wave_button.getFitWidth()+80));
-        iv_start_wave_button.setY(canvas_height-iv_start_wave_button.getFitHeight()-100);
+        iv_start_wave_button.setX(canvas_width - 5 * (iv_start_wave_button.getFitWidth() + 80));
+        iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 100);
         iv_start_wave_button.setFitHeight(70);
         iv_start_wave_button.setFitWidth(70);
 
@@ -327,7 +311,7 @@ public class Map extends Parent implements Runnable, Serializable {
         return size_asteroid;
     }
 
-    public void set_const_message(String message){
+    public void set_const_message(String message) {
         curr_message = message;
     }
 
@@ -343,9 +327,9 @@ public class Map extends Parent implements Runnable, Serializable {
         double t = 0;
         while (t < 3000) {
             try {
-                synchronized (key){
+                synchronized (key) {
                     Platform.runLater(() -> show_message_displayed());
-                        Thread.sleep((long) (1000.0 / Game.get_instance().get_fps()));
+                    Thread.sleep((long) (1000.0 / Game.get_instance().get_fps()));
                     t += 1000.0 / Game.get_instance().get_fps();
                 }
             } catch (InterruptedException e) {
@@ -357,14 +341,27 @@ public class Map extends Parent implements Runnable, Serializable {
 
     }
 
+    public void game_over() {
+
+        gc.drawImage(gameover,400,300);
+
+
+
+
+
+
+
+    }
 
     public  void game_win(int score){
         if (score>=0){
-            gc.drawImage(win,300,290);
+            gc.drawImage(win,400,300);
 
 
         }
-        else gc.drawImage(gameover,300,290);
+
+        else ;
+
 
 
 
