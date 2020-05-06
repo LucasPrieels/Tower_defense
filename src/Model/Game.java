@@ -73,10 +73,10 @@ public class Game implements Runnable, Serializable {
 
         time_between_waves = 20;
 
-        int start_path1 = 210, width1 = 15;
-        double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1);
+        int start_path1 = 237, width1 = 15;  //210
+        double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1,2);
         int start_path2 = 100, width2 = 10;
-        double[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width2);
+        double[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width2,1);
         Path2 path1 = new Path2(pos_path1, width1);
         Path2 path2 = new Path2(pos_path2, width2);
         ArrayList<Path2> paths = new ArrayList<>(List.of(path1, path2));
@@ -146,21 +146,58 @@ public class Game implements Runnable, Serializable {
         npc_destroyed++;
     }
 
-    public double[] construct_path(int dim_x, int dim_y, int start, int width){
-        double[] tab = new double[dim_x];
-        tab[0] = start;
-        for (int i=1; i<dim_x; i++){
-            double val = tab[i-1] + Math.random()*2-1;
-            if (val+width > dim_y){
-                val = dim_y-width;
+    //public double[] construct_path(int dim_x, int dim_y, int start, int width){
+    //    double[] tab = new double[dim_x];
+    //    tab[0] = start;
+    //    for (int i=1; i<dim_x; i++){
+    //        double val = tab[i-1] + Math.random()*2-1;
+    //        if (val+width > dim_y){
+    //            val = dim_y-width;
+    //        }
+    //        if (val-width < 0){
+    //            val = width;
+    //        }
+    //        tab[i] = val;
+    //    }
+    //    return tab;
+    //}
+
+    public double[] construct_path(int dim_x, int dim_y, int start, int width, int path_number){
+           double[] tab = new double[dim_x];
+            tab[0] = start;
+            for (int i=1; i<dim_x/3; i++){
+                if(path_number == 1){
+                double val = tab[i-1] + 0.005*i ;  //on commence à dessiner par la gauche
+                tab[i] = val;}
+                else if(path_number == 2){
+                    double val = tab[i-1] - 0.005*i ;  //on commence à dessiner par la gauche
+                    tab[i] = val;
+                }
             }
-            if (val-width < 0){
-                val = width;
+            for(int j=dim_x/3; j<dim_x; j++){
+                double val = tab[dim_x/3-1] + 0.005*(dim_x/2);
+                tab[j] = val;
             }
-            tab[i] = val;
+            return tab;
         }
-        return tab;
-    }
+
+    //public double[] construct_path_2(int dim_x, int dim_y, int start, int width){
+    //    double[] tab = new double[dim_x];
+    //    tab[0] = start;
+    //    for (int i=1; i<dim_x/3; i++){
+    //        double val = tab[i-1] - 0.005*i ;  //on commence à dessiner par la gauche
+    //        tab[i] = val;
+    //    }
+    //    for(int j=dim_x/3; j<dim_x; j++){
+    //        double val = tab[dim_x/3-1] + 0.005*(dim_x/2);
+    //         tab[j] = val;
+    //    }
+    //    return tab;
+    //}
+
+
+
+
 
     public int get_time_between_waves(){return time_between_waves;}
     public int get_price_classic_tower(){return price_classic_tower;}
