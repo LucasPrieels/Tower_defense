@@ -118,7 +118,6 @@ public class Game implements Runnable, Serializable {
                     return;
                 }
             } catch(InterruptedException e){
-                Map.get_instance().end_game(score);
                 return;
             }
         }
@@ -176,9 +175,15 @@ public class Game implements Runnable, Serializable {
     }
     public void add_thread(Thread thread){threads.add(thread);}
     public void stop_threads(){
-        synchronized (key2){
-            for (Thread t: threads){
-                t.interrupt();
+        ArrayList<Thread> copyThreads = threads;
+        for (Thread t: copyThreads){
+            t.interrupt();
+        }
+        for (Thread t: copyThreads){
+            try{
+                t.join();
+            } catch (InterruptedException e){
+                e.printStackTrace();
             }
         }
     }

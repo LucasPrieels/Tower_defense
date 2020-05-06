@@ -1,17 +1,11 @@
 package View;
 
 import Model.*;
-import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
-import java.awt.*;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -32,10 +26,10 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
     }
     @Override
     public void handle(MouseEvent mouseEvent) {
-        Menu.sound();
         if (handle_finished){
             return;
         }
+        Menu.sound();
         gc = canvas.getGraphicsContext2D();
         Map.get_instance().set_const_message("");
         double fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x(), fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();

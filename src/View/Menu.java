@@ -33,10 +33,8 @@ public class Menu extends Parent implements Serializable{
     private Stage theStage;
     private Image image;
     private int level = 1; // Niveau sélectionné si on n'en sélectionne pas d'autre
-    private Music song = TinySound.loadMusic("Songs/music.wav");
 
     public Menu(Stage theStage){
-        if (!song.playing()) song.play(true, 0.5);
         try{
             image = new Image(new FileInputStream("Assets/menu.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
         } catch(FileNotFoundException e){
@@ -98,11 +96,6 @@ public class Menu extends Parent implements Serializable{
                     String text = "No game has been saved.";
                     vbox_text(vbox, text);
                     return;
-                }
-                for (Tower tower: Board.get_instance().get_towers()){
-                    Thread thread_tower = new Thread(tower);
-                    Game.get_instance().add_thread(thread_tower);
-                    thread_tower.start();
                 }
                 launch_game();
             }

@@ -11,7 +11,7 @@ public abstract class NPC implements Serializable {
     private int health;
     private double speed, freezed = 0.0;
     private Path2 path;
-    private transient Sound blast_snd = TinySound.loadSound("Songs/blast.wav"), destroyed_snd = TinySound.loadSound("Songs/explosion.wav"), freezed_snd = TinySound.loadSound("Songs/freeze.wav");
+    private transient Sound blast_snd, destroyed_snd, freezed_snd;
     private ArrayList<Double> pos_x_snowflakes = new ArrayList<>(), pos_y_snowflakes = new ArrayList<>();
 
     protected NPC(double pos_x, double pos_y, double speed, int health, Path2 path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
@@ -32,9 +32,11 @@ public abstract class NPC implements Serializable {
         boolean res = check_shot_by_munition(munition);
         if (res){
             health -= munition.get_tower().get_power();
+            blast_snd = TinySound.loadSound("Songs/blast.wav");
             blast_snd.play(0.8);
             if (health <= 0){
                 if (Board.get_instance().remove_npc(this)){
+                    destroyed_snd = TinySound.loadSound("Songs/explosion.wav");
                     destroyed_snd.play(2);
                     Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
                 }
@@ -48,6 +50,7 @@ public abstract class NPC implements Serializable {
         if (res){
             pos_x_snowflakes.clear();
             pos_y_snowflakes.clear();
+            freezed_snd = TinySound.loadSound("Songs/freeze.wav");
             freezed_snd.play();
             set_freezed(munition.get_tower().get_power());
         }

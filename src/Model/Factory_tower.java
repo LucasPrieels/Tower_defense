@@ -8,7 +8,7 @@ public class Factory_tower extends Tower {
     private static int[] npc_destroyed_needed = {10, 30};
     private static int max_level = 2; //On compte àpd 0
     public static final Object key = new Object();
-    private transient Sound coin_snd = TinySound.loadSound("Songs/coin.wav");
+    private transient Sound coin_snd;
 
     public Factory_tower(Asteroid asteroid) {
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
@@ -22,6 +22,7 @@ public class Factory_tower extends Tower {
             try{
                 Thread.sleep(period[get_curr_level()]*1000);
                 synchronized (key){
+                    coin_snd = TinySound.loadSound("Songs/coin.wav");
                     coin_snd.play();
                     Game.get_instance().increase_money(prod_money[get_curr_level()]);
                     System.out.println("Argent produit par une usine");

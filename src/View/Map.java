@@ -39,7 +39,7 @@ public class Map extends Parent implements Runnable, Serializable {
     private static String curr_message;
     private double fact_x, fact_y;
     private static final Object key = new Object();
-    private transient Sound game_over_snd = TinySound.loadSound("Songs/game_over.wav"), won_snd = TinySound.loadSound("Songs/won.wav");
+    private transient Sound game_over_snd, won_snd;
 
     private Map(Stage stage, int level) throws FileNotFoundException {
         this.level = level;
@@ -344,18 +344,19 @@ public class Map extends Parent implements Runnable, Serializable {
     }
 
     public void game_over() {
+        game_over_snd = TinySound.loadSound("Songs/game_over.wav");
         game_over_snd.play(5);
         System.out.println("Game Over");
         gc.drawImage(gameover,400,300);
     }
 
     public void game_won(int score){
+        won_snd = TinySound.loadSound("Songs/won.wav");
         won_snd.play();
         gc.drawImage(win,400,300);
     }
 
     public void end_game(int score){
-        System.out.println(score);
         if (score > 0) game_won(score);
         else game_over();
     }
