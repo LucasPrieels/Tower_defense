@@ -9,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class TowerListener extends Parent implements EventHandler<MouseEvent>, Serializable {
     private Canvas canvas;
@@ -33,27 +34,41 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
         gc = canvas.getGraphicsContext2D();
         Map.get_instance().set_const_message("");
         double fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x(), fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
-        if (message == "Upgrade_tower"){
-            for (Tower tower: Board.get_instance().get_towers()){
-                if (is_into_circle(tower.get_asteroid().get_pos_x()*fact_x, tower.get_asteroid().get_pos_y()*fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
-                    if (Game.get_instance().pay(tower.get_price_upgrade())){
-                        if (Game.get_instance().get_npc_destroyed() >= tower.get_npc_destroyed_needed()){
-                            if (tower.get_curr_level() != tower.get_max_level()){
-                                tower.upgrade();
-                            }
-                            else{
+        CopyOnWriteArrayList<Tower> copyTowers = new CopyOnWriteArrayList<>(Board.get_instance().get_towers());
+        if (message == "Upgrade_tower"|| message == "Destroy_tower"){
+            for(Tower tower : copyTowers){
+                if(message == "Upgrade_tower") {
+                    if (is_into_circle(tower.get_asteroid().get_pos_x() * fact_x, tower.get_asteroid().get_pos_y() * fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
+                        if (Game.get_instance().pay(tower.get_price_upgrade())) {
+                            if (Game.get_instance().get_npc_destroyed() >= tower.get_npc_destroyed_needed()) {
+                                if (tower.get_curr_level() != tower.get_max_level()) {
+                                    tower.upgrade();
+                                } else {
+                                    Menu.bad_sound();
+                                    Map.get_instance().set_temp_message("La tour est déjà à son niveau maximal");
+                                }
+                            } else {
                                 Menu.bad_sound();
-                                Map.get_instance().set_temp_message("La tour est déjà à son niveau maximal");
+                                Map.get_instance().set_temp_message("Vous devez avoir tué " + tower.get_npc_destroyed_needed() + " PNJs");
                             }
-                        }
-                        else{
+                        } else {
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("Vous devez avoir tué " + tower.get_npc_destroyed_needed() + " PNJs");
+                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                         }
                     }
+                }
+                else if(message == "Destroy_tower"){
+                    if (is_into_circle(tower.get_asteroid().get_pos_x() * fact_x, tower.get_asteroid().get_pos_y() * fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)){
+                        Board.get_instance().remove_tower(tower);
+                        tower.get_asteroid().unoccupy();
+                    }
                     else{
-                        Menu.bad_sound();
-                        Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                        Map.get_instance().set_temp_message("Il n'y a pas de tour");
+                    }
+                    try {
+                        Controller.Update_manager.get_instance().update_window();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
                     }
                 }
             }
@@ -93,6 +108,10 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                             Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                         }
                     }
+                    //else if (message == "Destroy_tower"){
+                    //    Menu.bad_sound();
+                    //    Map.get_instance().set_temp_message("Il n'y a pas de tour sur l'astéroïde");
+                    //}
                     else{
                         System.out.println("Erreur!!!");
                     }

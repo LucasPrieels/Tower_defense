@@ -53,11 +53,16 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
                 Map.get_instance().set_const_message("Cliquez sur un astéroïde");
             });
         }
-        else if(message == "Upgrade_tower"){
+        else if(message == "Upgrade_tower"|| message == "Destroy_tower"){
             Platform.runLater( () -> {
                 Map.get_instance().set_const_message("Cliquez sur une tour");
             });
         }
+        //else if(message == "Destroy_tower"){
+        //    Platform.runLater(() -> {
+        //        Map.get_instance().set_const_message("Cliquez sur une tour");
+        //    });
+        //}
         Platform.runLater( () -> {
             //System.out.println("Updating");
             try {

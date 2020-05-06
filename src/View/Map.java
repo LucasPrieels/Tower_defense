@@ -34,6 +34,7 @@ public class Map extends Parent implements Runnable, Serializable {
     private transient Buy_freezing_tower_icon buy_freezing_tower_icon;
     private transient Buy_factory_tower_icon buy_factory_tower_icon;
     private transient Buy_classic_tower_icon buy_classic_tower_icon;
+    private transient Destroy_tower_icon destroy_tower_icon;
     private ArrayList<Integer> type_asteroid = new ArrayList<>();
     private ArrayList<Double> pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
     private static String curr_message;
@@ -61,7 +62,7 @@ public class Map extends Parent implements Runnable, Serializable {
         create_shop();
         fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x();
         fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
-        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
+        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,destroy_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
     }
 
     //Singleton
@@ -289,9 +290,10 @@ public class Map extends Parent implements Runnable, Serializable {
         this.buy_classic_tower_icon = new Buy_classic_tower_icon();
         this.buy_factory_tower_icon = new Buy_factory_tower_icon();
         this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
+        this.destroy_tower_icon = new Destroy_tower_icon();
         this.iv_start_wave_button = new ImageView(start_wave_button);
 
-        iv_start_wave_button.setX(canvas_width - 5*(iv_start_wave_button.getFitWidth() + 80));
+        iv_start_wave_button.setX(canvas_width - 6*(iv_start_wave_button.getFitWidth() + 80));
         iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 100);
         iv_start_wave_button.setFitHeight(70);
         iv_start_wave_button.setFitWidth(70);
@@ -300,6 +302,7 @@ public class Map extends Parent implements Runnable, Serializable {
         buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas));
+        destroy_tower_icon.setOnMouseClicked(new ShopListener(gc, "Destroy_tower", canvas));
         iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
     }
 

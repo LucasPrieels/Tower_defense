@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 
 public class Destroy_tower_icon extends Parent {
     public Destroy_tower_icon() throws FileNotFoundException {
-        Image icon = new Image(new FileInputStream("Images/moins.png"));
+        Image icon = new Image(new FileInputStream("Assets/moins.png"));
         ImageView imageView = new ImageView(icon);
         imageView.setX(Map.get_canvas_width()-imageView.getFitWidth()-80);
         imageView.setY(Map.get_canvas_height()-imageView.getFitHeight()-100);

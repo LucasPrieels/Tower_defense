@@ -86,6 +86,7 @@ public class Board implements Runnable, Serializable {
 
     public void add_npc(NPC npc){ npcs.add(npc);}
     public void add_tower(Tower tower){ towers.add(tower);}
+    public void remove_tower(Tower tower){towers.remove(tower);}
     public void add_munition(Munition munition){ munitions.add(munition);}
 
     public ArrayList<NPC> get_npcs(){ return npcs;} // Utiliser polymorphisme pour éviter répétition? Sans instanceof?

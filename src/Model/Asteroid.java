@@ -26,4 +26,6 @@ public class Asteroid implements Serializable {
         occupied = false;
         this.tower = null;
     }
+
+
 }

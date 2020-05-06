@@ -12,9 +12,9 @@ import java.io.Serializable;
 
 public class Upgrade_tower_icon extends Parent {
     public Upgrade_tower_icon() throws FileNotFoundException {
-        Image tower = new Image(new FileInputStream("Assets/upgrade_tower.png"));
+        Image tower = new Image(new FileInputStream("Assets/plus.png"));
         ImageView imageView = new ImageView(tower);
-        imageView.setX(Map.get_canvas_width()-tower.getWidth()-10);
+        imageView.setX(Map.get_canvas_width()-2*(imageView.getFitWidth()+80));
         imageView.setY(Map.get_canvas_height()-imageView.getFitHeight()-100);
         imageView.setFitHeight(70);
         imageView.setFitWidth(70);
