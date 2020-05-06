@@ -7,6 +7,7 @@ import Model.Level;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import kuusisto.tinysound.TinySound;
 
 import java.io.FileNotFoundException;
 
@@ -21,8 +22,10 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
 
     @Override
     public void handle(MouseEvent mouseEvent) {
+        Menu.sound();
         //if(message == "menu"){ }
         if (message == "exit"){
+            TinySound.shutdown();
             stage.close();
         }
         else if (message == "menu"){

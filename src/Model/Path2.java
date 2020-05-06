@@ -34,7 +34,7 @@ public class Path2 implements Serializable {
         moveTo.setY(pos[0]*fact_y);
         path.getElements().add(moveTo);
 
-        for (int i=1; i<Board.get_instance().get_dim_x(); i += Math.round((double)Board.get_instance().get_dim_x()/50)){
+        for (int i=1; i<Board.get_instance().get_dim_x(); i += Math.round((double)Board.get_instance().get_dim_x()/10)){
             LineTo lineTo = new LineTo();
             lineTo.setX(i*fact_x);
             lineTo.setY(pos[i]*fact_y);

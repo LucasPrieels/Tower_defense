@@ -11,7 +11,7 @@ public class Game implements Runnable, Serializable {
     private static Game instance;
     private ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
     private transient ArrayList<Thread> threads = new ArrayList<>();
-    private static Object key = new Object();
+    private static final Object key = new Object(), key2 = new Object();
 
     private Game(){ //All the parameters of the game are here
         // Level
@@ -73,9 +73,9 @@ public class Game implements Runnable, Serializable {
 
         time_between_waves = 20;
 
-        int start_path1 = 200, width1 = 15;
+        int start_path1 = 210, width1 = 15;
         double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1);
-        int start_path2 = 70, width2 = 10;
+        int start_path2 = 100, width2 = 10;
         double[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width2);
         Path2 path1 = new Path2(pos_path1, width1);
         Path2 path2 = new Path2(pos_path2, width2);
@@ -104,41 +104,25 @@ public class Game implements Runnable, Serializable {
 
         for (int i=0; i<Level.get_instance().get_waves().size(); i++){
             try{
+                Thread thread_wave;
                 synchronized (key){
                     curr_wave = i;
                     Wave wave = Level.get_instance().get_waves().get(i);
-                    Thread thread_wave = new Thread(wave);
+                    thread_wave = new Thread(wave);
                     Game.get_instance().add_thread(thread_wave);
                     thread_wave.start();
-                    thread_wave.join();// Normalement il faut le mettre mais ça fonctionne plus si je le mets
-                    if(score<0){
-                        Map.get_instance().game_over();
-                        i=4;
-
-
-                    }
-
+                }
+                thread_wave.join();
+                if (score <= 0){
+                    Map.get_instance().game_over();
+                    return;
                 }
             } catch(InterruptedException e){
+                Map.get_instance().end_game(score);
                 return;
             }
-
-
         }
-
-
-       Map.get_instance().game_win(score);
-
-        /*if (score >= 0) won();
-        else game_over();*/
-    }
-
-    public void won(){
-        //...
-    }
-
-    public void game_over(){
-        //...
+        Map.get_instance().end_game(score);
     }
 
     public boolean pay(int paid){
@@ -167,7 +151,7 @@ public class Game implements Runnable, Serializable {
         double[] tab = new double[dim_x];
         tab[0] = start;
         for (int i=1; i<dim_x; i++){
-            double val = tab[0] + Math.random()*2-1;
+            double val = tab[i-1] + Math.random()*2-1;
             if (val+width > dim_y){
                 val = dim_y-width;
             }
@@ -192,8 +176,10 @@ public class Game implements Runnable, Serializable {
     }
     public void add_thread(Thread thread){threads.add(thread);}
     public void stop_threads(){
-        for (Thread t: threads){
-            t.interrupt();
+        synchronized (key2){
+            for (Thread t: threads){
+                t.interrupt();
+            }
         }
     }
 

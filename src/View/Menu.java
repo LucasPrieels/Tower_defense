@@ -22,6 +22,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import kuusisto.tinysound.Music;
+import kuusisto.tinysound.Sound;
+import kuusisto.tinysound.TinySound;
 
 import java.io.*;
 
@@ -30,10 +33,12 @@ public class Menu extends Parent implements Serializable{
     private Stage theStage;
     private Image image;
     private int level = 1; // Niveau sélectionné si on n'en sélectionne pas d'autre
+    private Music song = TinySound.loadMusic("Songs/music.wav");
 
     public Menu(Stage theStage){
+        if (!song.playing()) song.play(true, 0.5);
         try{
-            image = new Image(new FileInputStream("Images/menu.jpg"));
+            image = new Image(new FileInputStream("Assets/menu.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -52,6 +57,8 @@ public class Menu extends Parent implements Serializable{
         button_exit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent){
+                sound();
+                TinySound.shutdown();
                 theStage.close();
             }
         });
@@ -59,6 +66,7 @@ public class Menu extends Parent implements Serializable{
         button_rules.setOnAction(new EventHandler<ActionEvent>() {
             @Override 
             public void handle(ActionEvent actionEvent) {
+                sound();
                 String text =  "Tower Defense :\n\n"+"Player start with an appropriate amount of currency and is able to obtain\n more money during game by defeating waves of  enemies and also by\n building a Factory tower."+"There are 3  waves on each level  and  each wave\n of enemies spawns with a short pause in between waves.\n\n The player  buy towers through currency pieces and than he should place\n the tower on a asteroid location." +
                         " Towers can be upgraded at least three\ntimes to have more range, or damage.\n \n" +
                         " The player win the  game when his score is higher than  0 or lose  when his\n  score is  0.\n" +
@@ -70,6 +78,7 @@ public class Menu extends Parent implements Serializable{
         button_help.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                sound();
                 String text = "HELP:\n\n"+"Press the  play button to start the game.\n\n" +
                         "Change the difficulty on level mode tab.\n\n" +
                         "Press the exit button if you want to quit the game."
@@ -83,6 +92,7 @@ public class Menu extends Parent implements Serializable{
         button_load.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                sound();
                 level = load_data();
                 if (level == -1){
                     String text = "No game has been saved.";
@@ -101,6 +111,7 @@ public class Menu extends Parent implements Serializable{
         button_start.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                sound();
                 vbox.getChildren().clear();
                 vbox.setLayoutX(400);
                 vbox.setLayoutY(300);
@@ -133,17 +144,29 @@ public class Menu extends Parent implements Serializable{
                 
                 level1.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {level = 1; launch_game();}
+                    public void handle(MouseEvent mouseEvent) {
+                        level = 1;
+                        sound();
+                        launch_game();
+                    }
                 });
 
                 level2.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {level = 2; launch_game();}
+                    public void handle(MouseEvent mouseEvent) {
+                        level = 2;
+                        sound();
+                        launch_game();
+                    }
                 });
 
                 level3.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
-                    public void handle(MouseEvent mouseEvent) {level = 3; launch_game();}
+                    public void handle(MouseEvent mouseEvent) {
+                        level = 3;
+                        sound();
+                        launch_game();
+                    }
                 });
             }
         });
@@ -226,5 +249,15 @@ public class Menu extends Parent implements Serializable{
         button.setPrefHeight(height);
         button.setStyle(color);
         return button;
+    }
+
+    public static void sound(){
+        Sound button_snd = TinySound.loadSound("Songs/button.wav");
+        button_snd.play();
+    }
+
+    public static void bad_sound(){
+        Sound bad_button_snd = TinySound.loadSound("Songs/bad_button.wav");
+        bad_button_snd.play();
     }
 }

@@ -19,7 +19,7 @@ public class Board implements Runnable, Serializable {
     private ArrayList<Munition> munitions = new ArrayList<>();
     private int dim_x, dim_y, margin_x, margin_y, width_path, max_offset;
     private double proba, size_asteroid;
-    public static Object key = new Object();
+    public static final Object key = new Object();
 
     private Board(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, double size_asteroid, double proba, int max_offset, ArrayList<Path2> paths){
         this.dim_x = dim_x;
@@ -126,11 +126,11 @@ public class Board implements Runnable, Serializable {
                         }
                     });
                 }
-                try{
-                    Thread.sleep(1000/Game.get_instance().get_fps());
-                } catch(InterruptedException e){
-                    return;
-                }
+            }
+            try{
+                Thread.sleep(1000/Game.get_instance().get_fps());
+            } catch(InterruptedException e){
+                return;
             }
         }
     }
