@@ -78,6 +78,7 @@ public class Wave implements Runnable, Serializable {
                             }
                         });
                     }
+                    if (Game.get_instance().get_score() <= 0) return;
                     Thread.sleep(1000/fps);
                 } catch(InterruptedException e) {
                     return;

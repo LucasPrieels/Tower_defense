@@ -362,6 +362,7 @@ public class Map extends Parent implements Runnable, Serializable {
     public void end_game(int score){
         if (score > 0) game_won(score);
         else game_over();
+        Game.get_instance().stop_threads();
     }
 
     public double get_fact_x(){return fact_x;}
