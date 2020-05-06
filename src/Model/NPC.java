@@ -1,12 +1,18 @@
 package Model;
 
+import kuusisto.tinysound.Sound;
+import kuusisto.tinysound.TinySound;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public abstract class NPC implements Serializable {
     private double pos_x, pos_y;
     private int health;
     private double speed, freezed = 0.0;
     private Path2 path;
+    private transient Sound blast_snd = TinySound.loadSound("Songs/blast.wav"), destroyed_snd = TinySound.loadSound("Songs/explosion.wav"), freezed_snd = TinySound.loadSound("Songs/freeze.wav");
+    private ArrayList<Double> pos_x_snowflakes = new ArrayList<>(), pos_y_snowflakes = new ArrayList<>();
 
     protected NPC(double pos_x, double pos_y, double speed, int health, Path2 path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
@@ -26,8 +32,12 @@ public abstract class NPC implements Serializable {
         boolean res = check_shot_by_munition(munition);
         if (res){
             health -= munition.get_tower().get_power();
+            blast_snd.play(0.8);
             if (health <= 0){
-                if (Board.get_instance().remove_npc(this)) Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
+                if (Board.get_instance().remove_npc(this)){
+                    destroyed_snd.play(2);
+                    Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
+                }
             }
         }
         return res;
@@ -35,7 +45,12 @@ public abstract class NPC implements Serializable {
 
     public boolean is_shot(Freezing_munition munition){
         boolean res = check_shot_by_munition(munition);
-        if (res) set_freezed(munition.get_tower().get_power());
+        if (res){
+            pos_x_snowflakes.clear();
+            pos_y_snowflakes.clear();
+            freezed_snd.play();
+            set_freezed(munition.get_tower().get_power());
+        }
         return res;
     }
 
@@ -60,6 +75,12 @@ public abstract class NPC implements Serializable {
     public Path2 get_path(){ return path;}
     public double get_speed(){ return speed;}
     public double is_frozen(){ return freezed;}
+    public ArrayList<Double> get_pos_x_snowflakes(){ return pos_x_snowflakes;}
+    public ArrayList<Double> get_pos_y_snowflakes(){ return pos_y_snowflakes;}
+    public void add_snowflake(double x, double y){
+        pos_x_snowflakes.add(x);
+        pos_y_snowflakes.add(y);
+    }
 
     public abstract int get_radius();
 }

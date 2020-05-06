@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public abstract class Attack_tower extends Tower{
     private double[] range;
     private int[] power,  npc_destroyed_needed;
-    public static Object key = new Object();
+    public static final Object key = new Object();
 
     protected Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
@@ -33,9 +33,10 @@ public abstract class Attack_tower extends Tower{
                     if (fire()) {
                         Thread.sleep(get_period());
                     }
-                    Thread.sleep(200/Game.get_instance().get_fps());
                 }
+                Thread.sleep(200/Game.get_instance().get_fps());
             } catch(InterruptedException | AssertionError e){
+                System.out.println("RETURN");
                 return;
             }
         }

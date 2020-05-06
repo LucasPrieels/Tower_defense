@@ -13,9 +13,10 @@ public class Start_wave_listener implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
         if (launched){
-            Menu.save_data();
+            Menu.bad_sound();
             return;
         }
+        Menu.sound();
         Thread t = new Thread(Game.get_instance());
         Game.get_instance().add_thread(t);
         t.start();

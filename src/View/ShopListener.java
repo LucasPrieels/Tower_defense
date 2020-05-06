@@ -19,7 +19,7 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
     private GraphicsContext gc;
     private String message;
     private Canvas canvas;
-    public static Object key = new Object();
+    public static final Object key = new Object();
 
     public ShopListener(GraphicsContext gc, String message, Canvas canvas){
         this.gc = gc;
@@ -27,7 +27,10 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
         this.canvas = canvas;
     }
 
-    public void handle(MouseEvent mouseEvent) {message(gc);}
+    public void handle(MouseEvent mouseEvent) {
+        Menu.sound();
+        message(gc);
+    }
 
     private void message(GraphicsContext gc){
         Thread thread_message = new Thread(this);

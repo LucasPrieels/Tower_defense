@@ -7,6 +7,8 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
+import kuusisto.tinysound.Sound;
+import kuusisto.tinysound.TinySound;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -17,7 +19,7 @@ public class Wave implements Runnable, Serializable {
     private double speed_small_npc, speed_med_npc, speed_big_npc;
     private ArrayList<Integer> time_small_npc, time_med_npc, time_big_npc;
     private boolean finished = false;
-    public static Object key = new Object();
+    public static final Object key = new Object();
 
     public Wave(int health_small_npc, double speed_small_npc, int health_med_npc, double speed_med_npc, int health_big_npc, double speed_big_npc, ArrayList<Integer> time_small_npc, ArrayList<Integer> time_med_npc, ArrayList<Integer> time_big_npc, int time_between_waves){
         this.health_small_npc = health_small_npc;
@@ -50,14 +52,14 @@ public class Wave implements Runnable, Serializable {
                         try {
                             Controller.Update_manager.get_instance().update_window();
                         } catch (FileNotFoundException e) {
-                            System.out.println("Erreur");
                             e.printStackTrace();
                         }
                     });
-                    Thread.sleep(1000 / fps);
-                    if (iter % fps == 0) {
-                        time++;
-                    }
+                    if (Game.get_instance().get_score() <= 0) return;
+                }
+                Thread.sleep(1000 / fps);
+                if (iter % fps == 0) {
+                    time++;
                 }
             } catch(InterruptedException | AssertionError e){
                 return;
@@ -65,8 +67,8 @@ public class Wave implements Runnable, Serializable {
         }
         if (Game.get_instance().get_curr_wave() == Level.get_instance().get_num_waves() - 1){
             while (Board.get_instance().get_npcs().size() > 0){
-                synchronized (key) {
-                    try{
+                try{
+                    synchronized (key) {
                         update_pos_npcs();
                         Platform.runLater(() -> {
                             try {
@@ -75,10 +77,10 @@ public class Wave implements Runnable, Serializable {
                                 e.printStackTrace();
                             }
                         });
-                    Thread.sleep(1000/fps);
-                    } catch(InterruptedException e) {
-                        return;
                     }
+                    Thread.sleep(1000/fps);
+                } catch(InterruptedException e) {
+                    return;
                 }
             }
         }
@@ -144,6 +146,8 @@ public class Wave implements Runnable, Serializable {
             npc.set_pos_y(pos[1]);
             if (pos[0] == 0){
                 Board.get_instance().remove_npc(npc);
+                Sound negative_snd = TinySound.loadSound("Songs/negative.wav");
+                negative_snd.play(3);
                 Game.get_instance().decrease_score(Game.get_instance().get_score_lost());
             }
         }

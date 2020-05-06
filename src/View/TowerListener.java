@@ -32,6 +32,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
     }
     @Override
     public void handle(MouseEvent mouseEvent) {
+        Menu.sound();
         if (handle_finished){
             return;
         }
@@ -47,14 +48,17 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                                 tower.upgrade();
                             }
                             else{
+                                Menu.bad_sound();
                                 Map.get_instance().set_temp_message("La tour est déjà à son niveau maximal");
                             }
                         }
                         else{
-                            Map.get_instance().set_temp_message("Vous n'avez pas tué assez de PNJs");
+                            Menu.bad_sound();
+                            Map.get_instance().set_temp_message("Vous devez avoir tué " + tower.get_npc_destroyed_needed() + " PNJs");
                         }
                     }
                     else{
+                        Menu.bad_sound();
                         Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                     }
                 }
@@ -65,6 +69,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                 if (is_into_circle(pos_x_asteroid.get(i)*fact_x, pos_y_asteroid.get(i)*fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)) {
                     //ATTENTION Faire une factory plutôt que des else if
                     if (Board.get_instance().get_asteroids().get(i).is_occupied()){
+                        Menu.bad_sound();
                         Map.get_instance().set_temp_message("Astéroide déjà occupé");
                     }
                     else if (message == "Classic_tower"){
@@ -72,6 +77,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                             Board.get_instance().add_tower(new Classic_tower(Board.get_instance().get_asteroids().get(i)));
                         }
                         else{
+                            Menu.bad_sound();
                             Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                         }
                     }
@@ -80,6 +86,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                             Board.get_instance().add_tower(new Freezing_tower(Board.get_instance().get_asteroids().get(i)));
                         }
                         else{
+                            Menu.bad_sound();
                             Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                         }
                     }
@@ -88,6 +95,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                             Board.get_instance().add_tower(new Factory_tower(Board.get_instance().get_asteroids().get(i)));
                         }
                         else{
+                            Menu.bad_sound();
                             Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
                         }
                     }
