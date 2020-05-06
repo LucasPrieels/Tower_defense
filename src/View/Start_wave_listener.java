@@ -4,8 +4,6 @@ import Model.*;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
-import java.io.Serializable;
-
 public class Start_wave_listener implements EventHandler<MouseEvent> {
     boolean launched = false;
     @Override

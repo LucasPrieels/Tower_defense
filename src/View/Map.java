@@ -29,7 +29,7 @@ public class Map extends Parent implements Runnable, Serializable {
     private static Map instance = null;
     private transient Image im_small_npc, im_med_npc, im_big_npc, factory_tower_img, level_background, score_img, money_img, wave_img, timer_img, classic_tower_img, freezing_tower_img, classic_munition_img, freezing_munition_img, start_wave_button, star_1, star_2, star_3, menu_button, exit_button, snowflake, win, gameover;
     private ArrayList<Image> planets = new ArrayList<>();
-    private ImageView iv_small_npc, iv_med_npc, iv_big_npc, iv_start_wave_button, iv_menu_button, iv_exit_button;
+    private ImageView iv_small_npc, iv_med_npc, iv_big_npc, iv_start_wave_button, iv_menu_button, iv_exit_button, iv_classic_munition, iv_freezing_munition;
     private transient Upgrade_tower_icon upgrade_tower_icon;
     private transient Buy_freezing_tower_icon buy_freezing_tower_icon;
     private transient Buy_factory_tower_icon buy_factory_tower_icon;
@@ -99,7 +99,6 @@ public class Map extends Parent implements Runnable, Serializable {
 
         win = new Image(new FileInputStream("Assets/win.png"));
         gameover = new Image(new FileInputStream("Assets/gameover.jpg"));
-
         score_img = new Image(new FileInputStream("Assets/score_rectangle_1.png"));
         money_img = new Image(new FileInputStream("Assets/score_rectangle_2.png"));
         wave_img = new Image(new FileInputStream("Assets/score_rectangle_3.png"));
@@ -126,7 +125,9 @@ public class Map extends Parent implements Runnable, Serializable {
         snowflake = new Image(new FileInputStream("Assets/flocon.png"), size_snowflake, size_snowflake, false, false);
 
         classic_munition_img = new Image(new FileInputStream("Assets/Classic_munition.png"), size_munitions, size_munitions, false, false);
+        iv_classic_munition = new ImageView(classic_munition_img);
         freezing_munition_img = new Image(new FileInputStream("Assets/Freezing_munition.png"), size_munitions, size_munitions, false, false);
+        iv_freezing_munition = new ImageView(freezing_munition_img);
 
         menu_button = new Image(new FileInputStream("Assets/back_to_menu.png"));
         exit_button = new Image(new FileInputStream("Assets/exit.png"));
@@ -143,13 +144,17 @@ public class Map extends Parent implements Runnable, Serializable {
     }
 
     public void update_munitions_canvas() {
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
         for (Munition munition : Board.get_instance().get_munitions()) {
             double pos_x = munition.get_pos_x(), pos_y = munition.get_pos_y();
             if (munition instanceof Classic_munition){
-                gc.drawImage(classic_munition_img, pos_x*fact_x, pos_y*fact_y);
+                iv_classic_munition.setRotate(Math.atan(munition.get_dir_y()/munition.get_dir_x())*180/Math.PI);
+                gc.drawImage(iv_classic_munition.snapshot(params, null), pos_x*fact_x, pos_y*fact_y);
             }
             else if (munition instanceof Freezing_munition){
-                gc.drawImage(freezing_munition_img, pos_x*fact_x, pos_y*fact_y);
+                iv_freezing_munition.setRotate(Math.atan(munition.get_dir_y()/munition.get_dir_x())*180/Math.PI);
+                gc.drawImage(iv_freezing_munition.snapshot(params, null), pos_x*fact_x, pos_y*fact_y);
             }
             else{
                 System.out.println("ERREUR !!! Essaye d'imprimer une munition n'existant pas dans update_munitions_canvas");
@@ -161,7 +166,6 @@ public class Map extends Parent implements Runnable, Serializable {
         for (Tower tower: Board.get_instance().get_towers()){
             if (tower instanceof Classic_tower){
                 gc.drawImage(classic_tower_img, (tower.get_asteroid().get_pos_x()*fact_x)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getHeight()/2, (tower.get_asteroid().get_pos_y()*fact_y)-(double)classic_tower_img.getWidth()/2+(double)classic_tower_img.getWidth()/2);
-
                 //gc.drawImage(star, tower.get_asteroid().get_pos_x()*fact_x,tower.get_asteroid().get_pos_y()*fact_y,20,15);
             }
             else if (tower instanceof Freezing_tower){
@@ -212,15 +216,18 @@ public class Map extends Parent implements Runnable, Serializable {
             Image img_npc = null;
             double size_x = 0, size_y = 0;
             if (npc instanceof Small_NPC) {
+                iv_small_npc.setRotate(npc.get_direction() - 90);
                 img_npc = iv_small_npc.snapshot(params, null);
                 size_x = (double) size_small_npc / 2;
                 size_y = (double) size_small_npc / 2;
                 // Pour que ça soit le centre de l'image qui soit à la position spécifiée et pas le coin supérieur gauche
             } else if (npc instanceof Medium_NPC) {
+                iv_med_npc.setRotate(npc.get_direction() - 90);
                 img_npc = iv_med_npc.snapshot(params, null);
                 size_x = (double) size_med_npc / 2;
                 size_y = (double) size_med_npc / 2;
             } else if (npc instanceof Big_NPC) {
+                iv_big_npc.setRotate(npc.get_direction() - 90);
                 img_npc = iv_big_npc.snapshot(params, null);
                 size_x = (double) size_big_npc / 2;
                 size_y = (double) size_big_npc / 2;}

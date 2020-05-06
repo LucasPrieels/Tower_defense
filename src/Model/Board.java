@@ -11,9 +11,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Board implements Runnable, Serializable {
     private static Board instance = null;
-
     private ArrayList<NPC> npcs = new ArrayList<>();
-    private ArrayList<Path2> paths;
+    private  ArrayList<Path2> paths;
     private ArrayList<Tower> towers = new ArrayList<>();
     private ArrayList<Asteroid> asteroids = new ArrayList<>();
     private ArrayList<Munition> munitions = new ArrayList<>();

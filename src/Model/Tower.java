@@ -11,7 +11,7 @@ public abstract class Tower implements Runnable, Serializable {
     private int curr_level, max_level;
     private int[] period, price_upgrade, npc_destroyed_needed;
     private transient Sound tower_snd;
-    protected Thread thread; //enlever si ca marche pas
+    protected transient Thread thread; //enlever si ca marche pas
 
     protected Tower(Asteroid asteroid, int[] period, int[] price_upgrade, int max_level, int[] npc_destroyed_needed){
         tower_snd = TinySound.loadSound("Songs/tower.wav");

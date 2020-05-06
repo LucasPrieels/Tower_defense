@@ -85,5 +85,11 @@ public abstract class NPC implements Serializable {
         pos_y_snowflakes.add(y);
     }
 
+    public double get_direction() {
+        double dir_x = get_path().next_pos(pos_x, pos_y, speed)[0] - pos_x;
+        double dir_y = get_path().next_pos(pos_x, pos_y, speed)[1] - pos_y;
+        return Math.atan(dir_y/dir_x)*180/Math.PI;
+    }
+
     public abstract int get_radius();
 }
