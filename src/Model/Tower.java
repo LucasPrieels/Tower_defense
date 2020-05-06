@@ -10,9 +10,10 @@ public abstract class Tower implements Runnable, Serializable {
     private Asteroid asteroid;
     private int curr_level, max_level;
     private int[] period, price_upgrade, npc_destroyed_needed;
-    private transient Sound tower_snd = TinySound.loadSound("Songs/tower.wav");
+    private transient Sound tower_snd;
 
     protected Tower(Asteroid asteroid, int[] period, int[] price_upgrade, int max_level, int[] npc_destroyed_needed){
+        tower_snd = TinySound.loadSound("Songs/tower.wav");
         tower_snd.play();
         this.asteroid = asteroid;
         asteroid.occupy(this);
@@ -50,6 +51,7 @@ public abstract class Tower implements Runnable, Serializable {
     public boolean upgrade() {
         if (get_curr_level() != get_max_level() && Game.get_instance().get_npc_destroyed() >= npc_destroyed_needed[get_curr_level()] && Game.get_instance().pay(get_price_upgrade())) {
             increment_curr_level();
+            tower_snd = TinySound.loadSound("Songs/tower.wav");
             tower_snd.play(3);
             return true;
         }

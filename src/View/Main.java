@@ -15,7 +15,6 @@ public class Main extends Application {
     private static Stage theStage;
 
     public static void start_static(Stage theStage){
-        TinySound.init();
         Group root = new Group();
         Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
         //Canvas canvas = new Canvas(1920,1080);
@@ -33,6 +32,8 @@ public class Main extends Application {
         Main.theStage.setWidth(screenSize.getWidth());
         Main.theStage.setHeight(screenSize.getHeight());
         Main.theStage.setTitle("Nom du jeu");
+        TinySound.init();
+        TinySound.loadMusic("Songs/music.wav").play(true, 0.5);
         start_static(theStage);
     }
 
