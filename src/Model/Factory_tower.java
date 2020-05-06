@@ -12,9 +12,12 @@ public class Factory_tower extends Tower {
 
     public Factory_tower(Asteroid asteroid) {
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
-        Thread thread_factory_tower = new Thread(this);
-        Game.get_instance().add_thread(thread_factory_tower);
-        thread_factory_tower.start();
+        this.thread = new Thread(this);
+        Game.get_instance().add_thread(thread);
+        thread.start();
+        //Thread thread_factory_tower = new Thread(this);
+        //Game.get_instance().add_thread(thread_factory_tower);
+        //thread_factory_tower.start();
     }
 
     public void run(){

@@ -125,6 +125,7 @@ public class Board implements Runnable, Serializable {
                             System.out.println("Munition détruite");
                             remove_munition(munition);
                         }
+
                     });
                 }
             }

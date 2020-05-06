@@ -12,9 +12,12 @@ public abstract class Attack_tower extends Tower{
         this.range = range;
         this.power = power;
         this.npc_destroyed_needed = npc_destroyed_needed;
-        Thread thread_attack_tower = new Thread(this);
-        Game.get_instance().add_thread(thread_attack_tower);
-        thread_attack_tower.start();
+        this.thread = new Thread(this);
+        Game.get_instance().add_thread(thread);
+        thread.start();
+        //Thread thread_attack_tower = new Thread(this);
+        //Game.get_instance().add_thread(thread_attack_tower);
+        //thread_attack_tower.start();
     }
 
     public void add_munition(Munition munition){
