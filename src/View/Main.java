@@ -34,10 +34,7 @@ public class Main extends Application {
     public static void start_gameover(Stage theStage){
         Group root = new Group();
         Menu_gameover menu_over = new Menu_gameover(theStage);
-
         root.getChildren().add(menu_over);
-
-
         Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
         Main.theStage.setScene(scene);
         Main.theStage.show();
@@ -53,7 +50,7 @@ public class Main extends Application {
         Main.theStage.setTitle("Nom du jeu");
         TinySound.init();
         TinySound.loadMusic("Songs/music.wav").play(true, 0.5);
-        //start_gameover(theStage);
+
         start_static(theStage);
     }
 

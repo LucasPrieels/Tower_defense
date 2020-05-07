@@ -357,13 +357,26 @@ public class Map extends Parent implements Runnable, Serializable {
         game_over_snd = TinySound.loadSound("Songs/game_over.wav");
         game_over_snd.play(5);
         System.out.println("Game Over");
-        gc.drawImage(gameover,400,300);
+        //gc.drawImage(gameover,400,300);
+        Menu.save_data();
+        Game.get_instance().stop_threads();
+
+        Game.set_instance(null);
+        Level.set_instance(null);
+        Board.set_instance(null);
+        Map.set_instance(null);
+
+        Game game = Game.get_instance();
+
+        Main.start_gameover(stage);
+
     }
 
     public void game_won(int score){
         won_snd = TinySound.loadSound("Songs/won.wav");
         won_snd.play();
         gc.drawImage(win,400,300);
+
     }
 
     public void end_game(int score){

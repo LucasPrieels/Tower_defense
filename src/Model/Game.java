@@ -1,6 +1,10 @@
 package Model;
 
+import View.Main;
 import View.Map;
+import View.Menu;
+import View.Menu_gameover;
+import javafx.stage.Stage;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,6 +16,8 @@ public class Game implements Runnable, Serializable {
     private ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
     private transient ArrayList<Thread> threads = new ArrayList<>();
     private static final Object key = new Object(), key2 = new Object();
+    private Stage stage;
+    private Menu_gameover menu_over;
 
     private Game(){ //All the parameters of the game are here
         // Level
@@ -113,15 +119,17 @@ public class Game implements Runnable, Serializable {
                     thread_wave.start();
                 }
                 thread_wave.join();
-                if (score <= 0){
+               if (score <= 0){
                     Map.get_instance().game_over();
+
                     return;
                 }
+
             } catch(InterruptedException e){
                 return;
             }
         }
-        Map.get_instance().end_game(score);
+        //Map.get_instance().end_game(score);
     }
 
     public boolean pay(int paid){

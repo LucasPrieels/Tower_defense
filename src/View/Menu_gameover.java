@@ -22,8 +22,8 @@ public class Menu_gameover extends Parent {
 
     public Menu_gameover(Stage theStage){
 
-
-
+           //gameover1.jpg
+          //win1.png
         try{
             image = new Image(new FileInputStream("Assets/gameover1.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
         } catch(FileNotFoundException e){
