@@ -71,7 +71,7 @@ public abstract class NPC implements Serializable {
     private boolean check_shot_by_munition(Munition munition){
         double munition_pos_x = munition.get_pos_x();
         double munition_pos_y = munition.get_pos_y();
-        if(Math.sqrt(Math.pow(munition_pos_x - pos_x, 2)+ Math.pow(munition_pos_y - pos_y, 2))<10) return true;
+        if(Math.sqrt(Math.pow(munition_pos_x - pos_x, 2)+ Math.pow(munition_pos_y - pos_y, 2))<5) return true;
         return false;
     }
 

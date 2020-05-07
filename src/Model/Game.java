@@ -215,13 +215,9 @@ public class Game implements Runnable, Serializable {
         ArrayList<Thread> copyThreads = threads;
         for (Thread t: copyThreads){
             t.interrupt();
-        }
-        for (Thread t: copyThreads){
             try{
-                t.join();
-            } catch (InterruptedException e){
-                e.printStackTrace();
-            }
+                t.join(); // Utile?
+            } catch (InterruptedException e){}
         }
     }
 

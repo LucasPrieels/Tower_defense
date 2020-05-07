@@ -32,17 +32,19 @@ public abstract class Attack_tower extends Tower{
     public void run(){
         while (true) {
             try{
-                synchronized (key){
-                    if (fire()) {
-                        Thread.sleep(get_period());
-                    }
+                if (fire()) {
+                    Thread.sleep(get_period());
                 }
-                Thread.sleep(200/Game.get_instance().get_fps());
+                Thread.sleep(1000/Game.get_instance().get_fps());
             } catch(InterruptedException | AssertionError e){
                 System.out.println("RETURN");
                 return;
             }
         }
+    }
+
+    protected double distance(NPC npc){
+        return Math.sqrt(Math.pow(get_asteroid().get_pos_x() - npc.get_pos_x(), 2) + Math.pow(get_asteroid().get_pos_y() - npc.get_pos_y(), 2));
     }
 
     public abstract boolean fire();

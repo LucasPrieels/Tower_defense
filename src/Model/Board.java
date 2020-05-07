@@ -117,16 +117,15 @@ public class Board implements Runnable, Serializable {
         while (true){
             synchronized (key){
                 CopyOnWriteArrayList<Munition> copyMunitions = new CopyOnWriteArrayList<>(Board.get_instance().get_munitions());
-                for (Munition munition: copyMunitions){
-                    Platform.runLater( () -> {
+                Platform.runLater( () -> {
+                    for (Munition munition: copyMunitions){
                         munition.update();
-                        if (munition.check_shot_npc()){
-                            System.out.println("Munition détruite");
+                        if (munition.check_shot_npc() && munitions.contains(munition)){ // Check if a munition has been removed from munitions but is still in its copy
+                            System.out.println("Munition détruite" + munition);
                             remove_munition(munition);
                         }
-
-                    });
-                }
+                    }
+                });
             }
             try{
                 Thread.sleep(1000/Game.get_instance().get_fps());
