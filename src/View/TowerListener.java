@@ -59,8 +59,11 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                 }
                 else if(message == "Destroy_tower"){
                     if (is_into_circle(tower.get_asteroid().get_pos_x() * fact_x, tower.get_asteroid().get_pos_y() * fact_y, mouseEvent.getX(), mouseEvent.getY(), 50.0)){
+                        tower.get_thread().interrupt();
                         Board.get_instance().remove_tower(tower);
                         tower.get_asteroid().unoccupy();
+
+
                     }
                     else{
                         Map.get_instance().set_temp_message("Il n'y a pas de tour");

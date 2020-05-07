@@ -71,7 +71,7 @@ public abstract class NPC implements Serializable {
     private boolean check_shot_by_munition(Munition munition){
         double munition_pos_x = munition.get_pos_x();
         double munition_pos_y = munition.get_pos_y();
-        if(Math.sqrt(Math.pow(munition_pos_x - pos_x, 2)+ Math.pow(munition_pos_y - pos_y, 2))<10) return true;
+        if(Math.sqrt(Math.pow(munition_pos_x - pos_x, 2)+ Math.pow(munition_pos_y - pos_y, 2))<5) return true;
         return false;
     }
 
@@ -83,6 +83,12 @@ public abstract class NPC implements Serializable {
     public void add_snowflake(double x, double y){
         pos_x_snowflakes.add(x);
         pos_y_snowflakes.add(y);
+    }
+
+    public double get_direction() {
+        double dir_x = get_path().next_pos(pos_x, pos_y, speed)[0] - pos_x;
+        double dir_y = get_path().next_pos(pos_x, pos_y, speed)[1] - pos_y;
+        return Math.atan(dir_y/dir_x)*180/Math.PI;
     }
 
     public abstract int get_radius();

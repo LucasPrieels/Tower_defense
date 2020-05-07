@@ -19,13 +19,20 @@ public class Classic_tower extends Attack_tower{
 
     public boolean fire(){
         ArrayList<NPC> npcs = Board.get_instance().get_npcs();
+        if (npcs.size() == 0) return false;
+
+        //On cherche le PNJ qui se trouve le plus à gauche de l'écran, pour lui tirer dessus en priorité
+        double mini = -1;
+        NPC curr_npc = null;
         for (NPC npc: npcs){
-            if (npc_in_tower_area(npc)){
-                System.out.println("FIRE!");
-                shoot(npc); // On s'arrête dès que le premier PNJ dans la zone d'attaque a été trouvé car c'est dans l'ordre
-                // le premier a avoir été tiré donc celui qui est le plus loin sur la plateau
-                return true;
+            if ((curr_npc == null || npc.get_pos_y() < mini) && npc_in_tower_area(npc)) {
+                mini = npc.get_pos_y();
+                curr_npc = npc;
             }
+        }
+        if (curr_npc != null){
+            shoot(curr_npc);
+            return true;
         }
         return false;
     }

@@ -23,8 +23,8 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
     @Override
     public void handle(MouseEvent mouseEvent) {
         Menu.sound();
-        //if(message == "menu"){ }
         if (message == "exit"){
+            Game.get_instance().stop_threads();
             TinySound.shutdown();
             stage.close();
         }

@@ -32,6 +32,8 @@ public abstract class Munition implements Serializable {
     public NPC get_npc(){return npc;}
     public double get_pos_x(){return pos_x;}
     public double get_pos_y(){return pos_y;}
+    public double get_dir_x(){return dir_x;}
+    public double get_dir_y(){return dir_y;}
     public Attack_tower get_tower(){return tower;}
 
     public abstract boolean check_shot_npc();

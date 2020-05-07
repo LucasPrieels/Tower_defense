@@ -5,16 +5,19 @@ import java.util.ArrayList;
 public abstract class Attack_tower extends Tower{
     private double[] range;
     private int[] power,  npc_destroyed_needed;
-    public static final Object key = new Object();
+    private static final Object key = new Object();
 
     protected Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
         this.range = range;
         this.power = power;
         this.npc_destroyed_needed = npc_destroyed_needed;
-        Thread thread_attack_tower = new Thread(this);
-        Game.get_instance().add_thread(thread_attack_tower);
-        thread_attack_tower.start();
+        this.thread = new Thread(this);
+        Game.get_instance().add_thread(thread);
+        thread.start();
+        //Thread thread_attack_tower = new Thread(this);
+        //Game.get_instance().add_thread(thread_attack_tower);
+        //thread_attack_tower.start();
     }
 
     public void add_munition(Munition munition){
@@ -29,17 +32,19 @@ public abstract class Attack_tower extends Tower{
     public void run(){
         while (true) {
             try{
-                synchronized (key){
-                    if (fire()) {
-                        Thread.sleep(get_period());
-                    }
+                if (fire()) {
+                    Thread.sleep(get_period());
                 }
-                Thread.sleep(200/Game.get_instance().get_fps());
+                Thread.sleep(1000/Game.get_instance().get_fps());
             } catch(InterruptedException | AssertionError e){
                 System.out.println("RETURN");
                 return;
             }
         }
+    }
+
+    protected double distance(NPC npc){
+        return Math.sqrt(Math.pow(get_asteroid().get_pos_x() - npc.get_pos_x(), 2) + Math.pow(get_asteroid().get_pos_y() - npc.get_pos_y(), 2));
     }
 
     public abstract boolean fire();
