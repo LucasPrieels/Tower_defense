@@ -72,19 +72,19 @@ public class Game implements Runnable, Serializable {
         int dim_y = 300;
         int margin_x = 15;
         int margin_y = 15;
-        int width_path = 7;
         double size_asteroid = Map.get_size_asteroid();
         double proba = 1; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
 
         time_between_waves = 20;
 
-        int start_path1 = 237, width1 = 15;  //210
-        double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width1,2);
-        int start_path2 = 100, width2 = 10;
-        double[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width2,1);
-        Path2 path1 = new Path2(pos_path1, width1);
-        Path2 path2 = new Path2(pos_path2, width2);
+        int width_path = 10;
+        int start_path1 = 237;
+        double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width_path,2);
+        int start_path2 = 100;
+        double[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width_path,1);
+        Path2 path1 = new Path2(pos_path1, width_path);
+        Path2 path2 = new Path2(pos_path2, width_path);
         ArrayList<Path2> paths = new ArrayList<>(List.of(path1, path2));
         int num_waves = time_small_npc.size();
 
@@ -170,7 +170,7 @@ public class Game implements Runnable, Serializable {
     //    return tab;
     //}
 
-    public double[] construct_path(int dim_x, int dim_y, int start, int width, int path_number){
+    public static double[] construct_path(int dim_x, int dim_y, int start, int width, int path_number){
            double[] tab = new double[dim_x];
             tab[0] = start;
             for (int i=1; i<dim_x/3; i++){
@@ -183,7 +183,7 @@ public class Game implements Runnable, Serializable {
                 }
             }
             for(int j=dim_x/3; j<dim_x; j++){
-                double val = tab[dim_x/3-1] + 0.005*(dim_x/2);
+                double val = tab[dim_x/3-1] + 0.005*((double)dim_x/2);
                 tab[j] = val;
             }
             return tab;
@@ -202,10 +202,6 @@ public class Game implements Runnable, Serializable {
     //    }
     //    return tab;
     //}
-
-
-
-
 
     public int get_time_between_waves(){return time_between_waves;}
     public int get_price_classic_tower(){return price_classic_tower;}
@@ -231,4 +227,6 @@ public class Game implements Runnable, Serializable {
 
     public ArrayList<Thread> get_threads(){return threads;}
     public void set_threads(ArrayList<Thread> threads){this.threads = threads;}
+
+
 }
