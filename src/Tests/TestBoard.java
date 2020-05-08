@@ -26,7 +26,8 @@ public class TestBoard {
     public void init_board(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, int max_offset, double proba){
         Board.set_instance(null);
         ArrayList<Path2> paths = new ArrayList<>();
-        paths.add(new Path2(Game.construct_path(dim_x, dim_y, dim_y/2,  width_path, 0), width_path));
+        //paths.add(new Path2(Game.construct_path(dim_x, dim_y, dim_y/2,  width_path, 0), width_path));
+        Game.get_instance().construct_path(dim_x,Map.get_level());
         Board.init(dim_x, dim_y, margin_x, margin_y, width_path, proba, size_asteroid, max_offset, paths);
     }
 
