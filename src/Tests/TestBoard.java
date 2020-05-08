@@ -25,10 +25,8 @@ public class TestBoard {
 
     public void init_board(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, int max_offset, double proba){
         Board.set_instance(null);
-        ArrayList<Path2> paths = new ArrayList<>();
-        //paths.add(new Path2(Game.construct_path(dim_x, dim_y, dim_y/2,  width_path, 0), width_path));
-        Game.get_instance().construct_path(dim_x,Map.get_level());
-        Board.init(dim_x, dim_y, margin_x, margin_y, width_path, proba, size_asteroid, max_offset, paths);
+        Board.init(dim_x, dim_y, margin_x, margin_y, width_path, proba, size_asteroid, max_offset, Game.get_instance().get_paths());
+        Game.get_instance().construct_path(Board.get_instance().get_dim_x(), 1);
     }
 
     public void init(){
@@ -36,6 +34,8 @@ public class TestBoard {
         Level.set_instance(null);
         Game.set_instance(null);
         Game.get_instance();
+        Game.get_instance().construct_path(Board.get_instance().get_dim_x(), 1);
+        Board.get_instance().create_asteroids_random();
     }
 
     @Test
@@ -62,18 +62,21 @@ public class TestBoard {
 
     @Test
     public void testCreateAsteroidsNotTooCloseBorders(){ // Checks that none of the asteroids are too close of the borders
-        int dim_x = 500, dim_y = 200, margin_x = 20, margin_y = 20, width_path = 15, size_asteroid = 10, max_offset = 10;
+        int dim_x = 500, dim_y = 300, margin_x = 15, margin_y = 15, width_path = 15, size_asteroid = 10, max_offset = 10;
         double proba = 1;
         init_board(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, max_offset, proba);
         Board.get_instance().create_asteroids_random();
-
         for (Asteroid asteroid: Board.get_instance().get_asteroids()){
-            assertTrue(asteroid.get_pos_x() > margin_x);
-            assertTrue(asteroid.get_pos_x() < dim_x - margin_x - Map.get_size_asteroid()/2);
-            assertTrue(asteroid.get_pos_y() > margin_y);
-            assertTrue(asteroid.get_pos_y() < dim_y -  margin_y - Map.get_size_asteroid()/2);
+            assertTrue(asteroid.get_pos_x() >= margin_x);
+            assertTrue(asteroid.get_pos_x() <= dim_x - margin_x - Map.get_size_asteroid()/2);
+            assertTrue(asteroid.get_pos_y() >= margin_y);
+            System.out.println(asteroid.get_pos_y() + " " + (dim_y -  margin_y - Map.get_size_asteroid()/2));
+            assertTrue(asteroid.get_pos_y() <= dim_y -  margin_y - Map.get_size_asteroid()/2);
         }
     }
+
+    // ATTENTION AJOUTER TEST CREER 2x ASTEROIDES
+    // S'assurer d'un minimum d'astéroides placés
 
     @Test
     public void testCreateAsteroidsDistancePaths(){ // Checks that every asteroid is close enough from a path, but not too close from any

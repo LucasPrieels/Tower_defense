@@ -6,6 +6,7 @@ import javafx.stage.Stage;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -30,7 +31,7 @@ public class Board implements Runnable, Serializable {
         this.size_asteroid = size_asteroid;
         this.proba = proba;
         this.max_offset = max_offset;
-        this.paths = paths; // Ne pas les créer aléatoirement car ça pourrait créer des conflits (croisements, bloquages de chemins etc)
+        this.paths = paths;
     }
 
     //Singleton
@@ -39,7 +40,6 @@ public class Board implements Runnable, Serializable {
             throw new AssertionError("Board can't be initalized twice");
         }
         instance = new Board(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
-        instance.create_asteroids_random();
     }
 
     public static Board get_instance(){
@@ -156,5 +156,9 @@ public class Board implements Runnable, Serializable {
 
     public static void set_instance(Board instance) {
         Board.instance = instance;
+    }
+
+    public void set_paths(ArrayList<Path2> paths){
+        this.paths = paths;
     }
 }

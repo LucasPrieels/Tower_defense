@@ -16,12 +16,13 @@ import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
 
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable, Serializable {
     private int score, money, wave, timer, npc_destroyed;
-    private static int level;
+    private int level;
     private static double canvas_height, canvas_width;
     private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8, size_munitions = 13, size_snowflake = 8;
     private static Canvas canvas;
@@ -57,14 +58,19 @@ public class Map extends Parent implements Runnable, Serializable {
         init_canvas();
         drawScoreRectangle();
         draw_menu_buttons();
+        create_shop();
+        fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x();
+        fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
+
+        if (Game.get_instance().get_paths().isEmpty()) Game.get_instance().construct_path(Board.get_instance().get_dim_x(), level);
+        if (Board.get_instance().get_asteroids().isEmpty()) Board.get_instance().create_asteroids_random();
+
         for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
             type_asteroid.add((int) Math.floor(Math.random() * 5.999999) + 1);
             pos_x_asteroid.add(asteroid.get_pos_x() * canvas.getWidth() / Board.get_instance().get_dim_x());
             pos_y_asteroid.add(asteroid.get_pos_y() * canvas.getHeight() / Board.get_instance().get_dim_y());
         }
-        create_shop();
-        fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x();
-        fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
+
         this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,destroy_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
     }
 
@@ -144,24 +150,19 @@ public class Map extends Parent implements Runnable, Serializable {
         update_munitions_canvas();
         show_message_displayed();
         show_towers();
-        if (game_over==true){
+        if (game_over){
             System.out.println("Update  Lose");
             View.Menu_gameover.start_gameover(stage,"gameover");}
-        if (win_game == true ){
+        if (win_game){
             System.out.println("Update  win");
             View.Menu_gameover.start_gameover(stage,"wingame");
         }
     }
-
-
-
-
-
-
     public void update_munitions_canvas() {
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
-        for (Munition munition : Board.get_instance().get_munitions()) {
+        ArrayList<Munition> copyMunitions = Board.get_instance().get_munitions();
+        for (Munition munition : copyMunitions) {
             double pos_x = munition.get_pos_x(), pos_y = munition.get_pos_y();
             if (munition instanceof Classic_munition){
                 iv_classic_munition.setRotate(Math.atan(munition.get_dir_y()/munition.get_dir_x())*180/Math.PI);
@@ -376,11 +377,13 @@ public class Map extends Parent implements Runnable, Serializable {
         System.out.println("Game Over");
         //gc.drawImage(gameover,400,300);
 
-        try {
-            update_canvas();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        Platform.startup(()->{
+            try {
+                update_canvas();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
 
         System.out.println("You Lose");
         //View.Menu_gameover.start_gameover(stage);
@@ -393,16 +396,14 @@ public class Map extends Parent implements Runnable, Serializable {
         won_snd.play();
         System.out.println("you win");
 
-        //Ecrire la
-        try {
-            update_canvas();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
+        Platform.startup(()->{
+            try {
+                update_canvas();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        });
         System.out.println("you win 2");
-
     }
 
     public void end_game(int score){
@@ -413,7 +414,7 @@ public class Map extends Parent implements Runnable, Serializable {
 
     public double get_fact_x(){return fact_x;}
     public double get_fact_y(){return fact_y;}
-    public static int get_level(){return level;}
+    public int get_level(){return level;}
 
     public static void set_instance(Map instance) {
         Map.instance = instance;
