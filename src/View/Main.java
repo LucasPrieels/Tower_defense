@@ -1,5 +1,8 @@
 package View;
 
+
+
+
 import Model.Game;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -14,12 +17,18 @@ import java.io.FileNotFoundException;
 public class Main extends Application {
     private static Stage theStage;
 
+
     public static void start_static(Stage theStage){
         Group root = new Group();
         Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
-        //Canvas canvas = new Canvas(1920,1080);
 
+
+
+
+        //Canvas canvas = new Canvas(1920,1080);
+         //Menu_gameover menu = new Menu_gameover(theStage);
         Menu menu = new Menu(theStage);
+
         root.getChildren().add(menu);
 
         Main.theStage.setScene(scene);
@@ -34,7 +43,9 @@ public class Main extends Application {
         Main.theStage.setTitle("Nom du jeu");
         TinySound.init();
         TinySound.loadMusic("Songs/music.wav").play(true, 0.5);
+
         start_static(theStage);
+
     }
 
     public static void main() {

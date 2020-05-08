@@ -1,9 +1,12 @@
 package Model;
 
+import View.Main;
 import View.Map;
+import View.Menu;
+import View.Menu_gameover;
+import javafx.stage.Stage;
 
 import java.io.Serializable;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,8 +16,8 @@ public class Game implements Runnable, Serializable {
     private ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
     private transient ArrayList<Thread> threads = new ArrayList<>();
     private static final Object key = new Object(), key2 = new Object();
-    private static Path2 path1,path2,path3,path4;
-    private static ArrayList<Path2> paths;
+    private Stage stage;
+    private boolean game_over = false;
 
     private Game(){ //All the parameters of the game are here
         // Level
@@ -69,14 +72,20 @@ public class Game implements Runnable, Serializable {
         int dim_y = 300;
         int margin_x = 15;
         int margin_y = 15;
-        int width_path = 7;
         double size_asteroid = Map.get_size_asteroid();
         double proba = 1; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
 
         time_between_waves = 20;
-        construct_path(dim_x,Map.get_level()); //mnt les planetes se construisent dessus, pq???
-        //et pnj pas crées sur tous les chemins
+
+        int width_path = 10;
+        int start_path1 = 237;
+        double[] pos_path1 = construct_path(dim_x, dim_y, start_path1, width_path,2);
+        int start_path2 = 100;
+        double[] pos_path2 = construct_path(dim_x, dim_y, start_path2, width_path,1);
+        Path2 path1 = new Path2(pos_path1, width_path);
+        Path2 path2 = new Path2(pos_path2, width_path);
+        ArrayList<Path2> paths = new ArrayList<>(List.of(path1, path2));
         int num_waves = time_small_npc.size();
 
         price_classic_tower = 100;
@@ -110,15 +119,20 @@ public class Game implements Runnable, Serializable {
                     thread_wave.start();
                 }
                 thread_wave.join();
-                if (score <= 0){
-                    Map.get_instance().game_over();
+                if (score < 0 ){
+                    Map.get_instance().end_game(score);
+
                     return;
                 }
+
             } catch(InterruptedException e){
                 return;
             }
         }
         Map.get_instance().end_game(score);
+
+
+
     }
 
     public boolean pay(int paid){
@@ -159,63 +173,9 @@ public class Game implements Runnable, Serializable {
     //    return tab;
     //}
 
-    public double[] construct_path_1(int dim_x,int start,int path_num){
-        double[] tab = new double[dim_x];
-        tab[0] = start;
-        for (int i = 1; i < (dim_x/4); i++) {
-            double val = tab[0];
-            tab[i] = val;
-        }
-        for (int j = (dim_x/4); j < (dim_x / 4) + 20; j++) {
-            double val = -j + tab[0];
-            tab[j] = val;
-        }
-        if(path_num == 1){
-            for (int k = (dim_x / 4) + 20; k < dim_x; k++) {
-                double val = tab[(dim_x/4)+20-1];
-                tab[k] = val;
-            }}
-        else if (path_num == 2){
-            for (int k2 = (dim_x / 4) + 20; k2 < dim_x-80; k2++) {
-                double val = tab[(dim_x/4)+20-1];
-                tab[k2] = val;
-            }
-            for (int l2 =dim_x-80; l2<dim_x-70;l2++){
-                double val = tab[dim_x-70-1] + 0.5*l2;
-                tab[l2] = val;
-            }
-            for(int m2 = dim_x-70;m2<dim_x;m2++){
-                double val = tab[dim_x-70-1];
-                tab[m2] = val;
-            }
-        }
-        return tab; //j'ai essayé de faire des coins arrondis mais je n'y arrive pas, à cause de la résolution?
-    }
-
-    public double[] construct_path_2(int dim_x, int start, int path_number){
-        double[] tab = new double[dim_x];
-            tab[0] = start;
-            if(path_number == 1){
-                for (int i=1; i<dim_x; i++){
-                    double val = 47*Math.sin(0.01*i-5.5) + tab[0];
-                    tab[i] = val;}}
-            else if(path_number == 2){
-                for(int j=1; j<dim_x;j++){
-                    double val= -47*Math.sin(0.01*j-5.5) + tab[0];
-                    tab[j] = val;
-            }}
-            else if(path_number == 3){
-                for(int k=1; k<dim_x;k++){
-                    double val= -15*Math.sin(0.02*k)+ tab[0];
-                    tab[k] = val;
-            }}
-            return tab;
-    }
-
-    public double[] construct_path_3(int dim_x, int start, int path_number){
+    public static double[] construct_path(int dim_x, int dim_y, int start, int width, int path_number){
            double[] tab = new double[dim_x];
             tab[0] = start;
-            if(path_number == 1 || path_number == 2){
             for (int i=1; i<dim_x/3; i++){
                 if(path_number == 1){
                 double val = tab[i-1] + 0.005*i ;  //on commence à dessiner par la gauche
@@ -226,67 +186,25 @@ public class Game implements Runnable, Serializable {
                 }
             }
             for(int j=dim_x/3; j<dim_x; j++){
-                double val = tab[dim_x/3-1] + 0.005*(dim_x/2);
+                double val = tab[dim_x/3-1] + 0.005*((double)dim_x/2);
                 tab[j] = val;
-            }}
-            else if(path_number == 3 || path_number == 4){
-                for(int k = 1; k<dim_x; k++){
-                double val = start;
-                tab[k] = val;}
-
             }
             return tab;
         }
 
-    public void construct_path(int dim_x,int level){
-        if(level== 1){
-            int width1 = 15, start_path1 = 200;
-            double[] pos_path1 = construct_path_1(dim_x,start_path1, 1);
-            this.path1 = new Path2(pos_path1, width1);
-            int width2 = 15, start_path2 = 200;  //210
-            double[] pos_path2 = construct_path_1(dim_x, start_path2,2);
-            this.path2 = new Path2(pos_path2, width2);
-            this.paths = new ArrayList<>(List.of(path1, path2));}
-
-        else if(level == 2){
-            int start_path1 = 130, width1 = 15;  //210
-            double[] pos_path1 = construct_path_2(dim_x, start_path1,1);
-            int start_path2 = 130, width2 = 10;
-            this.path1 = new Path2(pos_path1,width1);
-            double[] pos_path2 = construct_path_2(dim_x, start_path2,2); //elever witdh
-            this.path2 = new Path2(pos_path2, width2);
-            int start_path3 = 220, width3 = 10;
-            double[] pos_path3 = construct_path_2(dim_x,start_path3,3);
-            this.path3 = new Path2(pos_path3,width3);
-            this.paths = new ArrayList<>(List.of(path1,path2,path3));
-        }
-        else if(level ==3){
-            int start_path1 = 83, width1 = 15;  //210
-            double[] pos_path1 = construct_path_3(dim_x, start_path1,1);
-            int start_path2 = 220, width2 = 10;
-            this.path1 = new Path2(pos_path1,width1);
-            double[] pos_path2 = construct_path_3(dim_x, start_path2,2); //elever witdh
-            this.path2 = new Path2(pos_path2, width2);
-            int start_path3 = 50, width3 = 10;
-            double[] pos_path3 = construct_path_3(dim_x,start_path3,3);
-            this.path3 = new Path2(pos_path3,width3);
-            int start_path4 = 250, width4 = 10;
-            double[] pos_path4 = construct_path_3(dim_x,start_path4,4);
-            this.path4 = new Path2(pos_path4,width4);
-            this.paths = new ArrayList<>(List.of(path1,path2,path3,path4));
-        }
-
-        //else if(level == 2){
-        //    construct_path_2(dim_x, start, path_num);
-        //}
-        //else if(level ==3){
-        //    contruct_path3(dim_x, start, path_num);
-        //}
-    }
-
-
-
-
+    //public double[] construct_path_2(int dim_x, int dim_y, int start, int width){
+    //    double[] tab = new double[dim_x];
+    //    tab[0] = start;
+    //    for (int i=1; i<dim_x/3; i++){
+    //        double val = tab[i-1] - 0.005*i ;  //on commence à dessiner par la gauche
+    //        tab[i] = val;
+    //    }
+    //    for(int j=dim_x/3; j<dim_x; j++){
+    //        double val = tab[dim_x/3-1] + 0.005*(dim_x/2);
+    //         tab[j] = val;
+    //    }
+    //    return tab;
+    //}
 
     public int get_time_between_waves(){return time_between_waves;}
     public int get_price_classic_tower(){return price_classic_tower;}
@@ -312,4 +230,6 @@ public class Game implements Runnable, Serializable {
 
     public ArrayList<Thread> get_threads(){return threads;}
     public void set_threads(ArrayList<Thread> threads){this.threads = threads;}
+
+
 }
