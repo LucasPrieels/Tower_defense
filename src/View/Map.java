@@ -244,7 +244,8 @@ public class Map extends Parent implements Runnable, Serializable {
                 iv_big_npc.setRotate(npc.get_direction() - 90);
                 img_npc = iv_big_npc.snapshot(params, null);
                 size_x = (double) size_big_npc / 2;
-                size_y = (double) size_big_npc / 2;}
+                size_y = (double) size_big_npc / 2;
+            }
 
             gc.drawImage(img_npc, pos_x - size_x, pos_y - size_y);
 
