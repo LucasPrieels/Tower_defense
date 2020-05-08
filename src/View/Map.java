@@ -20,7 +20,8 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent implements Runnable, Serializable {
-    private int level, score, money, wave, timer, npc_destroyed;
+    private int score, money, wave, timer, npc_destroyed;
+    private static int level;
     private static double canvas_height, canvas_width;
     private static int size_asteroid = 50, size_small_npc = 35, size_med_npc = 50, size_big_npc = 70, num_diff_asteroid = 8, size_munitions = 13, size_snowflake = 8;
     private static Canvas canvas;
@@ -374,7 +375,7 @@ public class Map extends Parent implements Runnable, Serializable {
 
     public double get_fact_x(){return fact_x;}
     public double get_fact_y(){return fact_y;}
-    public int get_level(){return level;}
+    public static int get_level(){return level;}
 
     public static void set_instance(Map instance) {
         Map.instance = instance;
