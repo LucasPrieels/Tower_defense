@@ -41,6 +41,8 @@ public class Map extends Parent implements Runnable, Serializable {
     private double fact_x, fact_y;
     private static final Object key = new Object();
     private transient Sound game_over_snd, won_snd;
+    private boolean game_over  = false;
+    private boolean win_game = false;
 
     private Map(Stage stage, int level) throws FileNotFoundException {
         this.level = level;
@@ -141,7 +143,19 @@ public class Map extends Parent implements Runnable, Serializable {
         update_munitions_canvas();
         show_message_displayed();
         show_towers();
+        if (game_over==true){
+            System.out.println("Update  Lose");
+            View.Menu_gameover.start_gameover(stage,"gameover");}
+        if (win_game == true ){
+            System.out.println("Update  win");
+            View.Menu_gameover.start_gameover(stage,"wingame");
+        }
     }
+
+
+
+
+
 
     public void update_munitions_canvas() {
         SnapshotParameters params = new SnapshotParameters();
@@ -354,35 +368,45 @@ public class Map extends Parent implements Runnable, Serializable {
     }
 
     public void game_over() {
+        game_over = true ;
         game_over_snd = TinySound.loadSound("Songs/game_over.wav");
         game_over_snd.play(5);
         System.out.println("Game Over");
         //gc.drawImage(gameover,400,300);
-        Menu.save_data();
-        Game.get_instance().stop_threads();
 
-        Game.set_instance(null);
-        Level.set_instance(null);
-        Board.set_instance(null);
-        Map.set_instance(null);
+        try {
+            update_canvas();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
-        Game game = Game.get_instance();
-
-        Main.start_gameover(stage);
+        System.out.println("You Lose");
+        //View.Menu_gameover.start_gameover(stage);
 
     }
 
-    public void game_won(int score){
+    public void game_won(){
+        win_game = true;
         won_snd = TinySound.loadSound("Songs/won.wav");
         won_snd.play();
-        gc.drawImage(win,400,300);
+        System.out.println("you win");
+
+        //Ecrire la
+        try {
+            update_canvas();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+
+        System.out.println("you win 2");
 
     }
 
     public void end_game(int score){
-        if (score > 0) game_won(score);
+        if (score > 0) game_won();
         else game_over();
-        Game.get_instance().stop_threads();
+
     }
 
     public double get_fact_x(){return fact_x;}

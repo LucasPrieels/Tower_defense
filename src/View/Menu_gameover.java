@@ -1,15 +1,12 @@
 package View;
 
-import Model.Save;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
@@ -20,15 +17,35 @@ public class Menu_gameover extends Parent {
     private Stage theStage;
     private Image image;
 
-    public Menu_gameover(Stage theStage){
+    private String message1 = "gameover";
+    private String message2 = "wingame";
+
+
+    public Menu_gameover(Stage theStage,String message){
 
            //gameover1.jpg
           //win1.png
-        try{
-            image = new Image(new FileInputStream("Assets/gameover1.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
-        } catch(FileNotFoundException e){
-            e.printStackTrace();
+
+        if (message == message1) {
+            try {
+                image = new Image(new FileInputStream("Assets/gameover1.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
+
+        if (message==message2) {
+            try{
+                image = new Image(new FileInputStream("Assets/win1.png"), theStage.getWidth(), theStage.getHeight(), false, false);
+            } catch(FileNotFoundException e){
+                e.printStackTrace();
+            }
+
+        }
+
+
+
+
         ImageView imageView = new ImageView(image);
         this.theStage = theStage;
 
@@ -45,7 +62,19 @@ public class Menu_gameover extends Parent {
 
 
 
+    //mettre les fonctions
 
+
+
+
+    public static void start_gameover(Stage theStage,String message){
+        Group root = new Group();
+        Menu_gameover menu_over = new Menu_gameover(theStage,message);
+        root.getChildren().add(menu_over);
+        Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
+        theStage.setScene(scene);
+        theStage.show();
+    }
 
 
 

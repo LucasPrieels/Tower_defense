@@ -17,7 +17,7 @@ public class Game implements Runnable, Serializable {
     private transient ArrayList<Thread> threads = new ArrayList<>();
     private static final Object key = new Object(), key2 = new Object();
     private Stage stage;
-    private Menu_gameover menu_over;
+    private boolean game_over = false;
 
     private Game(){ //All the parameters of the game are here
         // Level
@@ -119,8 +119,8 @@ public class Game implements Runnable, Serializable {
                     thread_wave.start();
                 }
                 thread_wave.join();
-               if (score <= 0){
-                    Map.get_instance().game_over();
+                if (score < 0 ){
+                    Map.get_instance().end_game(score);
 
                     return;
                 }
@@ -129,7 +129,10 @@ public class Game implements Runnable, Serializable {
                 return;
             }
         }
-        //Map.get_instance().end_game(score);
+        Map.get_instance().end_game(score);
+
+
+
     }
 
     public boolean pay(int paid){
