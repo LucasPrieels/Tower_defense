@@ -13,6 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements Runnable, Serializable {
     private int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
@@ -309,7 +310,7 @@ public class Game implements Runnable, Serializable {
             this.path3 = new Path2(pos_path3, width3);
             this.paths = new ArrayList<>(List.of(path1, path2, path3));
         } else if (level == 3) {
-            int start_path1 =93, width1 = 15;  //210
+            int start_path1 = 93, width1 = 15;  //210
             ArrayList<Pair<Double, Double>> pos_path1 = construct_path_3(dim_x, start_path1, 1);
             int start_path2 = 213, width2 = 10;
             this.path1 = new Path2(pos_path1, width1);
@@ -318,9 +319,6 @@ public class Game implements Runnable, Serializable {
             int start_path3 = 250, width3 = 10;
             ArrayList<Pair<Double, Double>> pos_path3 = construct_path_3(dim_x, start_path3, 3);
             this.path3 = new Path2(pos_path3, width3);
-            //int start_path4 = 230, width4 = 10;
-            //double[] pos_path4 = construct_path_3(dim_x, start_path4, 4);
-            //this.path4 = new Path2(pos_path4, width4);
             this.paths = new ArrayList<>(List.of(path1, path2, path3));
         }
         Board.get_instance().set_paths(paths);
@@ -340,7 +338,7 @@ public class Game implements Runnable, Serializable {
     public void add_thread(Thread thread){threads.add(thread);}
 
     public void stop_threads(){
-        ArrayList<Thread> copyThreads = threads;
+        CopyOnWriteArrayList<Thread> copyThreads = new CopyOnWriteArrayList<>(threads);
         for (Thread t: copyThreads){
             t.interrupt();
             try{

@@ -11,8 +11,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import static org.junit.Assert.assertTrue;
-
 public class Board implements Runnable, Serializable {
     private static Board instance = null;
     private ArrayList<NPC> npcs = new ArrayList<>();
@@ -72,6 +70,17 @@ public class Board implements Runnable, Serializable {
         return true;
     }
 
+    private boolean not_behind_button(Asteroid asteroid, Map instance){
+        ArrayList<ArrayList<Double>> forbidden = instance.get_forbidden();
+        for (ArrayList<Double> zone: forbidden){
+            System.out.println(asteroid.get_pos_x() + " " + asteroid.get_pos_y() + " " + zone);
+            if (asteroid.get_pos_x() >= zone.get(0) && asteroid.get_pos_x() <= zone.get(1) && asteroid.get_pos_y() >= zone.get(2) && asteroid.get_pos_y() <= zone.get(3)){
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void create_asteroids_random(){
         double height_asteroid = Map.get_size_asteroid(), width_asteroid = Map.get_size_asteroid();
         Map instance = null;
@@ -106,7 +115,7 @@ public class Board implements Runnable, Serializable {
                     }
                     asteroid = new Asteroid(pos_x, pos_y);
 
-                    boolean cond = far_other_paths(asteroid, height_asteroid) && far_other_asteroids(asteroid, Math.max(height_asteroid, width_asteroid));
+                    boolean cond = far_other_paths(asteroid, height_asteroid) && far_other_asteroids(asteroid, Math.max(height_asteroid, width_asteroid)) & not_behind_button(asteroid, instance);
 
                     if (cond){
                         asteroids.add(asteroid);
