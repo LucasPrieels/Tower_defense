@@ -2,11 +2,14 @@ package View;
 
 import Model.*;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -46,6 +49,7 @@ public class Map extends Parent implements Runnable, Serializable {
     private transient Sound game_over_snd, won_snd;
     private boolean game_over  = false;
     private boolean win_game = false;
+    private String tower_message;
 
     private Map(Stage stage, int level) throws FileNotFoundException {
         this.level = level;
@@ -210,6 +214,7 @@ public class Map extends Parent implements Runnable, Serializable {
         }
     }
 
+
     private void show_message_displayed() {
         gc.setFill(Color.rgb(0,0,0,0.5)); //noir transparent
         gc.fillRoundRect(canvas.getWidth()-330,canvas.getHeight()-160,330,45,15,25);
@@ -324,11 +329,11 @@ public class Map extends Parent implements Runnable, Serializable {
         iv_start_wave_button.setFitHeight(70);
         iv_start_wave_button.setFitWidth(70);
 
-        upgrade_tower_icon.setOnMouseClicked(new ShopListener(gc, "Upgrade_tower", canvas));
-        buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
-        buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas));
-        buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas));
-        destroy_tower_icon.setOnMouseClicked(new ShopListener(gc, "Destroy_tower", canvas));
+        upgrade_tower_icon.setOnMouseClicked(new ShopListener(gc, "Upgrade_tower", canvas,upgrade_tower_icon));
+        buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas,upgrade_tower_icon));
+        buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas,upgrade_tower_icon));
+        buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas,upgrade_tower_icon));
+        destroy_tower_icon.setOnMouseClicked(new ShopListener(gc, "Destroy_tower", canvas,upgrade_tower_icon));
         iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
     }
 
