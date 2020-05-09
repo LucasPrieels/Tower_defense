@@ -21,7 +21,7 @@ public class Game implements Runnable, Serializable {
     private Stage stage;
     private boolean game_over = false;
     private ArrayList<Path2> paths = new ArrayList<>();
-    private Path2 path1, path2,path3,path4;
+    private Path2 path1, path2,path3;
 
     private Game(){ //All the parameters of the game are here
         // Level
@@ -154,18 +154,27 @@ public class Game implements Runnable, Serializable {
         npc_destroyed++;
     }
 
-    /*
-    public double[] construct_path(int dim_x, int dim_y, int start, int width){
+    //public double[] construct_path(int dim_x, int dim_y, int start, int width){
+    //    double[] tab = new double[dim_x];
+    //    tab[0] = start;
+    //    for (int i=1; i<dim_x; i++){
+    //        double val = tab[i-1] + Math.random()*2-1;
+    //        if (val+width > dim_y){
+    //            val = dim_y-width;
+    //        }
+    //        if (val-width < 0){
+    //            val = width;
+    //        }
+    //        tab[i] = val;
+    //    }
+    //    return tab;
+    //}
+
+    public double[] construct_path_1(int dim_x,int start,int path_num){
         double[] tab = new double[dim_x];
         tab[0] = start;
-        for (int i=1; i<dim_x; i++){
-            double val = tab[i-1] + Math.random()*2-1;
-            if (val+width > dim_y){
-                val = dim_y-width;
-            }
-            if (val-width < 0){
-                val = width;
-            }
+        for (int i = 1; i < (dim_x/4); i++) {
+            double val = tab[0];
             tab[i] = val;
         }
         return tab;
@@ -239,10 +248,31 @@ public class Game implements Runnable, Serializable {
                 double val = tab[dim_x/3-1] + 0.005*((double)dim_x/2);
                 tab[j] = val;
             }}
-        else if(path_number == 3 || path_number == 4){
-            for(int k = 1; k<dim_x; k++){
-                double val = start;
-                tab[k] = val;}
+        else if(path_number == 3){
+            //for(int k = 1; k<dim_x; k++){
+            //    double val = start;
+            //    tab[k] = val;}
+
+            for(int k=1; k<dim_x;k++){
+                    double val= -15*Math.sin(0.01*k+11)+ tab[0];
+                    tab[k] = val;
+            }
+                //else if(path_number == 3){
+                //    double val = -20*Math.cos(0.01*k+7)+ tab[0];
+                //    tab[k] = val;
+                //}
+            //}
+
+            for(int l=dim_x/2;l<dim_x;l++){
+                double val = tab[dim_x/2-1];
+                tab[l] = val;
+            }
+            //else if(path_number == 3){
+            //    for(int m=1; m<dim_x;m++){
+            //        double val = tab[0];
+            //        tab[m] = val;
+
+            //}
 
         }
         return tab;
@@ -269,19 +299,19 @@ public class Game implements Runnable, Serializable {
             this.path3 = new Path2(pos_path3, width3);
             this.paths = new ArrayList<>(List.of(path1, path2, path3));
         } else if (level == 3) {
-            int start_path1 = 83, width1 = 15;  //210
+            int start_path1 = 53, width1 = 15;  //210
             double[] pos_path1 = construct_path_3(dim_x, start_path1, 1);
-            int start_path2 = 220, width2 = 10;
+            int start_path2 = 190, width2 = 10;
             this.path1 = new Path2(pos_path1, width1);
             double[] pos_path2 = construct_path_3(dim_x, start_path2, 2); //elever witdh
             this.path2 = new Path2(pos_path2, width2);
-            int start_path3 = 50, width3 = 10;
+            int start_path3 = 230, width3 = 10;
             double[] pos_path3 = construct_path_3(dim_x, start_path3, 3);
             this.path3 = new Path2(pos_path3, width3);
-            int start_path4 = 250, width4 = 10;
-            double[] pos_path4 = construct_path_3(dim_x, start_path4, 4);
-            this.path4 = new Path2(pos_path4, width4);
-            this.paths = new ArrayList<>(List.of(path1, path2, path3, path4));
+            //int start_path4 = 230, width4 = 10;
+            //double[] pos_path4 = construct_path_3(dim_x, start_path4, 4);
+            //this.path4 = new Path2(pos_path4, width4);
+            this.paths = new ArrayList<>(List.of(path1, path2, path3));
         }
         Board.get_instance().set_paths(paths);
     }
