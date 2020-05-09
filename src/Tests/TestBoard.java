@@ -24,9 +24,9 @@ public class TestBoard {
         return paths;
     }
 
-    public void init_board(int dim_x, int dim_y, int margin_x, int margin_y, int width_path, int size_asteroid, int max_offset, double proba){
+    public void init_board(int dim_x, int dim_y, int margin_x, int margin_y, int size_asteroid, int max_distance, double proba){
         Board.set_instance(null);
-        Board.init(dim_x, dim_y, margin_x, margin_y, width_path, proba, size_asteroid, max_offset, Game.get_instance().get_paths());
+        Board.init(dim_x, dim_y, margin_x, margin_y, proba, size_asteroid, max_distance, Game.get_instance().get_paths());
         Game.get_instance().construct_path(Board.get_instance().get_dim_x(), 1);
     }
 
@@ -43,15 +43,15 @@ public class TestBoard {
     public void testInit() { // Checks the init() function normally
         ArrayList<Path2> paths = create_random_path();
         Board.set_instance(null);
-        Board.init(500, 200, 20, 20, 15, 10, 1, 10, paths);
+        Board.init(500, 200, 20, 20, 10, 1, 10, paths);
         assertEquals(Board.get_instance().get_paths(), paths);
     }
 
     @Test(expected=AssertionError.class)
     public void testInvalidInit(){ // Checks that there is an AssertionError if we're trying to initialize twice the Board
         Board.set_instance(null);
-        Board.init(10, 200, 20, 20, 15, 10, 1, 10, create_random_path());
-        Board.init(10, 200, 20, 20, 15, 10, 1, 10, create_random_path());
+        Board.init(10, 200, 20, 20, 10, 1, 10, create_random_path());
+        Board.init(10, 200, 20, 20, 10, 1, 10, create_random_path());
         // We can't initialize the board twice
     }
 
@@ -63,9 +63,9 @@ public class TestBoard {
 
     @Test
     public void testCreateAsteroidsNotTooCloseBorders(){ // Checks that none of the asteroids are too close of the borders
-        int dim_x = 500, dim_y = 300, margin_x = 15, margin_y = 15, width_path = 15, size_asteroid = 10, max_offset = 10;
+        int dim_x = 500, dim_y = 300, margin_x = 15, margin_y = 15, size_asteroid = 10, max_distance = 10;
         double proba = 1;
-        init_board(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, max_offset, proba);
+        init_board(dim_x, dim_y, margin_x, margin_y, size_asteroid, max_distance, proba);
         Board.get_instance().create_asteroids_random();
         for (Asteroid asteroid: Board.get_instance().get_asteroids()){
             assertTrue(asteroid.get_pos_x() >= margin_x);
@@ -81,13 +81,13 @@ public class TestBoard {
     @Test
     public void testCreateAsteroidsDistancePaths(){ // Checks that every asteroid is close enough from a path, but not too close from any
         init();
-        int max_offset = Board.get_instance().get_max_offset();
+        int max_distance = Board.get_instance().get_max_distance();
 
         for (Asteroid asteroid: Board.get_instance().get_asteroids()){
             boolean cond = false;
             for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
                 Path2 path = Board.get_instance().get_paths().get(i);
-                cond = cond | (Math.abs(asteroid.get_pos_y() - path.get_ord((int) Math.round(asteroid.get_pos_x()))) <= (((double) Board.get_instance().get_width_path(i) / 2) + (Map.get_size_asteroid() / 2) + max_offset));
+                cond = cond | (Math.abs(asteroid.get_pos_y() - path.get_ord((int) Math.round(asteroid.get_pos_x()))) <= (((double) Board.get_instance().get_width_path(i) / 2) + (Map.get_size_asteroid() / 2) + (double)Big_NPC.get_size()/2 + max_distance));
             }
             assertTrue(cond);
 
@@ -95,7 +95,7 @@ public class TestBoard {
             cond = true;
             for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
                 Path2 path = Board.get_instance().get_paths().get(i);
-                cond = cond & (Math.abs(asteroid.get_pos_y() - path.get_ord((int) Math.round(asteroid.get_pos_x()))) >= (((double) Board.get_instance().get_width_path(i) / 2) + (Map.get_size_asteroid() / 2)));
+                cond = cond & (Math.abs(asteroid.get_pos_y() - path.get_ord((int) Math.round(asteroid.get_pos_x()))) >= (((double) Board.get_instance().get_width_path(i) / 2) + (Map.get_size_asteroid() / 2) + (double)Big_NPC.get_size()/2));
             }
             assertTrue(cond);
         }
@@ -212,7 +212,7 @@ public class TestBoard {
 
         Platform.startup(() -> {assertTrue(Board.get_instance().remove_npc(npc1));}); // This launches a Platform.runLater() then it needs to be launched from a JavaFX thread
         try{
-            Thread.sleep(100); // We have to wait a bit for checking because the destruction of munitions is in a Platform.runLater()
+            Thread.sleep(500); // We have to wait a bit for checking because the destruction of munitions is in a Platform.runLater()
         } catch (InterruptedException e){}
 
         assertEquals(Board.get_instance().get_munitions().size(), 0);

@@ -80,7 +80,7 @@ public class Map extends Parent implements Runnable, Serializable {
     }
 
     private void init_canvas() throws FileNotFoundException {
-        gc.drawImage(level_background, 0, 0); //modifier
+        gc.drawImage(level_background, 0, 0);
         for (int i = 0; i < type_asteroid.size(); i++) {
             gc.drawImage(planets.get(type_asteroid.get(i)), pos_x_asteroid.get(i), pos_y_asteroid.get(i));
         }

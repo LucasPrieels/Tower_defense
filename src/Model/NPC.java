@@ -13,6 +13,7 @@ public abstract class NPC implements Serializable {
     private Path2 path;
     private transient Sound blast_snd, destroyed_snd, freezed_snd;
     private ArrayList<Double> pos_x_snowflakes = new ArrayList<>(), pos_y_snowflakes = new ArrayList<>();
+    private static final Object key = new Object();
 
     protected NPC(double pos_x, double pos_y, double speed, int health, Path2 path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
@@ -30,20 +31,23 @@ public abstract class NPC implements Serializable {
     public void set_pos_y(double pos_y){this.pos_y = pos_y;}
 
     public boolean is_shot(Classic_munition munition){
-        boolean res = check_shot_by_munition(munition);
-        if (res){
-            health -= munition.get_tower().get_power();
-            blast_snd = TinySound.loadSound("Songs/blast.wav");
-            blast_snd.play(0.8);
-            if (health <= 0){
-                if (Board.get_instance().remove_npc(this)){
-                    destroyed_snd = TinySound.loadSound("Songs/explosion.wav");
-                    destroyed_snd.play(2);
-                    Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
+        synchronized (key) {
+            boolean res = check_shot_by_munition(munition);
+            if (res) {
+                System.out.println(health);
+                health -= munition.get_tower().get_power();
+                blast_snd = TinySound.loadSound("Songs/blast.wav");
+                blast_snd.play(0.8);
+                if (health <= 0) {
+                    if (Board.get_instance().remove_npc(this)) {
+                        destroyed_snd = TinySound.loadSound("Songs/explosion.wav");
+                        destroyed_snd.play(2);
+                        Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
+                    }
                 }
             }
+            return res;
         }
-        return res;
     }
 
     public boolean is_shot(Freezing_munition munition){
