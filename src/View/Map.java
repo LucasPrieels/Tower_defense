@@ -2,11 +2,19 @@ package View;
 
 import Model.*;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseDragEvent;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -45,6 +53,8 @@ public class Map extends Parent implements Runnable, Serializable {
     private transient Sound game_over_snd, won_snd;
     private boolean game_over  = false;
     private boolean win_game = false;
+
+
 
     private Map(Stage stage, int level) throws FileNotFoundException {
         this.level = level;
@@ -304,6 +314,7 @@ public class Map extends Parent implements Runnable, Serializable {
 
         iv_exit_button.setOnMouseClicked(new Menu_buttons_listener(stage, "exit"));
 
+
         iv_menu_button = new ImageView(menu_button);
         iv_menu_button.setX(canvas_width - 2 * menu_button.getWidth() - 20);
         iv_menu_button.setY(10);
@@ -325,11 +336,53 @@ public class Map extends Parent implements Runnable, Serializable {
         iv_start_wave_button.setFitWidth(70);
 
         upgrade_tower_icon.setOnMouseClicked(new ShopListener(gc, "Upgrade_tower", canvas));
-        buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
+       buy_classic_tower_icon.setOnMouseClicked(new ShopListener(gc, "Classic_tower", canvas));
         buy_factory_tower_icon.setOnMouseClicked(new ShopListener(gc, "Factory_tower", canvas));
         buy_freezing_tower_icon.setOnMouseClicked(new ShopListener(gc, "Freezing_tower", canvas));
         destroy_tower_icon.setOnMouseClicked(new ShopListener(gc, "Destroy_tower", canvas));
         iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
+
+
+
+
+        String string = new String (" Range: " +" 70\n"+
+                " Period: " +" 2000\n"+
+                " Power: " +" 4\n"+
+                " Price: " +" 100 coins\n"+
+                " Upgrade: " +" 50 coins and kill 5 NPC \n"
+
+        );
+        Tooltip tooltip=new Tooltip(string);
+        Tooltip.install(buy_classic_tower_icon, tooltip);
+
+
+        String string1 = new String (" Money Produced: " +" 20\n"+
+                " Period: " +" 20\n"+
+                " Price: " +" 200 coins \n"+
+                " Upgrade: " +" 200 coins and kill 10 PNJ \n"
+
+        );
+        Tooltip tooltip1 = new Tooltip(string1);
+        Tooltip.install(buy_factory_tower_icon, tooltip1);
+
+
+
+
+
+
+
+        String string2 = new String (" Range: " +" 50\n"+
+                " Period: " +" 5000\n"+
+                " Power: " +" 3\n"+
+                " Price: " +" 300 coins\n"+
+                " Upgrade: " +" 200 coins and kill 10 PNJ \n"
+
+        );
+        Tooltip tooltip2=new Tooltip(string2);
+        Tooltip.install(buy_freezing_tower_icon, tooltip2);
+
+
+
     }
 
     public static double get_canvas_height() {
