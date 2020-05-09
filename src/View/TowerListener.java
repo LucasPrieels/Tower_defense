@@ -45,15 +45,15 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                                     tower.upgrade();
                                 } else {
                                     Menu.bad_sound();
-                                    Map.get_instance().set_temp_message("La tour est déjà à son niveau maximal");
+                                    Map.get_instance().set_temp_message("The tower is at its maximum level");
                                 }
                             } else {
                                 Menu.bad_sound();
-                                Map.get_instance().set_temp_message("Vous devez avoir tué " + tower.get_npc_destroyed_needed() + " PNJs");
+                                Map.get_instance().set_temp_message("You must have killed " + tower.get_npc_destroyed_needed() + " NPCs");
                             }
                         } else {
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                            Map.get_instance().set_temp_message("You don't have enough money");
                         }
                     }
                 }
@@ -66,7 +66,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
 
                     }
                     else{
-                        Map.get_instance().set_temp_message("Il n'y a pas de tour");
+                        Map.get_instance().set_temp_message("There is no tower");
                     }
                     try {
                         Controller.Update_manager.get_instance().update_window();
@@ -82,7 +82,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                     //ATTENTION Faire une factory plutôt que des else if
                     if (Board.get_instance().get_asteroids().get(i).is_occupied()){
                         Menu.bad_sound();
-                        Map.get_instance().set_temp_message("Astéroide déjà occupé");
+                        Map.get_instance().set_temp_message("Asteroid already occupied");
                     }
                     else if (message == "Classic_tower"){
                         if (Game.get_instance().pay(Game.get_instance().get_price_classic_tower())){
@@ -90,7 +90,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                         }
                         else{
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                            Map.get_instance().set_temp_message("You don't have enough money");
                         }
                     }
                     else if (message == "Freezing_tower"){
@@ -99,7 +99,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                         }
                         else{
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                            Map.get_instance().set_temp_message("You don't have enough money");
                         }
                     }
                     else if (message == "Factory_tower"){
@@ -108,7 +108,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                         }
                         else{
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("Vous n'avez pas assez d'argent");
+                            Map.get_instance().set_temp_message("You don't have enough money");
                         }
                     }
                     //else if (message == "Destroy_tower"){
@@ -116,7 +116,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                     //    Map.get_instance().set_temp_message("Il n'y a pas de tour sur l'astéroïde");
                     //}
                     else{
-                        System.out.println("Erreur!!!");
+                        System.out.println("Error!!!");
                     }
                         try {
                             Controller.Update_manager.get_instance().update_window();
