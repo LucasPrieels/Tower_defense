@@ -55,4 +55,6 @@ public class Path2 implements Serializable {
         }
         return path;
     }
+
+    public ArrayList<Pair<Double, Double>> get_pos(){ return pos;}
 }
