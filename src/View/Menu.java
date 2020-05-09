@@ -65,10 +65,24 @@ public class Menu extends Parent implements Serializable{
             @Override 
             public void handle(ActionEvent actionEvent) {
                 sound();
-                String text =  "Tower Defense :\n\n"+"Player start with an appropriate amount of currency and is able to obtain\n more money during game by defeating waves of  enemies and also by\n building a Factory tower."+"There are 3  waves on each level  and  each wave\n of enemies spawns with a short pause in between waves.\n\n The player  buy towers through currency pieces and than he should place\n the tower on a asteroid location." +
-                        " Towers can be upgraded at least three\ntimes to have more range, or damage.\n \n" +
-                        " The player win the  game when his score is higher than  0 or lose  when his\n  score is  0.\n" +
-                        "\n"+"\n"+"\n"+"\n";
+                String text =  "\n\n" +
+                        " " +
+                        "Help aliens protect themselves from Earthlings searching for new planets. To do this,\n " +
+                        "you must eliminate their ships.  Use the towers that you can place on each planet\n " +
+                        "present on the map, but beware, these towers are not free of charge.  You have three\n" +
+                        " types of towers at your disposal: banks, classic towers and ice towers.  The banks \n" +
+                        "will start producing money as soon as you place them on a planet.  Of course, you \n" +
+                        "start the game with a certain amount of money in order to buy a few towers. The \n" +
+                        "classic towers throw ammunition at the land ships and the ice towers freeze them.  \n" +
+                        "This has the effect of slowing them down for a while.  Once all your towers have been\n" +
+                        " placed, you can launch the first wave of NPCs.  Each level consists of three waves.  \n" +
+                        "You can improve the efficiency of these towers twice for a certain amount of money \n" +
+                        "as soon as you have killed enough NPCs.  If an NPC manages to make it all the way \n" +
+                        "across the map without you killing it, your score will decrease.  If you reach the \n" +
+                        "end of all 3 waves with a score above 0, you will advance to the next level hoping to \n" +
+                        "reach the end of level 3 and save the space.  On the other hand, if you reach a score \n" +
+                        "of 0, your mission will have failed and space will be invaded by humans.\n\n"+
+                        " ";
                 vbox_text(vbox, text);
             }
         });
@@ -77,12 +91,15 @@ public class Menu extends Parent implements Serializable{
             @Override
             public void handle(ActionEvent actionEvent) {
                 sound();
-                String text = "HELP:\n\n"+"Press the  play button to start the game.\n\n" +
-                        "Change the difficulty on level mode tab.\n\n" +
-                        "Press the exit button if you want to quit the game."
-                        +"                                                  \n\n "
-                        + "                                                 \n\n"
-                        + "                 ";
+                String text = "\n\n" +
+                        " " +
+                        "Click on the \"rules\" button to familiarize yourself with the rules of the game.\n\n" +
+                        "Once the rules are understood, the \"start\" button will launch the game.  You will\n " +
+                        "then have the choice between the 3 available levels.\n\n" +
+                        "If you have to leave a game in progress, click on the \"Load last game\" button the \n" +
+                        "next time you play in order to resume the game from where you left it.    \n\n" +
+                        "The \"exit\" button exits the game.  \n\n" +
+                        "          ";
                 vbox_text(vbox, text);
             }
         });
