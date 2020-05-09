@@ -21,7 +21,7 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
     public static final Object key = new Object();
     private Upgrade_tower_icon upgrade_tower_icon;
 
-    public ShopListener(GraphicsContext gc, String message, Canvas canvas,Upgrade_tower_icon upgrade_tower_icon){
+    public ShopListener(GraphicsContext gc, String message, Canvas canvas, Upgrade_tower_icon upgrade_tower_icon){
         this.gc = gc;
         this.message = message;
         this.canvas = canvas;

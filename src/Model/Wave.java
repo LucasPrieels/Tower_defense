@@ -60,6 +60,7 @@ public class Wave implements Runnable, Serializable {
                 }
                 Thread.sleep(1000 / fps);
                 if (iter % fps == 0) {
+                    Game.get_instance().decrease_score(100);
                     time++;
                 }
             } catch(InterruptedException | AssertionError e){
@@ -143,7 +144,7 @@ public class Wave implements Runnable, Serializable {
                 speed /= 3;
                 npc.decrease_freezed(1.0/Game.get_instance().get_fps());
             }
-            npc.decrease_curr_ind();
+            npc.decrease_curr_ind(speed);
             Pair<Double, Double> pos = npc.get_path().next_pos(npc.get_curr_ind(), npc.get_pos_x(), npc.get_pos_y(), speed);
             npc.set_pos_x(pos.getKey());
             npc.set_pos_y(pos.getValue());

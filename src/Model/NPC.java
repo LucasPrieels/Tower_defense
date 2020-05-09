@@ -101,8 +101,8 @@ public abstract class NPC implements Serializable {
         return (int)Math.round(curr_ind); // Speed is a double
     }
 
-    public void decrease_curr_ind(){
-        curr_ind -= speed;
+    public void decrease_curr_ind(double curr_speed){
+        curr_ind -= curr_speed;
     }
 
     public abstract int get_radius();

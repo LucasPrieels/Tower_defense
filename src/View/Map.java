@@ -226,7 +226,6 @@ public class Map extends Parent implements Runnable, Serializable {
         gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
         gc.fillText(curr_message, canvas.getWidth()-300, canvas.getHeight()-130);
-        System.out.println("ici: " + (canvas.getWidth()-330)/fact_x + ' ' + canvas.getWidth()/fact_x);
     }
 
     public void update_npc_canvas() {
@@ -432,13 +431,11 @@ public class Map extends Parent implements Runnable, Serializable {
         System.out.println("Game Over");
         //gc.drawImage(gameover,400,300);
 
-        Platform.startup(()->{
-            try {
-                update_canvas();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
+        try {
+            update_canvas();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("You Lose");
         //View.Menu_gameover.start_gameover(stage);
@@ -475,8 +472,9 @@ public class Map extends Parent implements Runnable, Serializable {
 
     public ArrayList<ArrayList<Double>> get_forbidden(){
         ArrayList<ArrayList<Double>> forbidden = new ArrayList<>(); // zones where asteroids can't be placed
-        forbidden.add(new ArrayList<>(Arrays.asList((canvas.getWidth()-350)/fact_x, canvas.getWidth()/fact_x, (canvas.getHeight()-160)/fact_y, canvas.getHeight()/fact_y)));
-        forbidden.add(new ArrayList<>(Arrays.asList(0.0, 220.0/fact_x, 0.0, 60.0/fact_y)));
+        System.out.println(canvas.getWidth());
+        forbidden.add(new ArrayList<>(Arrays.asList((canvas.getWidth()-650)/fact_x, canvas.getWidth()/fact_x, (canvas.getHeight()-160)/fact_y, canvas.getHeight()/fact_y)));
+        forbidden.add(new ArrayList<>(Arrays.asList(0.0, 60.0/fact_x, 0.0, 220.0/fact_y)));
         forbidden.add(new ArrayList<>(Arrays.asList((canvas_width - 2 * menu_button.getWidth() - 30)/fact_x, canvas_width/fact_x, 0.0, 30.0/fact_y)));
         return forbidden;
     }
