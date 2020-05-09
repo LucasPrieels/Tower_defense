@@ -50,7 +50,9 @@ public class Board implements Runnable, Serializable {
     }
 
     public void create_asteroids_random(){
-        for (double x=margin_x + Map.get_size_asteroid()/2; x < dim_x - margin_x - Map.get_size_asteroid()/2; x += size_asteroid){
+        double height_asteroid = Map.get_size_asteroid()/Map.get_instance().get_fact_y();
+        double width_asteroid = Map.get_size_asteroid()/Map.get_instance().get_fact_x();
+        for (double x=margin_x + Map.get_size_asteroid()/2; x < dim_x - margin_x - Map.get_size_asteroid()/2; x += width_asteroid){
             for (Path2 path : paths) {
                 if (Math.random() < proba) { // Proba is the probability an asteroid is created at each iteration of x
                     boolean flag = true;
@@ -61,13 +63,13 @@ public class Board implements Runnable, Serializable {
                         double offset = Math.random() * 2 * max_offset - max_offset;
 
                         Asteroid asteroid;
-                        if (offset>0) asteroid = new Asteroid(x, Math.min(y + (double)width_path / 2 + Map.get_size_asteroid()/2 + offset, dim_y - margin_y - Map.get_size_asteroid()/2));
-                        else asteroid = new Asteroid(x, Math.max(y - (double)width_path / 2 - Map.get_size_asteroid()/2 + offset, margin_y + Map.get_size_asteroid()/2));
+                        if (offset>0) asteroid = new Asteroid(x, Math.min(y + (double)width_path / 2 + height_asteroid/2 + offset, dim_y - margin_y - height_asteroid/2));
+                        else asteroid = new Asteroid(x, Math.max(y - (double)width_path / 2 - height_asteroid/2 + offset, margin_y + height_asteroid/2));
 
                         boolean cond = true;
                         for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
                             Path2 other_path = Board.get_instance().get_paths().get(i);
-                            cond = cond & (Math.abs(asteroid.get_pos_y() - other_path.get_ord((int) Math.round(asteroid.get_pos_x()))) >= (((double) Board.get_instance().get_width_path(i) / 2) + (Map.get_size_asteroid() / 2)));
+                            cond = cond & (Math.abs(asteroid.get_pos_y() - other_path.get_ord((int) Math.round(asteroid.get_pos_x()))) >= (((double) Board.get_instance().get_width_path(i) / 2) + height_asteroid/2));
                         }
 
                         if (cond){
@@ -78,7 +80,7 @@ public class Board implements Runnable, Serializable {
                         if (!cond && iter >= 10) flag = false; // If we didn't found an adequate position for an asteroid by searching 10 times, we don't put one and go to the next position
 
                         iter++;
-                        if (x >= dim_x - margin_x - Map.get_size_asteroid()/2) return; // This position can be used for none of the paths
+                        if (x >= dim_x - margin_x - width_asteroid/2) return; // This position can be used for none of the paths
                     }
                 }
             }
@@ -140,7 +142,7 @@ public class Board implements Runnable, Serializable {
                     for (Munition munition: copyMunitions){
                         munition.update();
                         if (munition.check_shot_npc() && munitions.contains(munition)){ // Check if a munition has been removed from munitions but is still in its copy
-                            System.out.println("Munition détruite" + munition);
+                            System.out.println("Munition détruite");
                             remove_munition(munition);
                         }
                     }

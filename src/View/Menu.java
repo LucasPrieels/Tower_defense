@@ -4,6 +4,7 @@ import Model.Board;
 import Model.Game;
 import Model.Save;
 import Model.Tower;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -191,6 +192,7 @@ public class Menu extends Parent implements Serializable{
         System.out.println("Launching");
         try {
             Map.init(theStage, level);
+            Map.get_instance().first_update_canvas();
             map = Map.get_instance();
             try{
                 Controller.Update_manager.get_instance().update_window();

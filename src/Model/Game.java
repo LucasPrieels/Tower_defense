@@ -4,14 +4,19 @@ import View.Main;
 import View.Map;
 import View.Menu;
 import View.Menu_gameover;
+import javafx.application.Platform;
 import javafx.stage.Stage;
+import javafx.util.Pair;
+import javafx.util.Pair;
 
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Game implements Runnable, Serializable {
     private int money, npc_destroyed = 0, score, curr_wave = 0, time_between_waves, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
+    private double fact;
     private static Game instance;
     private ArrayList<ArrayList<Integer>> time_small_npc, time_med_npc, time_big_npc;
     private transient ArrayList<Thread> threads = new ArrayList<>();
@@ -25,19 +30,20 @@ public class Game implements Runnable, Serializable {
         // Level
         money = 1000;
         score = 500;
-        fps = 10;
+        fps = 50;
+        fact = 15; // Number of points for each increment of 1 in x or y (~ resolution)
 
         int[] health_small_npc = {10, 15, 20};
         int[] health_med_npc = {15, 20, 30};
         int[] health_big_npc = {20, 40, 50};
-        double[] speed_small_npc = {15, 15, 15};
-        double[] speed_med_npc = {10, 10, 10};
-        double[] speed_big_npc = {7, 7, 7};
+        double[] speed_small_npc = {15, 20, 25};
+        double[] speed_med_npc = {10, 15, 20};
+        double[] speed_big_npc = {7.5, 10, 15};
 
         for (int i=0; i<3; i++){
-            speed_small_npc[i]/=fps;
-            speed_med_npc[i]/=fps;
-            speed_big_npc[i]/=fps;
+            speed_small_npc[i]*=(fact/fps);
+            speed_med_npc[i]*=(fact/fps);
+            speed_big_npc[i]*=(fact/fps);
         }
 /*
         ArrayList<Integer> time_small_npc1 = new ArrayList<>(List.of(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0));
@@ -73,7 +79,7 @@ public class Game implements Runnable, Serializable {
         int dim_x = 500;
         int dim_y = 300;
         int margin_x = 15;
-        int margin_y = 10;
+        int margin_y = 5;
         double size_asteroid = Map.get_size_asteroid();
         double proba = 1; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
@@ -168,102 +174,135 @@ public class Game implements Runnable, Serializable {
     //    return tab;
     //}
 
-    public double[] construct_path_1(int dim_x,int start,int path_num){
-        double[] tab = new double[dim_x];
-        tab[0] = start;
-        for (int i = 1; i < (dim_x/4); i++) {
-            double val = tab[0];
-            tab[i] = val;
-        }
-        for (int j = (dim_x/4); j < (dim_x / 4) + 3; j++) {
-            double val = -j + tab[0];
-            tab[j] = val;
-        }
-        if(path_num == 1){
-            for (int k = (dim_x / 4) + 3; k < dim_x; k++) {
-                double val = tab[(dim_x/4)+3-1];
-                tab[k] = val;
-            }}
-        else if (path_num == 2){
-            for (int k2 = (dim_x / 4) + 3; k2 < dim_x-80; k2++) {
-                double val = tab[(dim_x/4)+3-1];
-                tab[k2] = val;
-            }
-            for (int l2 =dim_x-80; l2<dim_x-70;l2++){
-                double val = tab[dim_x-70-1] + 0.5*l2;
-                tab[l2] = val;
-            }
-            for(int m2 = dim_x-70;m2<dim_x;m2++){
-                double val = tab[dim_x-70-1];
-                tab[m2] = val;
-            }
-        }
-        return tab; //j'ai essayé de faire des coins arrondis mais je n'y arrive pas, à cause de la résolution?
+
+
+    public Pair<Double, Double> increment_pos(double x, double y, double dx, double dy){
+        dx /= Math.sqrt(dx*dx + dy*dy);
+        dy /= Math.sqrt(dx*dx + dy*dy);
+        dx /= fact;
+        dy /= fact;
+        return new Pair<>(x+dx, y+dy);
     }
 
-    public double[] construct_path_2(int dim_x, int start, int path_number){
-        double[] tab = new double[dim_x];
-        tab[0] = start;
-        if(path_number == 1){
-            for (int i=1; i<dim_x; i++){
-                double val = 47*Math.sin(0.01*i-5.5) + tab[0];
-                tab[i] = val;}}
-        else if(path_number == 2){
-            for(int j=1; j<dim_x;j++){
-                double val= -47*Math.sin(0.01*j-5.5) + tab[0];
-                tab[j] = val;
-            }}
-        else if(path_number == 3){
-            for(int k=1; k<dim_x;k++){
-                double val= -15*Math.sin(0.02*k)+ tab[0];
-                tab[k] = val;
-            }}
+    public ArrayList<Pair<Double, Double>> construct_path_1(int dim_x, double start, int path_num){
+        ArrayList<Pair<Double, Double>> tab = new ArrayList<>();
+        double x = 0, y = start;
+        if (path_num == 1){
+            while (x < dim_x){
+                tab.add(new Pair<>(x, y));
+                if (x >= (double)dim_x/4 && x < (double)dim_x/4 + 20){
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, -8); // Diagonal
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
+                else {
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0); // Horizontal
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
+            }
+        }
+        else{
+            while (x < dim_x){
+                tab.add(new Pair<>(x, y));
+                if (x >= (double)dim_x/4 && x < (double)dim_x/4 + 20){
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, -8); // Diagonal (pente positive)
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
+                else if (x >= dim_x - 80 && x < dim_x - 70){
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 16); // Diagonal (pente négative)
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
+                else {
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0); // Horizontal
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
+            }
+        }
         return tab;
     }
 
-    public double[] construct_path_3(int dim_x, int start, int path_number){
-        double[] tab = new double[dim_x];
-        tab[0] = start;
-        if(path_number == 1 || path_number == 2){
-            for (int i=1; i<dim_x/3; i++){
-                if(path_number == 1){
-                    double val = tab[i-1] + 0.005*i ;  //on commence à dessiner par la gauche
-                    tab[i] = val;}
+    public ArrayList<Pair<Double, Double>> construct_path_2(int dim_x, int start, int path_num){
+        ArrayList<Pair<Double, Double>> tab = new ArrayList<>();
+        double x = 0, y = start;
+        if (path_num == 1){
+            while (x < dim_x){
+                tab.add(new Pair<>(x, y));
+                Pair<Double, Double> pair = increment_pos(x, y, 1, 47*Math.sin(0.01*x-5.5) - 47*Math.sin(0.01*(x-1)-5.5));
+                x = pair.getKey();
+                y = pair.getValue();
+            }
+        }
+        else if (path_num == 2){
+            while (x < dim_x){
+                tab.add(new Pair<>(x, y));
+                Pair<Double, Double> pair = increment_pos(x, y, 1, -47*Math.sin(0.01*x-5.5) + 47*Math.sin(0.01*(x-1)-5.5));
+                x = pair.getKey();
+                y = pair.getValue();
+            }
+        }
+        else{
+            while (x < dim_x){
+                tab.add(new Pair<>(x, y));
+                Pair<Double, Double> pair = increment_pos(x, y, 1, -15*Math.sin(0.01*x-5.5) + 15*Math.sin(0.01*(x-1)-5.5));
+                x = pair.getKey();
+                y = pair.getValue();
+            }
+        }
+        return tab;
+    }
+    public ArrayList<Pair<Double, Double>> construct_path_3(int dim_x, int start, int path_num){
+        ArrayList<Pair<Double, Double>> tab = new ArrayList<>();
+        double x = 0, y = start;
+        if (path_num == 1){
+            while (x < dim_x){
+                if (x < (double)dim_x/3){
+                    tab.add(new Pair<>(x, y));
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0.005*x);
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
                 else{
-                    double val = tab[i-1] - 0.005*i ;  //on commence à dessiner par la gauche
-                    tab[i] = val;
+                    tab.add(new Pair<>(x, y));
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0);
+                    x = pair.getKey();
+                    y = pair.getValue();
                 }
             }
-            for(int j=dim_x/3; j<dim_x; j++){
-                double val = tab[dim_x/3-1] + 0.005*((double)dim_x/2);
-                tab[j] = val;
-            }}
-        else if(path_number == 3){
-            //for(int k = 1; k<dim_x; k++){
-            //    double val = start;
-            //    tab[k] = val;}
-
-            for(int k=1; k<dim_x;k++){
-                    double val= -15*Math.sin(0.01*k+11)+ tab[0];
-                    tab[k] = val;
+        }
+        else if (path_num == 2){
+            while (x < dim_x) {
+                if (x < (double) dim_x / 3) {
+                    tab.add(new Pair<>(x, y));
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, -0.005*x);
+                    x = pair.getKey();
+                    y = pair.getValue();
+                } else {
+                    tab.add(new Pair<>(x, y));
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0);
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
             }
-                //else if(path_number == 3){
-                //    double val = -20*Math.cos(0.01*k+7)+ tab[0];
-                //    tab[k] = val;
-                //}
-            //}
-
-            for(int l=dim_x/2;l<dim_x;l++){
-                double val = tab[dim_x/2-1];
-                tab[l] = val;
+        }
+        else{
+            while (x < dim_x){
+                if (x < (double)dim_x/2){
+                    tab.add(new Pair<>(x, y));
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, -15*Math.sin(0.01*x+11) + 15*Math.sin(0.01*(x-1)+11));
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
+                else{
+                    tab.add(new Pair<>(x, y));
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0);
+                    x = pair.getKey();
+                    y = pair.getValue();
+                }
             }
-            //else if(path_number == 3){
-            //    for(int m=1; m<dim_x;m++){
-            //        double val = tab[0];
-            //        tab[m] = val;
-
-            //}
-
         }
         return tab;
     }
@@ -271,32 +310,32 @@ public class Game implements Runnable, Serializable {
     public void construct_path(int dim_x, int level) {
         if (level == 1) {
             int width1 = 15, start_path1 = 200;
-            double[] pos_path1 = construct_path_1(dim_x, start_path1, 1);
+            ArrayList<Pair<Double, Double>> pos_path1 = construct_path_1(dim_x, start_path1, 1);
             this.path1 = new Path2(pos_path1, width1);
             int width2 = 15, start_path2 = 200;  //210
-            double[] pos_path2 = construct_path_1(dim_x, start_path2, 2);
+            ArrayList<Pair<Double, Double>> pos_path2 = construct_path_1(dim_x, start_path2, 2);
             this.path2 = new Path2(pos_path2, width2);
             this.paths = new ArrayList<>(List.of(path1, path2));
         } else if (level == 2) {
             int start_path1 = 130, width1 = 15;  //210
-            double[] pos_path1 = construct_path_2(dim_x, start_path1, 1);
+            ArrayList<Pair<Double, Double>> pos_path1 = construct_path_2(dim_x, start_path1, 1);
             int start_path2 = 130, width2 = 10;
             this.path1 = new Path2(pos_path1, width1);
-            double[] pos_path2 = construct_path_2(dim_x, start_path2, 2); //elever witdh
+            ArrayList<Pair<Double, Double>> pos_path2 = construct_path_2(dim_x, start_path2, 2); //elever witdh
             this.path2 = new Path2(pos_path2, width2);
             int start_path3 = 220, width3 = 10;
-            double[] pos_path3 = construct_path_2(dim_x, start_path3, 3);
+            ArrayList<Pair<Double, Double>> pos_path3 = construct_path_2(dim_x, start_path3, 3);
             this.path3 = new Path2(pos_path3, width3);
             this.paths = new ArrayList<>(List.of(path1, path2, path3));
         } else if (level == 3) {
-            int start_path1 = 53, width1 = 15;  //210
-            double[] pos_path1 = construct_path_3(dim_x, start_path1, 1);
-            int start_path2 = 190, width2 = 10;
+            int start_path1 = 60, width1 = 15;  //210
+            ArrayList<Pair<Double, Double>> pos_path1 = construct_path_3(dim_x, start_path1, 1);
+            int start_path2 = 213, width2 = 10;
             this.path1 = new Path2(pos_path1, width1);
-            double[] pos_path2 = construct_path_3(dim_x, start_path2, 2); //elever witdh
+            ArrayList<Pair<Double, Double>> pos_path2 = construct_path_3(dim_x, start_path2, 2); //elever witdh
             this.path2 = new Path2(pos_path2, width2);
-            int start_path3 = 230, width3 = 10;
-            double[] pos_path3 = construct_path_3(dim_x, start_path3, 3);
+            int start_path3 = 250, width3 = 10;
+            ArrayList<Pair<Double, Double>> pos_path3 = construct_path_3(dim_x, start_path3, 3);
             this.path3 = new Path2(pos_path3, width3);
             //int start_path4 = 230, width4 = 10;
             //double[] pos_path4 = construct_path_3(dim_x, start_path4, 4);
@@ -306,20 +345,13 @@ public class Game implements Runnable, Serializable {
         Board.get_instance().set_paths(paths);
     }
 
-
-
-
-
-
-
-
-        public int get_time_between_waves(){return time_between_waves;}
+    public int get_time_between_waves(){return time_between_waves;}
     public int get_price_classic_tower(){return price_classic_tower;}
     public int get_price_freezing_tower(){return price_freezing_tower;}
     public int get_price_factory_tower(){return price_factory_tower;}
     public int get_score_lost(){return score_lost;}
     public int get_time_wave(int wave){ return time_small_npc.get(wave).size();}
-    
+
     public static void set_instance(Game instance){
         Game.instance = instance;
         if (instance != null) instance.set_threads(new ArrayList<>());

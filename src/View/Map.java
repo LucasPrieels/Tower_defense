@@ -61,16 +61,6 @@ public class Map extends Parent implements Runnable, Serializable {
         create_shop();
         fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x();
         fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
-
-        if (Game.get_instance().get_paths().isEmpty()) Game.get_instance().construct_path(Board.get_instance().get_dim_x(), level);
-        if (Board.get_instance().get_asteroids().isEmpty()) Board.get_instance().create_asteroids_random();
-
-        for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
-            type_asteroid.add((int) Math.floor(Math.random() * 5.999999) + 1);
-            pos_x_asteroid.add(asteroid.get_pos_x() * canvas.getWidth() / Board.get_instance().get_dim_x());
-            pos_y_asteroid.add(asteroid.get_pos_y() * canvas.getHeight() / Board.get_instance().get_dim_y());
-        }
-
         this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,destroy_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
     }
 
@@ -142,10 +132,22 @@ public class Map extends Parent implements Runnable, Serializable {
         exit_button = new Image(new FileInputStream("Assets/exit.png"));
     }
 
+    public void first_update_canvas(){
+        if (Game.get_instance().get_paths().isEmpty()) Game.get_instance().construct_path(Board.get_instance().get_dim_x(), level);
+        if (Board.get_instance().get_asteroids().isEmpty()) Board.get_instance().create_asteroids_random();
+
+        for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
+            type_asteroid.add((int) Math.floor(Math.random() * 5.999999) + 1);
+            pos_x_asteroid.add(asteroid.get_pos_x() * canvas.getWidth() / Board.get_instance().get_dim_x());
+            pos_y_asteroid.add(asteroid.get_pos_y() * canvas.getHeight() / Board.get_instance().get_dim_y());
+        }
+        draw_paths();
+    }
+
     public void update_canvas() throws FileNotFoundException {
         init_canvas();
         drawScoreRectangle();
-        draw_paths();
+        //draw_paths();
         update_npc_canvas();
         update_munitions_canvas();
         show_message_displayed();
@@ -396,13 +398,11 @@ public class Map extends Parent implements Runnable, Serializable {
         won_snd.play();
         System.out.println("you win");
 
-        Platform.startup(()->{
-            try {
-                update_canvas();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        });
+        try {
+            update_canvas();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         System.out.println("you win 2");
     }
 

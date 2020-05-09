@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 import kuusisto.tinysound.TinySound;
 
 import java.awt.*;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
+import java.io.FileReader;
 
 public class Main extends Application {
     private static Stage theStage;
@@ -42,10 +44,13 @@ public class Main extends Application {
         Main.theStage.setHeight(screenSize.getHeight());
         Main.theStage.setTitle("Nom du jeu");
         TinySound.init();
-        TinySound.loadMusic("Songs/music.wav").play(true, 0.5);
-
+        try{
+            BufferedReader file = new BufferedReader(new FileReader("src/Songs/music.wav")); // Just to throw a FileNotFoundException
+            TinySound.loadMusic("Songs/music.wav").play(true, 0.5);
+        } catch (FileNotFoundException e){
+            System.out.println("Le fichier avec la musique n'a pas été trouvé, le jeu se lance sans.");
+        }
         start_static(theStage);
-
     }
 
     public static void main() {
