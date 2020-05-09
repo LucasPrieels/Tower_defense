@@ -1,8 +1,6 @@
 package View;
 
-import Model.Asteroid;
-import Model.Board;
-import Model.Game;
+import Model.*;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
@@ -11,6 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 
+import javax.naming.ldap.Control;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,11 +19,13 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
     private String message;
     private Canvas canvas;
     public static final Object key = new Object();
+    private Upgrade_tower_icon upgrade_tower_icon;
 
-    public ShopListener(GraphicsContext gc, String message, Canvas canvas){
+    public ShopListener(GraphicsContext gc, String message, Canvas canvas,Upgrade_tower_icon upgrade_tower_icon){
         this.gc = gc;
         this.message = message;
         this.canvas = canvas;
+        this.upgrade_tower_icon = upgrade_tower_icon;
     }
 
     public void handle(MouseEvent mouseEvent) {
@@ -54,7 +55,16 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
             });
         }
         else if(message == "Upgrade_tower"|| message == "Destroy_tower"){
-            Platform.runLater( () -> {
+            if(message == "Upgrade_tower") {
+                Platform.runLater(()->{
+                    upgrade_tower_icon.setOnMouseEntered(new Upgrade_tower_listener(canvas));
+                    Thread thread_tower_message = new Thread(new Upgrade_tower_listener(canvas));
+                    Game.get_instance().add_thread(thread_tower_message);
+                    thread_tower_message.start();
+
+                });
+            }
+                Platform.runLater( () -> {
                 Map.get_instance().set_const_message("Click on a tower");
             });
         }

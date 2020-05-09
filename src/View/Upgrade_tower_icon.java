@@ -11,9 +11,10 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 
 public class Upgrade_tower_icon extends Parent {
+    private static ImageView imageView;
     public Upgrade_tower_icon() throws FileNotFoundException {
         Image tower = new Image(new FileInputStream("Assets/plus.png"));
-        ImageView imageView = new ImageView(tower);
+        this.imageView = new ImageView(tower);
         imageView.setX(Map.get_canvas_width()-2*(imageView.getFitWidth()+80));
         imageView.setY(Map.get_canvas_height()-imageView.getFitHeight()-100);
         imageView.setFitHeight(70);
@@ -21,4 +22,10 @@ public class Upgrade_tower_icon extends Parent {
 
         this.getChildren().add(imageView);
     }
+    public static double get_pos_x(){return imageView.getX();}
+    public static double get_pos_y(){return imageView.getY();}
+    public static double get_width(){return imageView.getFitWidth();}
+    public static double get_height(){return imageView.getFitHeight();}
+
+
 }
