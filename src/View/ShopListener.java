@@ -50,12 +50,12 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
         canvas.setOnMouseClicked(towerListener);
         if(message == "Classic_tower" || message == "Freezing_tower" || message == "Factory_tower"){
             Platform.runLater( () -> {
-                Map.get_instance().set_const_message("Cliquez sur un astéroïde");
+                Map.get_instance().set_const_message("Click on an asteroid");
             });
         }
         else if(message == "Upgrade_tower"|| message == "Destroy_tower"){
             Platform.runLater( () -> {
-                Map.get_instance().set_const_message("Cliquez sur une tour");
+                Map.get_instance().set_const_message("Click on a tower");
             });
         }
         //else if(message == "Destroy_tower"){
