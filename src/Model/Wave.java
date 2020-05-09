@@ -7,6 +7,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
 
@@ -126,7 +127,7 @@ public class Wave implements Runnable, Serializable {
         double pos_y;
         do {
             num_paths = Board.get_instance().get_num_paths();
-            path_chosen = (int) Math.floor(Math.max(Math.random()-0.0000001,0) * num_paths);
+            path_chosen = (int) Math.floor(Math.random() * num_paths);
             width = Board.get_instance().get_width_path(path_chosen)-2*radius;
             pos_y = Board.get_instance().get_ord_path(path_chosen) + Math.random()*2*width - width;
             //System.out.println("pos_y " + pos_y + " " + Board.get_instance().get_ord_path(path_chosen));
@@ -142,10 +143,11 @@ public class Wave implements Runnable, Serializable {
                 speed /= 3;
                 npc.decrease_freezed(1.0/Game.get_instance().get_fps());
             }
-            double[] pos = npc.get_path().next_pos(npc.get_pos_x(), npc.get_pos_y(), speed);
-            npc.set_pos_x(pos[0]);
-            npc.set_pos_y(pos[1]);
-            if (pos[0] == 0){
+            npc.decrease_curr_ind();
+            Pair<Double, Double> pos = npc.get_path().next_pos(npc.get_curr_ind(), npc.get_pos_x(), npc.get_pos_y(), speed);
+            npc.set_pos_x(pos.getKey());
+            npc.set_pos_y(pos.getValue());
+            if (pos.getKey() <= 0){
                 Board.get_instance().remove_npc(npc);
                 Sound negative_snd = TinySound.loadSound("Songs/negative.wav");
                 negative_snd.play(3);

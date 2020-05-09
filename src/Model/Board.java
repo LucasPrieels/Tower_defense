@@ -142,7 +142,7 @@ public class Board implements Runnable, Serializable {
                     for (Munition munition: copyMunitions){
                         munition.update();
                         if (munition.check_shot_npc() && munitions.contains(munition)){ // Check if a munition has been removed from munitions but is still in its copy
-                            System.out.println("Munition détruite" + munition);
+                            System.out.println("Munition détruite");
                             remove_munition(munition);
                         }
                     }

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public abstract class NPC implements Serializable {
     private double pos_x, pos_y;
     private int health;
-    private double speed, freezed = 0.0;
+    private double speed, freezed = 0.0, curr_ind;
     private Path2 path;
     private transient Sound blast_snd, destroyed_snd, freezed_snd;
     private ArrayList<Double> pos_x_snowflakes = new ArrayList<>(), pos_y_snowflakes = new ArrayList<>();
@@ -20,6 +20,7 @@ public abstract class NPC implements Serializable {
         this.speed = speed;
         this.health = health;
         this.path = path;
+        curr_ind = path.get_pos_size()-1;
     }
 
     public double get_pos_x(){return pos_x;}
@@ -80,15 +81,24 @@ public abstract class NPC implements Serializable {
     public double is_frozen(){ return freezed;}
     public ArrayList<Double> get_pos_x_snowflakes(){ return pos_x_snowflakes;}
     public ArrayList<Double> get_pos_y_snowflakes(){ return pos_y_snowflakes;}
+
     public void add_snowflake(double x, double y){
         pos_x_snowflakes.add(x);
         pos_y_snowflakes.add(y);
     }
 
     public double get_direction() {
-        double dir_x = get_path().next_pos(pos_x, pos_y, speed)[0] - pos_x;
-        double dir_y = get_path().next_pos(pos_x, pos_y, speed)[1] - pos_y;
+        double dir_x = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_x, pos_y, speed).getKey() - pos_x;
+        double dir_y = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_x, pos_y, speed).getValue() - pos_y;
         return Math.atan(dir_y/dir_x)*180/Math.PI;
+    }
+
+    public int get_curr_ind(){
+        return (int)Math.round(curr_ind); // Speed is a double
+    }
+
+    public void decrease_curr_ind(){
+        curr_ind -= speed;
     }
 
     public abstract int get_radius();

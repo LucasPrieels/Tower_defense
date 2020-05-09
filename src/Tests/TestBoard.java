@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import Model.*;
 import View.Map;
 import javafx.application.Platform;
+import javafx.util.Pair;
 import kuusisto.tinysound.TinySound;
 import org.junit.Test;
 
@@ -15,9 +16,9 @@ public class TestBoard {
 
     public ArrayList<Path2> create_random_path(){
         ArrayList<Path2> paths = new ArrayList<>();
-        double[] path = new double[500];
-        for (int i=0; i<500; i++){
-            path[i] = Math.random()*200;
+        ArrayList<Pair<Double, Double>> path = new ArrayList<>();
+        for (double i = 0; i < 500; i++){
+            path.add(new Pair<>(i, Math.random()*200));
         }
         paths.add(new Path2(path, 15));
         return paths;
@@ -70,7 +71,6 @@ public class TestBoard {
             assertTrue(asteroid.get_pos_x() >= margin_x);
             assertTrue(asteroid.get_pos_x() <= dim_x - margin_x - Map.get_size_asteroid()/2);
             assertTrue(asteroid.get_pos_y() >= margin_y);
-            System.out.println(asteroid.get_pos_y() + " " + (dim_y -  margin_y - Map.get_size_asteroid()/2));
             assertTrue(asteroid.get_pos_y() <= dim_y -  margin_y - Map.get_size_asteroid()/2);
         }
     }

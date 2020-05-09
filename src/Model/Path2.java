@@ -4,26 +4,36 @@ import View.Map;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
+import javafx.util.Pair;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Path2 implements Serializable {
     private int width;
-    private double[] pos;
+    private ArrayList<Pair<Double, Double>> pos;
 
-    public Path2(double[] pos, int width){
+    public Path2(ArrayList<Pair<Double, Double>> pos, int width){
         this.pos = pos;
         this.width = width;
     }
 
-    public double get_ord(int x){return pos[x];}
+    public int get_pos_size(){
+        return pos.size();
+    }
 
-    public double[] next_pos(double pos_x, double pos_y, double speed){
-        double offset = pos_y-pos[(int)Math.round(pos_x)];
-        double angle = Math.atan(Math.max(pos[Math.max((int)(Math.round(pos_x-speed)),0)]+offset, 0)/(pos_x-speed));
-        System.out.println(angle);
-        speed *= Math.cos(angle);
-        return new double[]{Math.max(pos_x-speed, 0), Math.max(pos[Math.max((int)(Math.round(pos_x-speed)),0)]+offset, 0)};
+    public double get_ord(int pos_x){
+        for (int i = 0; i<pos.size(); i++){
+            if (Math.abs(pos.get(i).getKey() - pos_x) < 2) return pos.get(i).getValue();
+        }
+        throw new AssertionError("In get_ord in Path2.java, pos_x = " + pos_x + " corresponds to none of the positions of this path");
+    }
+
+    public Pair<Double, Double> next_pos(int curr_ind, double pos_x, double pos_y, double speed){
+        double offset = pos_y-pos.get(Math.min(curr_ind + (int)Math.round(speed), pos.size()-1)).getValue(); // + speed because we search for last position
+        double new_pos_x = pos.get(Math.max(curr_ind, 0)).getKey(); // We have to round speed, which can be a double depending on the number of FPS
+        double new_pos_y = Math.max(pos.get(Math.max(curr_ind, 0)).getValue() + offset, 0);
+        return new Pair<>(new_pos_x, new_pos_y);
     }
 
     public int get_width(){return width;}
@@ -33,21 +43,16 @@ public class Path2 implements Serializable {
         Path path = new Path();
 
         MoveTo moveTo = new MoveTo();
-        moveTo.setX(0);
-        moveTo.setY(pos[0]*fact_y);
+        moveTo.setX(pos.get(0).getKey());
+        moveTo.setY(pos.get(0).getValue()*fact_y);
         path.getElements().add(moveTo);
 
-        for (int i=1; i<Board.get_instance().get_dim_x(); i += Math.round((double)Board.get_instance().get_dim_x()/50)){
+        for (int i = 1; i < pos.size(); i++){
             LineTo lineTo = new LineTo();
-            lineTo.setX(i*fact_x);
-            lineTo.setY(pos[i]*fact_y);
+            lineTo.setX(pos.get(i).getKey()*fact_x);
+            lineTo.setY(pos.get(i).getValue()*fact_y);
             path.getElements().add(lineTo);
         }
-        int last_x = Board.get_instance().get_dim_x()-1;
-        LineTo lineTo = new LineTo();
-        lineTo.setX(last_x*fact_x);
-        lineTo.setY(pos[last_x]*fact_y);
-        path.getElements().add(lineTo);
         return path;
     }
 }
