@@ -78,25 +78,24 @@ public class Game implements Runnable, Serializable {
         //Board
         int dim_x = 500;
         int dim_y = 300;
-        int margin_x = 15;
-        int margin_y = 5;
+        int margin_x = 10;
+        int margin_y = 10;
         double size_asteroid = Map.get_size_asteroid();
-        double proba = 1; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
-        int max_offset = 20; //Max distance from each asteroid to the nearest path
+        double proba = 0.8; //For each increase of a certain number (see Board) in x, there is a probability of proba that we find an asteroid with that x-position
+        int max_distance = 40; //Max distance from each asteroid to the nearest path
 
         time_between_waves = 20;
 
-        int width_path = 10;
         int num_waves = time_small_npc.size();
 
-        price_classic_tower = 100;
-        price_factory_tower = 200;
-        price_freezing_tower = 300;
+        price_factory_tower = 100;
+        price_classic_tower = 200;
+        price_freezing_tower = 200;
 
         score_lost = 100; //Score lost when a PNJ is at the end of the window
 
         Level.init(num_waves, health_small_npc, speed_small_npc, health_med_npc, speed_med_npc, health_big_npc, speed_big_npc, time_small_npc, time_med_npc, time_big_npc, time_between_waves);
-        Board.init(dim_x, dim_y, margin_x, margin_y, width_path, size_asteroid, proba, max_offset, paths);
+        Board.init(dim_x, dim_y, margin_x, margin_y, size_asteroid, proba, max_distance, paths);
     }
 
     public static Game get_instance(){
@@ -158,24 +157,6 @@ public class Game implements Runnable, Serializable {
         npc_destroyed++;
     }
 
-    //public double[] construct_path(int dim_x, int dim_y, int start, int width){
-    //    double[] tab = new double[dim_x];
-    //    tab[0] = start;
-    //    for (int i=1; i<dim_x; i++){
-    //        double val = tab[i-1] + Math.random()*2-1;
-    //        if (val+width > dim_y){
-    //            val = dim_y-width;
-    //        }
-    //        if (val-width < 0){
-    //            val = width;
-    //        }
-    //        tab[i] = val;
-    //    }
-    //    return tab;
-    //}
-
-
-
     public Pair<Double, Double> increment_pos(double x, double y, double dx, double dy){
         dx /= Math.sqrt(dx*dx + dy*dy);
         dy /= Math.sqrt(dx*dx + dy*dy);
@@ -191,7 +172,7 @@ public class Game implements Runnable, Serializable {
             while (x < dim_x){
                 tab.add(new Pair<>(x, y));
                 if (x >= (double)dim_x/4 && x < (double)dim_x/4 + 20){
-                    Pair<Double, Double> pair = increment_pos(x, y, 1, -8); // Diagonal
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, -7); // Diagonal
                     x = pair.getKey();
                     y = pair.getValue();
                 }
@@ -206,12 +187,12 @@ public class Game implements Runnable, Serializable {
             while (x < dim_x){
                 tab.add(new Pair<>(x, y));
                 if (x >= (double)dim_x/4 && x < (double)dim_x/4 + 20){
-                    Pair<Double, Double> pair = increment_pos(x, y, 1, -8); // Diagonal (pente positive)
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, -7); // Diagonal (pente positive)
                     x = pair.getKey();
                     y = pair.getValue();
                 }
-                else if (x >= dim_x - 80 && x < dim_x - 70){
-                    Pair<Double, Double> pair = increment_pos(x, y, 1, 16); // Diagonal (pente négative)
+                else if (x >= dim_x - 100 && x < dim_x - 80){
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 8); // Diagonal (pente négative)
                     x = pair.getKey();
                     y = pair.getValue();
                 }
@@ -261,7 +242,7 @@ public class Game implements Runnable, Serializable {
             while (x < dim_x){
                 if (x < (double)dim_x/3){
                     tab.add(new Pair<>(x, y));
-                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0.005*x);
+                    Pair<Double, Double> pair = increment_pos(x, y, 1, 0.003*x);
                     x = pair.getKey();
                     y = pair.getValue();
                 }
@@ -321,18 +302,18 @@ public class Game implements Runnable, Serializable {
             ArrayList<Pair<Double, Double>> pos_path1 = construct_path_2(dim_x, start_path1, 1);
             int start_path2 = 130, width2 = 10;
             this.path1 = new Path2(pos_path1, width1);
-            ArrayList<Pair<Double, Double>> pos_path2 = construct_path_2(dim_x, start_path2, 2); //elever witdh
+            ArrayList<Pair<Double, Double>> pos_path2 = construct_path_2(dim_x, start_path2, 2);
             this.path2 = new Path2(pos_path2, width2);
             int start_path3 = 220, width3 = 10;
             ArrayList<Pair<Double, Double>> pos_path3 = construct_path_2(dim_x, start_path3, 3);
             this.path3 = new Path2(pos_path3, width3);
             this.paths = new ArrayList<>(List.of(path1, path2, path3));
         } else if (level == 3) {
-            int start_path1 = 60, width1 = 15;  //210
+            int start_path1 =93, width1 = 15;  //210
             ArrayList<Pair<Double, Double>> pos_path1 = construct_path_3(dim_x, start_path1, 1);
             int start_path2 = 213, width2 = 10;
             this.path1 = new Path2(pos_path1, width1);
-            ArrayList<Pair<Double, Double>> pos_path2 = construct_path_3(dim_x, start_path2, 2); //elever witdh
+            ArrayList<Pair<Double, Double>> pos_path2 = construct_path_3(dim_x, start_path2, 2);
             this.path2 = new Path2(pos_path2, width2);
             int start_path3 = 250, width3 = 10;
             ArrayList<Pair<Double, Double>> pos_path3 = construct_path_3(dim_x, start_path3, 3);
@@ -357,6 +338,7 @@ public class Game implements Runnable, Serializable {
         if (instance != null) instance.set_threads(new ArrayList<>());
     }
     public void add_thread(Thread thread){threads.add(thread);}
+
     public void stop_threads(){
         ArrayList<Thread> copyThreads = threads;
         for (Thread t: copyThreads){
