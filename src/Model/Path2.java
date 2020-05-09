@@ -20,6 +20,9 @@ public class Path2 implements Serializable {
 
     public double[] next_pos(double pos_x, double pos_y, double speed){
         double offset = pos_y-pos[(int)Math.round(pos_x)];
+        double angle = Math.atan(Math.max(pos[Math.max((int)(Math.round(pos_x-speed)),0)]+offset, 0)/(pos_x-speed));
+        System.out.println(angle);
+        speed *= Math.cos(angle);
         return new double[]{Math.max(pos_x-speed, 0), Math.max(pos[Math.max((int)(Math.round(pos_x-speed)),0)]+offset, 0)};
     }
 
@@ -34,7 +37,7 @@ public class Path2 implements Serializable {
         moveTo.setY(pos[0]*fact_y);
         path.getElements().add(moveTo);
 
-        for (int i=1; i<Board.get_instance().get_dim_x(); i += Math.round((double)Board.get_instance().get_dim_x()/10)){
+        for (int i=1; i<Board.get_instance().get_dim_x(); i += Math.round((double)Board.get_instance().get_dim_x()/50)){
             LineTo lineTo = new LineTo();
             lineTo.setX(i*fact_x);
             lineTo.setY(pos[i]*fact_y);

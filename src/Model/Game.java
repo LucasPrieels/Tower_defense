@@ -4,8 +4,10 @@ import View.Main;
 import View.Map;
 import View.Menu;
 import View.Menu_gameover;
+import javafx.application.Platform;
 import javafx.stage.Stage;
 
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +75,7 @@ public class Game implements Runnable, Serializable {
         int dim_x = 500;
         int dim_y = 300;
         int margin_x = 15;
-        int margin_y = 10;
+        int margin_y = 5;
         double size_asteroid = Map.get_size_asteroid();
         double proba = 1; //For each increase of size_asteroid in x, there is a probability of proba that we find an asteroid with that x-position
         int max_offset = 20; //Max distance from each asteroid to the nearest path
@@ -152,53 +154,52 @@ public class Game implements Runnable, Serializable {
         npc_destroyed++;
     }
 
-    //public double[] construct_path(int dim_x, int dim_y, int start, int width){
-    //    double[] tab = new double[dim_x];
-    //    tab[0] = start;
-    //    for (int i=1; i<dim_x; i++){
-    //        double val = tab[i-1] + Math.random()*2-1;
-    //        if (val+width > dim_y){
-    //            val = dim_y-width;
-    //        }
-    //        if (val-width < 0){
-    //            val = width;
-    //        }
-    //        tab[i] = val;
-    //    }
-    //    return tab;
-    //}
-
-    public double[] construct_path_1(int dim_x,int start,int path_num){
+    /*
+    public double[] construct_path(int dim_x, int dim_y, int start, int width){
         double[] tab = new double[dim_x];
         tab[0] = start;
-        for (int i = 1; i < (dim_x/4); i++) {
-            double val = tab[0];
+        for (int i=1; i<dim_x; i++){
+            double val = tab[i-1] + Math.random()*2-1;
+            if (val+width > dim_y){
+                val = dim_y-width;
+            }
+            if (val-width < 0){
+                val = width;
+            }
             tab[i] = val;
         }
-        for (int j = (dim_x/4); j < (dim_x / 4) + 20; j++) {
+        return tab;
+    }
+    */
+
+    public double[] construct_path_1(int dim_x, int start, int path_num){
+        double[] tab = new double[dim_x];
+        tab[0] = start;
+        for (int i = 1; i < (dim_x/4); i++) { // Horizontal
+            tab[i] = start;
+        }
+        for (int j = (dim_x/4); j < (dim_x / 4) + 20; j++) { // Diagonal
             double val = -j + tab[0];
             tab[j] = val;
         }
         if(path_num == 1){
-            for (int k = (dim_x / 4) + 20; k < dim_x; k++) {
+            for (int i = (dim_x / 4) + 20; i < dim_x; i++) { // Horizontal
                 double val = tab[(dim_x/4)+20-1];
-                tab[k] = val;
+                tab[i] = val;
             }}
         else if (path_num == 2){
-            for (int k2 = (dim_x / 4) + 20; k2 < dim_x-80; k2++) {
-                double val = tab[(dim_x/4)+20-1];
-                tab[k2] = val;
+            for (int i = (dim_x / 4) + 20; i < dim_x-80; i++) { // Horizontal
+                tab[i] = tab[(dim_x/4)+20-1];
             }
-            for (int l2 =dim_x-80; l2<dim_x-70;l2++){
-                double val = tab[dim_x-70-1] + 0.5*l2;
-                tab[l2] = val;
+            for (int i = dim_x-80; i < dim_x-70; i++){ // Diagonal
+                double val = tab[dim_x-70-1] + 0.5*i;
+                tab[i] = val;
             }
-            for(int m2 = dim_x-70;m2<dim_x;m2++){
-                double val = tab[dim_x-70-1];
-                tab[m2] = val;
+            for(int i = dim_x-70; i < dim_x; i++){ // Horizontal
+                tab[i] = tab[dim_x-70-1];
             }
         }
-        return tab; //j'ai essayé de faire des coins arrondis mais je n'y arrive pas, à cause de la résolution?
+        return tab;
     }
 
     public double[] construct_path_2(int dim_x, int start, int path_number){
@@ -285,14 +286,7 @@ public class Game implements Runnable, Serializable {
         Board.get_instance().set_paths(paths);
     }
 
-
-
-
-
-
-
-
-        public int get_time_between_waves(){return time_between_waves;}
+    public int get_time_between_waves(){return time_between_waves;}
     public int get_price_classic_tower(){return price_classic_tower;}
     public int get_price_freezing_tower(){return price_freezing_tower;}
     public int get_price_factory_tower(){return price_factory_tower;}
