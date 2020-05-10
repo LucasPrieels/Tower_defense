@@ -31,9 +31,10 @@ public abstract class Attack_tower extends Tower{
                     Thread.sleep(get_period());
                 }
                 Thread.sleep(1000/Game.get_instance().get_fps());
-            } catch(InterruptedException | AssertionError e){
-                System.out.println("RETURN");
+            } catch(InterruptedException e){
                 return;
+            } catch(AssertionError e){
+                e.printStackTrace();
             }
         }
     }

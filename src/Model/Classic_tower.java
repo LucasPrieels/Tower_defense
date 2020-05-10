@@ -35,8 +35,8 @@ public class Classic_tower extends Attack_tower{
         double mini = -1;
         NPC curr_npc = null;
         for (NPC npc: npcs){
-            if ((curr_npc == null || npc.get_pos_y() < mini) && npc_in_tower_area(npc)) {
-                mini = npc.get_pos_y();
+            if ((curr_npc == null || npc.get_pos_x() < mini) && npc_in_tower_area(npc)) {
+                mini = npc.get_pos_x();
                 curr_npc = npc;
             }
         }
