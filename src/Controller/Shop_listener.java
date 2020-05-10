@@ -51,7 +51,6 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
         else if(message.equals("Upgrade_tower") || message.equals("Destroy_tower")){
             if(message.equals("Upgrade_tower")) {
                 Platform.runLater(()->{
-                    iv_upgrade_tower_icon.setOnMouseEntered(new Upgrade_tower_listener(canvas));
                     Thread thread_tower_message = new Thread(new Upgrade_tower_listener(canvas));
                     Game.get_instance().add_thread(thread_tower_message);
                     thread_tower_message.start();

@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.Update_manager;
+import View.Map;
 import javafx.application.Platform;
 import java.io.Serializable;
 import java.util.ArrayList;

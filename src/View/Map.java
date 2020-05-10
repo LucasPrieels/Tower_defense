@@ -97,8 +97,6 @@ public class Map extends Parent{
         exit_button = new Image(new FileInputStream("Assets/exit.png"));
 
         im_big_npc = new Image(new FileInputStream("Assets/Big_NPC.png")); // For the score rectangle
-
-
     }
 
     private void draw_shop_icons(){
@@ -137,12 +135,9 @@ public class Map extends Parent{
         iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 90);
         iv_start_wave_button.setFitHeight(60);
         iv_start_wave_button.setFitWidth(60);
-
-
     }
 
     private void create_shop() {
-
         draw_shop_icons();
 
         iv_upgrade_tower_icon.setOnMouseClicked(new Shop_listener("Upgrade_tower", canvas,iv_upgrade_tower_icon));
@@ -174,20 +169,17 @@ public class Map extends Parent{
         Tooltip.install(iv_buy_freezing_tower_icon, tooltip2);
     }
 
+    public void draw_paths() {
+        for (Path_custom path2 : Board.get_instance().get_paths()) {
+            this.getChildren().add(path2.get_path_ui());
+        }
+    }
 
-
-    public void first_update_canvas(){
+    public void show_asteroids_gui(){
         for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
             type_asteroid.add((int) Math.floor(Math.random() * 5.999999) + 1);
             pos_x_asteroid.add(asteroid.get_pos_x() * canvas.getWidth() / Board.get_instance().get_dim_x());
             pos_y_asteroid.add(asteroid.get_pos_y() * canvas.getHeight() / Board.get_instance().get_dim_y());
-        }
-        draw_paths();
-    }
-
-    public void draw_paths() {
-        for (Path_custom path2 : Board.get_instance().get_paths()) {
-            this.getChildren().add(path2.get_path_ui());
         }
     }
 
@@ -234,6 +226,7 @@ public class Map extends Parent{
         gc.drawImage(level_background, 0, 0); // Cover the previous images
         draw_asteroids();
         draw_score_rectangle();
+        //show_forbidden_zones(); // To see rectangles where no asteroid can be placed (behind buttons)
     }
 
     private void draw_asteroids(){
@@ -295,10 +288,22 @@ public class Map extends Parent{
 
     public ArrayList<ArrayList<Double>> get_forbidden(){
         ArrayList<ArrayList<Double>> forbidden = new ArrayList<>(); // zones where asteroids can't be placed
-        System.out.println(canvas.getWidth());
-        forbidden.add(new ArrayList<>(Arrays.asList((canvas.getWidth()-650)/fact_x, canvas.getWidth()/fact_x, (canvas.getHeight()-160)/fact_y, canvas.getHeight()/fact_y)));
-        forbidden.add(new ArrayList<>(Arrays.asList(0.0, 60.0/fact_x, 0.0, 220.0/fact_y)));
-        forbidden.add(new ArrayList<>(Arrays.asList((canvas_width - 2 * menu_button.getWidth() - 30)/fact_x, canvas_width/fact_x, 0.0, 30.0/fact_y)));
+        forbidden.add(new ArrayList<>(Arrays.asList(canvas.getWidth()-440, canvas.getWidth()-50, canvas.getHeight()-190, canvas.getHeight()-50)));
+        forbidden.add(new ArrayList<>(Arrays.asList(0.0, 150.0, 0.0, 220.0)));
+        forbidden.add(new ArrayList<>(Arrays.asList(canvas_width - 2 * menu_button.getWidth() - 50, canvas_width, 0.0, 70.0)));
         return forbidden;
+    }
+
+    public void show_forbidden_zones(){
+        for (ArrayList<Double> forbid: Update_manager.get_forbidden()){
+            double xmin = forbid.get(0);
+            double xmax = forbid.get(1);
+            double ymin = forbid.get(2);
+            double ymax = forbid.get(3);
+            gc.drawImage(snowflake, xmin, ymin, size_snowflake, size_snowflake);
+            gc.drawImage(snowflake, xmin, ymax, size_snowflake, size_snowflake);
+            gc.drawImage(snowflake, xmax, ymin, size_snowflake, size_snowflake);
+            gc.drawImage(snowflake, xmax, ymax, size_snowflake, size_snowflake);
+        }
     }
 }

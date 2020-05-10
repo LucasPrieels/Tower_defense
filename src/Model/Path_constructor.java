@@ -25,13 +25,13 @@ public class Path_constructor {
             path2 = new Path_custom(pos_path2, width2);
             paths = new ArrayList<>(List.of(path1, path2));
         } else if (num_level == 2) {
-            int start_path1 = 130, width1 = 10;  //210
+            int start_path1 = 90, width1 = 10;  //210
             ArrayList<Pair<Double, Double>> pos_path1 = construct_path_2(dim_x, start_path1, 1);
-            int start_path2 = 130, width2 = 10;
+            int start_path2 = 90, width2 = 10;
             path1 = new Path_custom(pos_path1, width1);
             ArrayList<Pair<Double, Double>> pos_path2 = construct_path_2(dim_x, start_path2, 2);
             path2 = new Path_custom(pos_path2, width2);
-            int start_path3 = 220, width3 = 10;
+            int start_path3 = 180, width3 = 10;
             ArrayList<Pair<Double, Double>> pos_path3 = construct_path_2(dim_x, start_path3, 3);
             path3 = new Path_custom(pos_path3, width3);
             paths = new ArrayList<>(List.of(path1, path2, path3));

@@ -23,10 +23,14 @@ public class Update_manager {
         Update_manager.stage = theStage;
         try{
             Update_manager.map = Map.init(theStage);
-            map.first_update_canvas();
+            map.draw_paths();
             init_message(map);
         } catch (FileNotFoundException e){e.printStackTrace();}
         return map;
+    }
+
+    public static void show_asteroids_controller(){
+        map.show_asteroids_gui();
     }
 
     private static void init_message(Map map){

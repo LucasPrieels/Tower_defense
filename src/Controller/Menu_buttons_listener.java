@@ -32,8 +32,8 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
                 stage.close();
             }
             else if (message.equals("menu")) {
-                Launch_manager.save_data();
                 Game.get_instance().stop_threads();
+                Launch_manager.save_data();
 
                 Game.set_instance(null);
                 Level.set_instance(null);

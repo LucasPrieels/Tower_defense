@@ -14,6 +14,7 @@ public class Start_wave_listener implements EventHandler<MouseEvent> {
             return;
         }
         Menu.sound();
+        Message.set_temp_message("First wave launched");
         for (Tower tower: Board.get_instance().get_towers()){
             Thread thread_tower = new Thread(tower);
             Game.get_instance().add_thread(thread_tower);

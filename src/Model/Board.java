@@ -67,7 +67,8 @@ public class Board implements Serializable {
     private boolean not_behind_button(Asteroid asteroid){
         ArrayList<ArrayList<Double>> forbidden = Update_manager.get_forbidden();
         for (ArrayList<Double> zone: forbidden){
-            if (asteroid.get_pos_x() >= zone.get(0) && asteroid.get_pos_x() <= zone.get(1) && asteroid.get_pos_y() >= zone.get(2) && asteroid.get_pos_y() <= zone.get(3)){
+            double fact_x = Update_manager.get_fact_x(), fact_y = Update_manager.get_fact_y();
+            if (asteroid.get_pos_x()*fact_x >= zone.get(0) && asteroid.get_pos_x()*fact_x <= zone.get(1) && asteroid.get_pos_y()*fact_y >= zone.get(2) && asteroid.get_pos_y()*fact_y <= zone.get(3)){
                 return false;
             }
         }
@@ -79,7 +80,7 @@ public class Board implements Serializable {
         for (Path_custom path : paths) {
             for (int i = 0; i < path.get_pos().size(); i += 1500){
                 double x = path.get_pos().get(i).getKey(), y = path.get_pos().get(i).getValue();
-                if (x < margin_x + size_asteroid || x > dim_x - margin_x - size_asteroid || Math.random() > proba){
+                if (x < margin_x + (double)size_asteroid/2 || x > dim_x - margin_x - (double)size_asteroid/2 || Math.random() > proba){
                     // Proba is the probability an asteroid is created at each iteration of x
                     continue;
                 }

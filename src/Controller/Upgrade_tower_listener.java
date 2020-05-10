@@ -43,12 +43,12 @@ public void handle(MouseEvent mouseEvent) {
     @Override
     public void run() {
         double t = 0;
-        while (t<3000) {
+        while (t < 3000) {
             try {
                 synchronized (key) {
                     Platform.runLater(() -> handle(mouseEvent));
-                    Thread.sleep((long) (100.0 / Game.get_instance().get_fps()));
-                    t += 100.0 / Game.get_instance().get_fps();
+                    Thread.sleep((long) (50.0 / Game.get_instance().get_fps()));
+                    t += 50.0 / Game.get_instance().get_fps();
 
                 }
             } catch (InterruptedException e) {
