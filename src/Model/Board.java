@@ -13,13 +13,14 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Board implements Runnable, Serializable {
+public class Board implements Serializable {
     private static Board instance = null;
     private ArrayList<NPC> npcs = new ArrayList<>();
     private  ArrayList<Path_custom> paths;
     private ArrayList<Tower> towers = new ArrayList<>();
     private ArrayList<Asteroid> asteroids = new ArrayList<>();
     private ArrayList<Munition> munitions = new ArrayList<>();
+    private ArrayList<Redrawable> redrawables = new ArrayList<>();
     private int dim_x, dim_y, margin_x, margin_y, max_distance;
     private double proba;
     public static final Object key = new Object();
@@ -128,22 +129,42 @@ public class Board implements Runnable, Serializable {
             }
         }
         boolean res = npcs.contains(npc);
-        Board.get_instance().get_npcs().remove(npc);
+        npcs.remove(npc);
+        redrawables.remove(npc);
         return res;
     }
 
-    public void remove_munition(Munition munition){munitions.remove(munition);}
+    public void remove_munition(Munition munition){
+        munitions.remove(munition);
+        redrawables.remove(munition);
+    }
 
-    public void add_npc(NPC npc){ npcs.add(npc);}
-    public void add_tower(Tower tower){ towers.add(tower);}
-    public void remove_tower(Tower tower){towers.remove(tower);}
-    public void add_munition(Munition munition){ munitions.add(munition);}
+    public void add_npc(NPC npc){
+        npcs.add(npc);
+        redrawables.add(npc);
+    }
+
+    public void add_tower(Tower tower){
+        towers.add(tower);
+        redrawables.add(tower);
+    }
+
+    public void remove_tower(Tower tower){
+        towers.remove(tower);
+        redrawables.remove(tower);
+    }
+
+    public void add_munition(Munition munition){
+        munitions.add(munition);
+        redrawables.add(munition);
+    }
 
     public ArrayList<NPC> get_npcs(){ return npcs;} // Utiliser polymorphisme pour éviter répétition? Sans instanceof?
     public ArrayList<Path_custom> get_paths(){ return paths;}
     public ArrayList<Tower> get_towers(){ return towers;}
     public ArrayList<Asteroid> get_asteroids(){ return asteroids;}
     public ArrayList<Munition> get_munitions(){ return munitions;}
+    public ArrayList<Redrawable> get_redrawables(){ return redrawables;}
     public int get_max_distance(){ return max_distance;}
 
     public int get_dim_x(){return dim_x;}
@@ -166,26 +187,6 @@ public class Board implements Runnable, Serializable {
 
     private double distance(double pos_x1, double pos_y1, double pos_x2, double pos_y2) {
         return Math.sqrt(Math.pow(pos_x1-pos_x2, 2)+Math.pow(pos_y1-pos_y2, 2));
-    }
-
-    public void run(){
-        while (true){
-            synchronized (key){
-                CopyOnWriteArrayList<Munition> copyMunitions = new CopyOnWriteArrayList<>(Board.get_instance().get_munitions());
-                for (Munition munition: copyMunitions){
-                    munition.update();
-                    if (munition.check_shot_npc() && munitions.contains(munition)){ // Check if a munition has been removed from munitions but is still in its copy
-                        System.out.println("Munition détruite");
-                        remove_munition(munition);
-                    }
-                }
-            }
-            try{
-                Thread.sleep(1000/Game.get_instance().get_fps());
-            } catch(InterruptedException e){
-                return;
-            }
-        }
     }
 
     public static void set_instance(Board instance) {

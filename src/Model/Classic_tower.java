@@ -15,7 +15,7 @@ public class Classic_tower extends Attack_tower{
     public Classic_tower(Asteroid asteroid){
         super(asteroid, range, power, npc_destroyed_needed, period, price_upgrade, max_level);
         try{
-            classic_tower_img = new Image(new FileInputStream("Assets/classic_tower.png"), get_size_tower(), get_size_tower(), false, false);
+            classic_tower_img = new Image(new FileInputStream("Assets/classic_tower.png"), get_size_tower() / 1.5, get_size_tower(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }

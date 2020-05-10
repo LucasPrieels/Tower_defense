@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
-public abstract class Munition implements Serializable {
+public abstract class Munition implements Serializable, Redrawable {
     private NPC npc;
     private Attack_tower tower;
     private double pos_x, pos_y, dir_x, dir_y, speed;
@@ -18,7 +18,7 @@ public abstract class Munition implements Serializable {
         this.tower = tower;
     }
 
-    public void update(){
+    public void update_pos(){
         //Direction is updated because the PNJ has moved since
         dir_x = npc.get_pos_x()-pos_x;
         dir_y = npc.get_pos_y()-pos_y;

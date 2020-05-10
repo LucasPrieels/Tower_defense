@@ -47,10 +47,6 @@ public class Game implements Runnable, Serializable {
     }
 
     public void run(){ //Appelé par un listener sur un bouton
-        Thread thread_munition = new Thread(Board.get_instance());
-        Game.get_instance().add_thread(thread_munition);
-        thread_munition.start();
-
         for (int i=0; i<Level.get_instance().get_waves().size(); i++){
             try{
                 Thread thread_wave;

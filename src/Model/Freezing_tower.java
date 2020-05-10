@@ -15,7 +15,7 @@ public class Freezing_tower extends Attack_tower{
     public Freezing_tower(Asteroid asteroid){
         super(asteroid, range, power, npc_destroyed_needed, period, price_upgrade, max_level);
         try{
-            freezing_tower_img = new Image(new FileInputStream("Assets/freezing_tower.png"), get_size_tower(), get_size_tower(), false, false);
+            freezing_tower_img = new Image(new FileInputStream("Assets/freezing_tower.png"), get_size_tower() / 1.5, get_size_tower(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }

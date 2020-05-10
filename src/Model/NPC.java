@@ -1,13 +1,14 @@
 package Model;
 
 import javafx.scene.image.Image;
+import javafx.util.Pair;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class NPC implements Serializable {
+public abstract class NPC implements Serializable, Redrawable {
     private double pos_x, pos_y;
     private int health;
     private double speed, freezed = 0.0, curr_ind;
@@ -98,16 +99,29 @@ public abstract class NPC implements Serializable {
         return Math.atan(dir_y/dir_x)*180/Math.PI;
     }
 
-    public int get_curr_ind(){
-        return (int)Math.round(curr_ind); // Speed is a double
-    }
-
-    public void decrease_curr_ind(double curr_speed){
-        curr_ind -= curr_speed;
-    }
-
+    public int get_curr_ind(){ return (int)Math.round(curr_ind);} // Speed is a double
     public abstract int get_radius();
 
     public abstract Image get_image();
     public abstract double get_size();
+
+    public void update_pos(){
+        double curr_speed = speed;
+        if (is_frozen() > 0){
+            curr_speed /= 3;
+            decrease_freezed(1.0/Game.get_instance().get_fps());
+        }
+        curr_ind -= curr_speed;
+
+        Pair<Double, Double> pos = path.next_pos((int)Math.round(curr_ind), pos_x, pos_y, curr_speed);
+        pos_x = pos.getKey();
+        pos_y = pos.getValue();
+
+        if (pos.getKey() <= 0){
+            Board.get_instance().remove_npc(this);
+            Sound negative_snd = TinySound.loadSound("Songs/negative.wav");
+            negative_snd.play(3);
+            Game.get_instance().decrease_score(Game.get_instance().get_score_lost());
+        }
+    }
 }

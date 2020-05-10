@@ -94,7 +94,7 @@ public class Update_manager {
     private static void show_towers(){
         for (Tower tower: Board.get_instance().get_towers()){
             Image tower_img = tower.get_image();
-            map.draw_img(tower_img, tower.get_asteroid().get_pos_x(), tower.get_asteroid().get_pos_y());
+            map.draw_img(tower_img, tower.get_asteroid().get_pos_x() + 5, tower.get_asteroid().get_pos_y() + 2);
 
             for(int k = 0; k<= tower.get_max_level(); k++){
                 map.draw_star(tower.get_curr_level()+1, tower.get_asteroid().get_pos_x(), tower.get_asteroid().get_pos_y());

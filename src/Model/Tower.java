@@ -7,7 +7,7 @@ import kuusisto.tinysound.TinySound;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class Tower implements Runnable, Serializable {
+public abstract class Tower implements Runnable, Serializable, Redrawable {
     private Asteroid asteroid;
     private int curr_level, max_level;
     private int[] period, price_upgrade, npc_destroyed_needed;
@@ -68,4 +68,6 @@ public abstract class Tower implements Runnable, Serializable {
     public abstract Image get_image();
 
     protected static double get_size_tower(){ return size_tower;}
+
+    public void update_pos(){} // Les tours ne se déplacent pas mais doivent être Redrawable car leur position n'est pas fixée
 }

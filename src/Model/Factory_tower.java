@@ -21,7 +21,7 @@ public class Factory_tower extends Tower {
         Game.get_instance().add_thread(thread);
         thread.start();
         try{
-            factory_tower_img = new Image(new FileInputStream("Assets/factory_tower.png"), get_size_tower(), get_size_tower(), false, false);
+            factory_tower_img = new Image(new FileInputStream("Assets/factory_tower.png"), get_size_tower() / 1.5, get_size_tower(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
