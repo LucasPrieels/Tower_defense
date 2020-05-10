@@ -64,7 +64,8 @@ public class Wave implements Runnable, Serializable {
     }
 
     private void update_pos_redrawable(){
-        for (Redrawable redrawable: Board.get_instance().get_redrawables()){
+        CopyOnWriteArrayList<Redrawable> copyRedrawables = new CopyOnWriteArrayList<>(Board.get_instance().get_redrawables());
+        for (Redrawable redrawable: copyRedrawables){
             redrawable.update_pos();
         }
     }

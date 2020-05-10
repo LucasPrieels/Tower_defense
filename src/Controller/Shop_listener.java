@@ -43,7 +43,7 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
                 pos_y_asteroid.add(asteroid.get_pos_y());
             }
         }
-        Tower_listener towerListener = new Tower_listener(canvas, pos_x_asteroid, pos_y_asteroid, message);
+        Tower_listener towerListener = new Tower_listener(pos_x_asteroid, pos_y_asteroid, message);
         canvas.setOnMouseClicked(towerListener);
         if(message.equals("Classic_tower") || message.equals("Freezing_tower") || message.equals("Factory_tower")){
             Platform.runLater( () -> Message.set_const_message("Click on an asteroid"));

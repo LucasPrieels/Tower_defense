@@ -59,12 +59,6 @@ public class Level_constructor {
         speed_med_npc = new ArrayList<>(List.of(15.0, 20.0, 25.0));
         speed_big_npc = new ArrayList<>(List.of(10.0, 15.0, 20.0));
 
-        for (int i=0; i<3; i++){
-            speed_small_npc.set(i, fact/fps);
-            speed_med_npc.set(i, fact/fps);
-            speed_big_npc.set(i, fact/fps);
-        }
-
         time_small_npc1 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 0));
         time_small_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1));
         time_small_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 3, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0));
@@ -86,33 +80,28 @@ public class Level_constructor {
 
          health_small_npc = new ArrayList<>(List.of(20, 25, 30));
          health_med_npc = new ArrayList<>(List.of(25, 30, 40));
-        health_big_npc = new ArrayList<>(List.of(50, 70, 80));
-        speed_small_npc = new ArrayList<>(List.of(25.0, 30.0, 35.0));
-        speed_med_npc = new ArrayList<>(List.of(20.0, 25.0, 30.0));
-        speed_big_npc = new ArrayList<>(List.of(15.0, 20.0, 25.0));
+         health_big_npc = new ArrayList<>(List.of(50, 70, 80));
+         speed_small_npc = new ArrayList<>(List.of(25.0, 30.0, 35.0));
+         speed_med_npc = new ArrayList<>(List.of(20.0, 25.0, 30.0));
+         speed_big_npc = new ArrayList<>(List.of(15.0, 20.0, 25.0));
 
-        for (int i=0; i<3; i++){
-            speed_small_npc.set(i, fact/fps);
-            speed_med_npc.set(i, fact/fps);
-            speed_big_npc.set(i, fact/fps);
-        }
+         time_small_npc1 = new ArrayList<>(List.of(1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0));
+         time_small_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+         time_small_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0));
 
-        time_small_npc1 = new ArrayList<>(List.of(1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0));
-        time_small_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1));
-        time_small_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 1, 1, 0, 0));
+         time_med_npc1 = new ArrayList<>(List.of(0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0));
+         time_med_npc2 = new ArrayList<>(List.of(1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0, 0, 0, 1));
+         time_med_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0));
 
-        time_med_npc1 = new ArrayList<>(List.of(0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0));
-        time_med_npc2 = new ArrayList<>(List.of(1, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 1, 0, 0, 0, 1));
-        time_med_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0));
+         time_big_npc1 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0));
+         time_big_npc2 = new ArrayList<>(List.of(0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0));
+         time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0));
 
-        time_big_npc1 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0));
-        time_big_npc2 = new ArrayList<>(List.of(0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0));
-        time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0));
-
-        return prepare_level();
+         return prepare_level();
     }
 
     public static Level prepare_level(){
+
         for (int i=0; i<3; i++){
             speed_small_npc.set(i, speed_small_npc.get(i)*fact/fps);
             speed_med_npc.set(i, speed_small_npc.get(i)*fact/fps);

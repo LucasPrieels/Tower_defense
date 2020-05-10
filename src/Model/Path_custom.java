@@ -1,6 +1,7 @@
 package Model;
 
 import Controller.Update_manager;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -11,7 +12,6 @@ import java.util.ArrayList;
 public class Path_custom implements Serializable {
     private int width;
     private ArrayList<Pair<Double, Double>> pos;
-    private LineTo lineTo, lineTo2, lineTo3;
 
     public Path_custom(ArrayList<Pair<Double, Double>> pos, int width){
         this.pos = pos;
@@ -49,19 +49,18 @@ public class Path_custom implements Serializable {
         moveTo.setY(pos.get(0).getValue()*fact_y);
         path.getElements().add(moveTo);
 
-        for (int i = 1; i < pos.size(); i++){
-            this.lineTo = new LineTo();
-            lineTo.setX(pos.get(i).getKey()*fact_x);
-            lineTo.setY(pos.get(i).getValue()*fact_y);
+        for (int i = 1; i < pos.size(); i++) {
+            LineTo lineTo = new LineTo();
+            lineTo.setX(pos.get(i).getKey() * fact_x);
+            lineTo.setY(pos.get(i).getValue() * fact_y);
             path.getElements().add(lineTo);
             path.setStrokeWidth(0);
-
-
-        };
+        }
+        
         for (int j = pos.size()-1; j > 0; j--){
-            this.lineTo2 = new LineTo();
-            lineTo2.setX(pos.get(j).getKey()*fact_x+20*width/3);
-            lineTo2.setY(pos.get(j).getValue()*fact_y+20*width/3);
+            LineTo lineTo2 = new LineTo();
+            lineTo2.setX(pos.get(j).getKey()*fact_x+20*(double)width/3);
+            lineTo2.setY(pos.get(j).getValue()*fact_y+20*(double)width/3);
             path.getElements().add(lineTo2);
             path.setStrokeWidth(0);}
         path.setFill(Color.rgb(0,0,0,0.2));

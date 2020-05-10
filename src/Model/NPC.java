@@ -88,8 +88,8 @@ public abstract class NPC implements Serializable, Redrawable {
     }
 
     public double get_direction() {
-        double dir_x = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_y, speed).getKey() - pos_x;
-        double dir_y = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_y, speed).getValue() - pos_y;
+        double dir_x = get_path().next_pos(Math.max((int)Math.round(curr_ind-10), 0), pos_y, speed).getKey() - pos_x;
+        double dir_y = get_path().next_pos(Math.max((int)Math.round(curr_ind-10), 0), pos_y, speed).getValue() - pos_y;
         return Math.atan(dir_y/dir_x)*180/Math.PI;
     }
 
