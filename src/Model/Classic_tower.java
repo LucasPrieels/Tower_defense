@@ -15,19 +15,19 @@ public class Classic_tower extends Attack_tower{
     public Classic_tower(Asteroid asteroid){
         super(asteroid, range, power, npc_destroyed_needed, period, price_upgrade, max_level);
         try{
-            classic_tower_img = new Image(new FileInputStream("Assets/classic_tower.png"), get_size_tower() / 1.5, get_size_tower(), false, false);
+            classic_tower_img = new Image(new FileInputStream("Assets/classic_tower.png"), Tower.get_size() / 1.5, Tower.get_size(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
 
-    protected void shoot(NPC npc){
+    public void action_scanned(NPC npc){
         Munition munition = new Classic_munition(this, npc);
         System.out.println("Munition classique crée");
         add_munition(munition);
     }
 
-    public boolean fire(){
+    public boolean scan(){
         ArrayList<NPC> npcs = Board.get_instance().get_npcs();
         if (npcs.size() == 0) return false;
 
@@ -41,7 +41,7 @@ public class Classic_tower extends Attack_tower{
             }
         }
         if (curr_npc != null){
-            shoot(curr_npc);
+            action_scanned(curr_npc);
             return true;
         }
         return false;

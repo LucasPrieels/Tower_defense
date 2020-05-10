@@ -288,7 +288,7 @@ public class Map extends Parent{
 
     public ArrayList<ArrayList<Double>> get_forbidden(){
         ArrayList<ArrayList<Double>> forbidden = new ArrayList<>(); // zones where asteroids can't be placed
-        forbidden.add(new ArrayList<>(Arrays.asList(canvas.getWidth()-440, canvas.getWidth()-50, canvas.getHeight()-190, canvas.getHeight()-50)));
+        forbidden.add(new ArrayList<>(Arrays.asList(canvas.getWidth()-440, canvas.getWidth(), canvas.getHeight()-190, canvas.getHeight())));
         forbidden.add(new ArrayList<>(Arrays.asList(0.0, 150.0, 0.0, 220.0)));
         forbidden.add(new ArrayList<>(Arrays.asList(canvas_width - 2 * menu_button.getWidth() - 50, canvas_width, 0.0, 70.0)));
         return forbidden;

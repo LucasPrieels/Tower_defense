@@ -22,13 +22,11 @@ public class Freezing_munition extends Munition {
         }
     }
 
-    public boolean check_shot_npc(){
-        for (NPC npc: Board.get_instance().get_npcs()){
-            if (npc.is_shot(this)){
-                return true;
-            }
-        }
-        return false;
+    public void action_scanned(NPC npc){
+        npc.clear_snowflakes();
+        Sound freezed_snd = TinySound.loadSound("Songs/freeze.wav");
+        freezed_snd.play();
+        npc.set_freezed(get_tower().get_power());
     }
 
     public Image get_image(){ return freezing_munition_img;}

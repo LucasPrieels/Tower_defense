@@ -14,7 +14,7 @@ public class Board implements Serializable {
     private ArrayList<Tower> towers = new ArrayList<>();
     private ArrayList<Asteroid> asteroids = new ArrayList<>();
     private ArrayList<Munition> munitions = new ArrayList<>();
-    private ArrayList<Redrawable> redrawables = new ArrayList<>();
+    private ArrayList<Movable> movables = new ArrayList<>();
     private int dim_x, dim_y, margin_x, margin_y, max_distance;
     private double proba;
 
@@ -124,33 +124,33 @@ public class Board implements Serializable {
         }
         boolean res = npcs.contains(npc);
         npcs.remove(npc);
-        redrawables.remove(npc);
+        movables.remove(npc);
         return res;
     }
 
     public void remove_munition(Munition munition){
         munitions.remove(munition);
-        redrawables.remove(munition);
+        movables.remove(munition);
     }
 
     public void add_npc(NPC npc){
         npcs.add(npc);
-        redrawables.add(npc);
+        movables.add(npc);
     }
 
     public void add_tower(Tower tower){
         towers.add(tower);
-        redrawables.add(tower);
+        movables.add(tower);
     }
 
     public void remove_tower(Tower tower){
         towers.remove(tower);
-        redrawables.remove(tower);
+        movables.remove(tower);
     }
 
     public void add_munition(Munition munition){
         munitions.add(munition);
-        redrawables.add(munition);
+        movables.add(munition);
     }
 
     public ArrayList<NPC> get_npcs(){ return npcs;}
@@ -158,7 +158,7 @@ public class Board implements Serializable {
     public ArrayList<Tower> get_towers(){ return towers;}
     public ArrayList<Asteroid> get_asteroids(){ return asteroids;}
     public ArrayList<Munition> get_munitions(){ return munitions;}
-    public ArrayList<Redrawable> get_redrawables(){ return redrawables;}
+    public ArrayList<Movable> get_redrawables(){ return movables;}
 
     public int get_dim_x(){return dim_x;}
     public int get_dim_y(){return dim_y;}

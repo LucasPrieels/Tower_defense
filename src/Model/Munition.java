@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import java.io.Serializable;
 
-public abstract class Munition implements Serializable, Redrawable {
+public abstract class Munition implements Serializable, Movable, Scanner {
     private NPC npc;
     private Attack_tower tower;
     private double pos_x, pos_y, dir_x, dir_y, speed;
@@ -39,9 +39,24 @@ public abstract class Munition implements Serializable, Redrawable {
     public double get_dir_y(){return dir_y;}
     public Attack_tower get_tower(){return tower;}
 
-    public abstract boolean check_shot_npc();
     public abstract Image get_image();
 
     public static double get_size_munition(){return size_munition;}
+
+    private boolean check_shot(NPC npc){
+        double npc_pos_x = npc.get_pos_x();
+        double npc_pos_y = npc.get_pos_y();
+        return Math.sqrt(Math.pow(npc_pos_x - pos_x, 2) + Math.pow(npc_pos_y - pos_y, 2)) < 5;
+    }
+
+    public boolean scan(){
+        for (NPC npc: Board.get_instance().get_npcs()){
+            if (check_shot(npc)){
+                action_scanned(npc);
+                return true;
+            }
+        }
+        return false;
+    }
 }
 

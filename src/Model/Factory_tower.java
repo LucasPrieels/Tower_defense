@@ -6,43 +6,52 @@ import kuusisto.tinysound.TinySound;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
-public class Factory_tower extends Tower {
-    private static int[] period = {20, 10, 5}, prod_money = {20, 50, 100}, price_upgrade = {200, 500};
+public class Factory_tower extends Tower implements Runnable{
+    private static int[] period = {10, 7, 5}, prod_money = {50, 70, 100}, price_upgrade = {200, 500};
     private static int[] npc_destroyed_needed = {10, 30};
     private static int max_level = 2; //On compte àpd 0
-    public static final Object key = new Object();
     private static Image factory_tower_img;
+    private boolean interrupted = false;
 
     public Factory_tower(Asteroid asteroid) {
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
         this.thread = new Thread(this);
         Game.get_instance().add_thread(thread);
-        thread.start();
+        // Not started yet because we can't produce money before launching the first wave
         try{
-            factory_tower_img = new Image(new FileInputStream("Assets/factory_tower.png"), get_size_tower() / 1.5, get_size_tower(), false, false);
+            factory_tower_img = new Image(new FileInputStream("Assets/factory_tower.png"), Tower.get_size() / 1.5, Tower.get_size(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
-        //Thread thread_factory_tower = new Thread(this);
-        //Game.get_instance().add_thread(thread_factory_tower);
-        //thread_factory_tower.start();
     }
 
     public void run(){
         while (true){
-            try{
-                Thread.sleep(period[get_curr_level()]*1000);
-                synchronized (key){
-                    Sound coin_snd = TinySound.loadSound("Songs/coin.wav");
-                    coin_snd.play();
-                    Game.get_instance().increase_money(prod_money[get_curr_level()]);
-                    System.out.println("Argent produit par une usine");
-                }
-            } catch (InterruptedException e){
-                return;
+            if (scan()) {
+                action_scanned(new Small_NPC(0, 0, 0, 0, new Path_custom(new ArrayList<>(), 0)));
+                if (interrupted) return;
             }
         }
+    }
+
+    public boolean scan(){return true;} // Cas dégénéré, la tour produit de l'argent non stop mais on pourrait par exemple imaginer qu'un type de PNJ
+    // empêche la création d'argent, donc la possibilité reste ouverte
+
+    public void action_scanned(NPC npc){action_scanned();} // We have to put it because other action_scanned need a NPC
+
+    public void action_scanned(){
+        try{
+            Thread.sleep(period[get_curr_level()] * 1000);
+        } catch (InterruptedException e){
+            interrupted = true;
+            return;
+        }
+        Sound coin_snd = TinySound.loadSound("Songs/coin.wav");
+        coin_snd.play();
+        Game.get_instance().increase_money(prod_money[get_curr_level()]);
+        System.out.println("Argent produit par une usine");
     }
 
     public Image get_image(){ return factory_tower_img;}

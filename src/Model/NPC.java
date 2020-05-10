@@ -8,7 +8,7 @@ import kuusisto.tinysound.TinySound;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public abstract class NPC implements Serializable, Redrawable {
+public abstract class NPC implements Serializable, Movable {
     private double pos_x, pos_y;
     private int health;
     private double speed, freezed = 0.0, curr_ind;
@@ -28,40 +28,13 @@ public abstract class NPC implements Serializable, Redrawable {
     public double get_pos_x(){return pos_x;}
     public double get_pos_y(){return pos_y;}
 
-    public boolean is_shot(Classic_munition munition){
-        synchronized (key) {
-            boolean res = check_shot_by_munition(munition);
-            if (res) {
-                System.out.println(health);
-                health -= munition.get_tower().get_power();
-                Sound blast_snd = TinySound.loadSound("Songs/blast.wav");
-                blast_snd.play(0.8);
-                if (health <= 0) {
-                    if (Board.get_instance().remove_npc(this)) {
-                        Sound destroyed_snd = TinySound.loadSound("Songs/explosion.wav");
-                        destroyed_snd.play(2);
-                        Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
-                    }
-                }
-            }
-            return res;
-        }
-    }
-
-    public boolean is_shot(Freezing_munition munition){
-        boolean res = check_shot_by_munition(munition);
-        if (res){
-            pos_x_snowflakes.clear();
-            pos_y_snowflakes.clear();
-            Sound freezed_snd = TinySound.loadSound("Songs/freeze.wav");
-            freezed_snd.play();
-            set_freezed(munition.get_tower().get_power());
-        }
-        return res;
-    }
-
-    private void set_freezed(double time){
+    public void set_freezed(double time){
         freezed = time;
+    }
+
+    public void clear_snowflakes(){
+        pos_x_snowflakes.clear();
+        pos_y_snowflakes.clear();
     }
 
     public void decrease_freezed(double time){
@@ -71,11 +44,8 @@ public abstract class NPC implements Serializable, Redrawable {
         }
     }
 
-    private boolean check_shot_by_munition(Munition munition){
-        double munition_pos_x = munition.get_pos_x();
-        double munition_pos_y = munition.get_pos_y();
-        return Math.sqrt(Math.pow(munition_pos_x - pos_x, 2) + Math.pow(munition_pos_y - pos_y, 2)) < 5;
-    }
+    public void decrease_health(int num){ health -= num;}
+    public int get_health(){ return health;}
 
     public Path_custom get_path(){ return path;}
     public double is_frozen(){ return freezed;}

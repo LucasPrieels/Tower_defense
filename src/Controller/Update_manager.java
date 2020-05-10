@@ -98,7 +98,7 @@ public class Update_manager {
     private static void show_towers(){
         for (Tower tower: Board.get_instance().get_towers()){
             Image tower_img = tower.get_image();
-            map.draw_img(tower_img, tower.get_asteroid().get_pos_x() + 5, tower.get_asteroid().get_pos_y() + 2);
+            map.draw_img(tower_img, tower.get_asteroid().get_pos_x() + 4, tower.get_asteroid().get_pos_y());
 
             for(int k = 0; k<= tower.get_max_level(); k++){
                 map.draw_star(tower.get_curr_level()+1, tower.get_asteroid().get_pos_x(), tower.get_asteroid().get_pos_y());
@@ -119,7 +119,7 @@ public class Update_manager {
                     map.draw_snowflake(npc.get_pos_x_snowflakes().get(i), npc.get_pos_y_snowflakes().get(i));
                 }
                 if (Math.random() < 0.8){
-                    npc.add_snowflake(npc.get_pos_x() + npc.get_size()/6, npc.get_pos_y() + Math.random()*npc.get_size()/3 - npc.get_size()/6 + + npc.get_size()/6);
+                    npc.add_snowflake(npc.get_pos_x() + npc.get_size()/6, npc.get_pos_y() + Math.random()*npc.get_size()/4);
                 }
             }
         }

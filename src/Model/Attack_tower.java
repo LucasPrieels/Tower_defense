@@ -2,7 +2,7 @@ package Model;
 
 import javafx.scene.image.Image;
 
-public abstract class Attack_tower extends Tower{
+public abstract class Attack_tower extends Tower implements Runnable{
     private double[] range;
     private int[] power;
 
@@ -27,21 +27,15 @@ public abstract class Attack_tower extends Tower{
     public void run(){
         while (true) {
             try{
-                if (fire()) {
+                if (scan()) {
                     Thread.sleep(get_period());
                 }
                 Thread.sleep(1000/Game.get_instance().get_fps());
             } catch(InterruptedException e){
                 return;
-            } catch(AssertionError e){
-                e.printStackTrace();
-            }
+            } catch(AssertionError ignored){}
         }
     }
-
-    public abstract boolean fire();
-
-    protected abstract void shoot(NPC npc);
 
     public int get_power(){return power[get_curr_level()];}
 

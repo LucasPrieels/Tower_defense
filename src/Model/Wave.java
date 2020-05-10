@@ -1,7 +1,6 @@
 package Model;
 
 import Controller.Update_manager;
-import View.Map;
 import javafx.application.Platform;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -65,21 +64,22 @@ public class Wave implements Runnable, Serializable {
     }
 
     private void update_pos_redrawable(){
-        CopyOnWriteArrayList<Redrawable> copyRedrawables = new CopyOnWriteArrayList<>(Board.get_instance().get_redrawables());
-        for (Redrawable redrawable: copyRedrawables){
-            redrawable.update_pos();
+        CopyOnWriteArrayList<Movable> copyMovables = new CopyOnWriteArrayList<>(Board.get_instance().get_redrawables());
+        for (Movable movable : copyMovables){
+            movable.update_pos();
         }
     }
 
     private void check_munition_shot(){
         CopyOnWriteArrayList<Munition> copyMunitions = new CopyOnWriteArrayList<>(Board.get_instance().get_munitions());
         for (Munition munition: copyMunitions){
-            if (munition.check_shot_npc() && copyMunitions.contains(munition)){ // Check if a munition has been removed from munitions but is still in its copy
+            if (munition.scan() && copyMunitions.contains(munition)){ // Check if a munition has been removed from munitions but is still in its copy
                 System.out.println("Munition détruite");
                 Board.get_instance().remove_munition(munition);
             }
         }
     }
+
 
     public int get_time_wave(){return time_npc.get(0).size();}
     public int get_time(){return time;}

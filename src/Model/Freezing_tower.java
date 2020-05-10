@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Freezing_tower extends Attack_tower{
-    private static double[] range = {50.0, 70.0, 100.0};
+    private static double[] range = {80.0, 100.0, 120.0};
     private static int[] power = {5, 10, 15}, npc_destroyed_needed = {10, 30}, period = {3000, 2000, 1000}, price_upgrade = {200, 500};
     private static int max_level = 2; //On compte àpd 0
     private static Image freezing_tower_img;
@@ -15,19 +15,19 @@ public class Freezing_tower extends Attack_tower{
     public Freezing_tower(Asteroid asteroid){
         super(asteroid, range, power, npc_destroyed_needed, period, price_upgrade, max_level);
         try{
-            freezing_tower_img = new Image(new FileInputStream("Assets/freezing_tower.png"), get_size_tower() / 1.5, get_size_tower(), false, false);
+            freezing_tower_img = new Image(new FileInputStream("Assets/freezing_tower.png"), Tower.get_size() / 1.5, Tower.get_size(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
 
-    protected void shoot(NPC npc){
+    public void action_scanned(NPC npc){
         Munition munition = new Freezing_munition(this, npc);
         add_munition(munition);
         System.out.println("Munition gelante crée");
     }
 
-    public boolean fire(){
+    public boolean scan(){
         ArrayList<NPC> npcs = Board.get_instance().get_npcs();
         if (npcs.size() == 0) return false;
 
@@ -41,7 +41,7 @@ public class Freezing_tower extends Attack_tower{
             }
         }
         if (curr_npc != null){
-            shoot(curr_npc);
+            action_scanned(curr_npc);
             return true;
         }
         return false;

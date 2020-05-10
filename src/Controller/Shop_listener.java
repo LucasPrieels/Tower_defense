@@ -54,7 +54,6 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
                     Thread thread_tower_message = new Thread(new Upgrade_tower_listener(canvas));
                     Game.get_instance().add_thread(thread_tower_message);
                     thread_tower_message.start();
-
                 });
             }
                 Platform.runLater( () -> Message.set_const_message("Click on a tower"));

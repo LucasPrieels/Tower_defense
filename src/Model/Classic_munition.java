@@ -22,13 +22,17 @@ public class Classic_munition extends Munition {
         }
     }
 
-    public boolean check_shot_npc(){
-        for (NPC npc: Board.get_instance().get_npcs()){
-            if (npc.is_shot(this)){
-                return true;
+    public void action_scanned(NPC npc){
+        npc.decrease_health(get_tower().get_power());
+        Sound blast_snd = TinySound.loadSound("Songs/blast.wav");
+        blast_snd.play(0.8);
+        if (npc.get_health() <= 0) {
+            if (Board.get_instance().remove_npc(npc)) {
+                Sound destroyed_snd = TinySound.loadSound("Songs/explosion.wav");
+                destroyed_snd.play(2);
+                Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removed
             }
         }
-        return false;
     }
 
     public Image get_image(){ return classic_munition_img;}
