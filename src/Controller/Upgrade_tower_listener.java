@@ -54,7 +54,6 @@ public void handle(MouseEvent mouseEvent) {
                     Platform.runLater(() -> handle(mouseEvent));
                     Thread.sleep((long) (100.0 / Game.get_instance().get_fps()));
                     t += 100.0 / Game.get_instance().get_fps();
-                    System.out.println(t);
 
                 }
             } catch (InterruptedException e) {

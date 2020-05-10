@@ -31,14 +31,14 @@ public class Map extends Parent{
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private transient Image level_background, score_img, money_img, wave_img, timer_img, start_wave_button, menu_button, exit_button, win, gameover, star1, star2, star3, snowflake, im_big_npc;
+    private transient Image level_background, score_img, money_img, wave_img, timer_img, start_wave_button, menu_button, exit_button, win, gameover, star1, star2, star3, snowflake, im_big_npc,buy_freezing_tower_icon, buy_factory_tower_icon,buy_classic_tower_icon, destroy_tower_icon, upgrade_tower_icon;
     private ArrayList<Image> planets = new ArrayList<>();
-    private ImageView iv_start_wave_button, iv_menu_button, iv_exit_button;
-    private transient Upgrade_tower_icon upgrade_tower_icon;
-    private transient Buy_freezing_tower_icon buy_freezing_tower_icon;
-    private transient Buy_factory_tower_icon buy_factory_tower_icon;
-    private transient Buy_classic_tower_icon buy_classic_tower_icon;
-    private transient Destroy_tower_icon destroy_tower_icon;
+    private ImageView iv_start_wave_button, iv_menu_button, iv_exit_button,iv_buy_classic_tower_icon, iv_buy_factory_tower_icon, iv_buy_freezing_tower_icon, iv_destroy_tower_icon, iv_upgrade_tower_icon;
+    //private transient Upgrade_tower_icon upgrade_tower_icon;
+    //private transient Buy_freezing_tower_icon buy_freezing_tower_icon;
+    //private transient Buy_factory_tower_icon buy_factory_tower_icon;
+    //private transient Buy_classic_tower_icon buy_classic_tower_icon;
+    //private transient Destroy_tower_icon destroy_tower_icon;
     private ArrayList<Integer> type_asteroid = new ArrayList<>();
     private ArrayList<Double> pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
     private double fact_x, fact_y;
@@ -58,7 +58,7 @@ public class Map extends Parent{
         create_shop();
         fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x();
         fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
-        this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,destroy_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
+        this.getChildren().addAll(canvas, iv_upgrade_tower_icon, iv_buy_classic_tower_icon, iv_buy_factory_tower_icon, iv_buy_freezing_tower_icon,iv_destroy_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
     }
 
     public static Map init(Stage stage) throws FileNotFoundException {
@@ -86,6 +86,11 @@ public class Map extends Parent{
         wave_img = new Image(new FileInputStream("Assets/score_rectangle_3.png"));
         timer_img = new Image(new FileInputStream("Assets/score_rectangle_4.png"));
         start_wave_button = new Image(new FileInputStream("Assets/start_wave.png"));
+        buy_classic_tower_icon = new Image(new FileInputStream("Assets/classic_tower_icon.png"));
+        buy_factory_tower_icon = new Image(new FileInputStream("Assets/factory_tower_icon.png"));
+        buy_freezing_tower_icon = new Image(new FileInputStream("Assets/freezing_tower_icon.png"));
+        destroy_tower_icon = new Image(new FileInputStream("Assets/moins.png"));
+        upgrade_tower_icon = new Image(new FileInputStream("Assets/plus.png"));
 
         star1 = new Image(new FileInputStream("Assets/1star.png"));
         star2 = new Image(new FileInputStream("Assets/2star.png"));
@@ -97,26 +102,70 @@ public class Map extends Parent{
         exit_button = new Image(new FileInputStream("Assets/exit.png"));
 
         im_big_npc = new Image(new FileInputStream("Assets/Big_NPC.png")); // For the score rectangle
+
+
     }
 
-    private void create_shop() throws FileNotFoundException {
-        this.upgrade_tower_icon = new Upgrade_tower_icon();
-        this.buy_classic_tower_icon = new Buy_classic_tower_icon();
-        this.buy_factory_tower_icon = new Buy_factory_tower_icon();
-        this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
-        this.destroy_tower_icon = new Destroy_tower_icon();
-        this.iv_start_wave_button = new ImageView(start_wave_button);
+    private void draw_shop_icons(){
+        iv_buy_classic_tower_icon = new ImageView(buy_classic_tower_icon);
+        iv_buy_classic_tower_icon.setX(Map.get_canvas_width()-5*(iv_buy_classic_tower_icon.getFitWidth()+80));
+        iv_buy_classic_tower_icon.setY(Map.get_canvas_height()-iv_buy_classic_tower_icon.getFitHeight()-100);
+        iv_buy_classic_tower_icon.setFitWidth(70);
+        iv_buy_classic_tower_icon.setFitHeight(70);
 
+        iv_buy_factory_tower_icon = new ImageView(buy_factory_tower_icon);
+        iv_buy_factory_tower_icon.setX(Map.get_canvas_width()-3*(iv_buy_factory_tower_icon.getFitWidth()+80));
+        iv_buy_factory_tower_icon.setY(Map.get_canvas_height()-iv_buy_factory_tower_icon.getFitHeight()-100);
+        iv_buy_factory_tower_icon.setFitWidth(70);
+        iv_buy_factory_tower_icon.setFitHeight(70);
+
+        iv_buy_freezing_tower_icon = new ImageView(buy_freezing_tower_icon);
+        iv_buy_freezing_tower_icon.setX(Map.get_canvas_width()-4*(iv_buy_freezing_tower_icon.getFitWidth()+80));
+        iv_buy_freezing_tower_icon.setY(Map.get_canvas_height()-iv_buy_freezing_tower_icon.getFitHeight()-100);
+        iv_buy_freezing_tower_icon.setFitWidth(70);
+        iv_buy_freezing_tower_icon.setFitHeight(70);
+
+        iv_destroy_tower_icon = new ImageView(destroy_tower_icon);
+        iv_destroy_tower_icon.setX(Map.get_canvas_width()-iv_destroy_tower_icon.getFitWidth()-80);
+        iv_destroy_tower_icon.setY(Map.get_canvas_height()-iv_destroy_tower_icon.getFitHeight()-100);
+        iv_destroy_tower_icon.setFitWidth(70);
+        iv_destroy_tower_icon.setFitHeight(70);
+
+        iv_upgrade_tower_icon = new ImageView(upgrade_tower_icon);
+        iv_upgrade_tower_icon.setX(Map.get_canvas_width()-2*(iv_upgrade_tower_icon.getFitWidth()+80));
+        iv_upgrade_tower_icon.setY(Map.get_canvas_height()-iv_upgrade_tower_icon.getFitHeight()-100);
+        iv_upgrade_tower_icon.setFitHeight(70);
+        iv_upgrade_tower_icon.setFitWidth(70);
+
+        iv_start_wave_button = new ImageView(start_wave_button);
         iv_start_wave_button.setX(canvas_width - 6*(iv_start_wave_button.getFitWidth() + 80));
         iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 100);
         iv_start_wave_button.setFitHeight(70);
         iv_start_wave_button.setFitWidth(70);
 
-        upgrade_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Upgrade_tower", canvas,upgrade_tower_icon));
-        buy_classic_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Classic_tower", canvas,upgrade_tower_icon));
-        buy_factory_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Factory_tower", canvas,upgrade_tower_icon));
-        buy_freezing_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Freezing_tower", canvas,upgrade_tower_icon));
-        destroy_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Destroy_tower", canvas,upgrade_tower_icon));
+
+    }
+
+    private void create_shop() throws FileNotFoundException {
+        //this.upgrade_tower_icon = new Upgrade_tower_icon();
+        //this.buy_classic_tower_icon = new Buy_classic_tower_icon();
+        //this.buy_factory_tower_icon = new Buy_factory_tower_icon();
+        //this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
+        //this.destroy_tower_icon = new Destroy_tower_icon();
+        //this.iv_start_wave_button = new ImageView(start_wave_button);
+
+        //iv_start_wave_button.setX(canvas_width - 6*(iv_start_wave_button.getFitWidth() + 80));
+        //iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 100);
+        //iv_start_wave_button.setFitHeight(70);
+        //iv_start_wave_button.setFitWidth(70);
+
+        draw_shop_icons();
+
+        iv_upgrade_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Upgrade_tower", canvas,iv_upgrade_tower_icon));
+        iv_buy_classic_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Classic_tower", canvas,iv_upgrade_tower_icon));
+        iv_buy_factory_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Factory_tower", canvas,iv_upgrade_tower_icon));
+        iv_buy_freezing_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Freezing_tower", canvas,iv_upgrade_tower_icon));
+        iv_destroy_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Destroy_tower", canvas,iv_upgrade_tower_icon));
         iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
 
         String string = new String (" Range: " +" 70\n"+
@@ -126,7 +175,7 @@ public class Map extends Parent{
 
         );
         Tooltip tooltip=new Tooltip(string);
-        Tooltip.install(buy_classic_tower_icon, tooltip);
+        Tooltip.install(iv_buy_classic_tower_icon, tooltip);
 
 
         String string1 = new String (" Money Produced: " +" 20\n"+
@@ -135,7 +184,7 @@ public class Map extends Parent{
 
         );
         Tooltip tooltip1 = new Tooltip(string1);
-        Tooltip.install(buy_factory_tower_icon, tooltip1);
+        Tooltip.install(iv_buy_factory_tower_icon, tooltip1);
 
         String string2 = new String (" Range: " +" 50\n"+
                 " Period: " +" 5000\n"+
@@ -144,7 +193,7 @@ public class Map extends Parent{
 
         );
         Tooltip tooltip2=new Tooltip(string2);
-        Tooltip.install(buy_freezing_tower_icon, tooltip2);
+        Tooltip.install(iv_buy_freezing_tower_icon, tooltip2);
     }
 
 
