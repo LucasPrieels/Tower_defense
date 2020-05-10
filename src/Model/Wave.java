@@ -46,11 +46,7 @@ public class Wave implements Runnable, Serializable {
                     if (iter % fps == 0) add_new_npcs();
                     update_pos_npcs();
                     Platform.runLater(() -> {
-                        try {
-                            Controller.Update_manager.get_instance().update_window();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                        Controller.Update_manager.update_window();
                     });
                     if (Game.get_instance().get_score() <= 0) return;
                 }
@@ -68,11 +64,7 @@ public class Wave implements Runnable, Serializable {
                     synchronized (key) {
                         update_pos_npcs();
                         Platform.runLater(() -> {
-                            try {
-                                Controller.Update_manager.get_instance().update_window();
-                            } catch (FileNotFoundException e) {
-                                e.printStackTrace();
-                            }
+                            Controller.Update_manager.update_window();
                         });
                     }
                     if (Game.get_instance().get_score() <= 0) return;

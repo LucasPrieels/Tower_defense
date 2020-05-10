@@ -4,6 +4,7 @@ import Model.Board;
 import Model.Game;
 import Model.Save;
 import Model.Tower;
+import Controller.Launch_manager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -29,6 +30,8 @@ import kuusisto.tinysound.TinySound;
 
 import java.io.*;
 
+import static Controller.Launch_manager.load_data;
+
 
 public class Menu extends Parent implements Serializable{
     private Stage theStage;
@@ -38,9 +41,7 @@ public class Menu extends Parent implements Serializable{
     public Menu(Stage theStage){
         try{
             image = new Image(new FileInputStream("Assets/menu.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
-        } catch(FileNotFoundException e){
-            e.printStackTrace();
-        }
+        } catch(FileNotFoundException e){ e.printStackTrace();}
         ImageView imageView = new ImageView(image);
         this.theStage = theStage;
 
@@ -115,7 +116,7 @@ public class Menu extends Parent implements Serializable{
                     vbox_text(vbox, text);
                     return;
                 }
-                launch_game();
+                Launch_manager.launch_game(theStage);
             }
         });
 
@@ -135,9 +136,9 @@ public class Menu extends Parent implements Serializable{
                 label_level.setTextFill(Color.web("#000000"));
                 menulevels.getChildren().add(label_level);
 
-                Button level1  = new Button("Level 1");
-                Button level2  = new Button("Level 2");
-                Button level3  = new Button("Level 3");
+                Button level1 = new Button("Level 1");
+                Button level2 = new Button("Level 2");
+                Button level3 = new Button("Level 3");
 
                 menulevels.getChildren().addAll(level1, level2, level3);
 
@@ -158,7 +159,7 @@ public class Menu extends Parent implements Serializable{
                     public void handle(MouseEvent mouseEvent) {
                         Game.init(1);
                         sound();
-                        launch_game();
+                        Launch_manager.launch_game(theStage);
                     }
                 });
 
@@ -167,7 +168,7 @@ public class Menu extends Parent implements Serializable{
                     public void handle(MouseEvent mouseEvent) {
                         Game.init(2);
                         sound();
-                        launch_game();
+                        Launch_manager.launch_game(theStage);
                     }
                 });
 
@@ -176,58 +177,11 @@ public class Menu extends Parent implements Serializable{
                     public void handle(MouseEvent mouseEvent) {
                         Game.init(3);
                         sound();
-                        launch_game();
+                        Launch_manager.launch_game(theStage);
                     }
                 });
             }
         });
-    }
-
-    public void launch_game(){
-        Group root_play = new Group();
-        //theStage.setScene(new Scene(root2,1920,1080));
-        theStage.setScene(new Scene(root_play, theStage.getWidth(), theStage.getHeight()));
-        theStage.show();
-        View.Map map = null;
-        System.out.println("Launching");
-        try {
-            Map.init(theStage, level);
-            Map.get_instance().first_update_canvas();
-            map = Map.get_instance();
-            try{
-                Controller.Update_manager.get_instance().update_window();
-            } catch(FileNotFoundException e){}
-            //Thread t = new Thread(Game.get_instance());
-            //t.start();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        root_play.getChildren().add(map);
-    }
-
-    public static void save_data(){
-        try{
-            System.out.println("Saving...");
-            ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("towerDefense.serial"));
-            Save save = new Save();
-            oos.writeObject(save);
-            oos.flush();
-            oos.close();
-        } catch (Exception e) {e.printStackTrace();}
-    }
-
-    public static int load_data(){
-        Save save = null;
-        try{
-            System.out.println("Loading...");
-            ObjectInputStream ois = new ObjectInputStream(new FileInputStream("towerDefense.serial"));
-            save = (Save) ois.readObject();
-            save.init();
-            ois.close();
-        } catch (Exception e) {
-            return -1;
-        }
-        return save.get_level();
     }
 
     public void vbox_text(Group vbox, String text){

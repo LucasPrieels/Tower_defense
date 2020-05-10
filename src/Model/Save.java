@@ -16,7 +16,7 @@ public class Save implements Serializable {
         game = Game.get_instance();
         level = Level.get_instance();
         board = Board.get_instance();
-        num_level = Map.get_instance().get_level();
+        num_level = Game.get_instance().get_num_level();
         //map = Map.get_instance();
     }
 

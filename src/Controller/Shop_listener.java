@@ -1,27 +1,27 @@
-package View;
+package Controller;
 
 import Model.*;
+import View.Map;
+import View.Menu;
+import View.Upgrade_tower_icon;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
-import javax.naming.ldap.Control;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class ShopListener implements EventHandler<MouseEvent>, Runnable, Serializable {
+public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serializable {
     private GraphicsContext gc;
     private String message;
     private Canvas canvas;
     public static final Object key = new Object();
     private Upgrade_tower_icon upgrade_tower_icon;
 
-    public ShopListener(GraphicsContext gc, String message, Canvas canvas, Upgrade_tower_icon upgrade_tower_icon){
+    public Shop_listener(GraphicsContext gc, String message, Canvas canvas, Upgrade_tower_icon upgrade_tower_icon){
         this.gc = gc;
         this.message = message;
         this.canvas = canvas;
@@ -47,7 +47,7 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
                 pos_y_asteroid.add(asteroid.get_pos_y());
             }
         }
-        TowerListener towerListener = new TowerListener(canvas, pos_x_asteroid, pos_y_asteroid, message);
+        Tower_listener towerListener = new Tower_listener(canvas, pos_x_asteroid, pos_y_asteroid, message);
         canvas.setOnMouseClicked(towerListener);
         if(message == "Classic_tower" || message == "Freezing_tower" || message == "Factory_tower"){
             Platform.runLater( () -> {
@@ -75,11 +75,7 @@ public class ShopListener implements EventHandler<MouseEvent>, Runnable, Seriali
         //}
         Platform.runLater( () -> {
             //System.out.println("Updating");
-            try {
-                Controller.Update_manager.get_instance().update_window();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
+            Controller.Update_manager.update_window();
         });
     }
 }

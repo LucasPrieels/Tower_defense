@@ -1,6 +1,8 @@
-package View;
+package Controller;
 
 import Model.*;
+import View.Map;
+import View.Menu;
 import javafx.event.EventHandler;
 import javafx.scene.Parent;
 import javafx.scene.canvas.Canvas;
@@ -11,7 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class TowerListener extends Parent implements EventHandler<MouseEvent>, Serializable {
+public class Tower_listener extends Parent implements EventHandler<MouseEvent>, Serializable {
     private Canvas canvas;
     private ArrayList<Double> pos_x_asteroid;
     private ArrayList<Double> pos_y_asteroid;
@@ -19,7 +21,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
     private boolean handle_finished = false;
     private String message;
 
-    public TowerListener(Canvas canvas, ArrayList<Double> pos_x_asteroid, ArrayList<Double> pos_y_asteroid, String message){
+    public Tower_listener(Canvas canvas, ArrayList<Double> pos_x_asteroid, ArrayList<Double> pos_y_asteroid, String message){
         this.canvas = canvas;
         this.pos_x_asteroid = pos_x_asteroid;
         this.pos_y_asteroid = pos_y_asteroid;
@@ -68,11 +70,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                     else{
                         Map.get_instance().set_temp_message("There is no tower");
                     }
-                    try {
-                        Controller.Update_manager.get_instance().update_window();
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    Controller.Update_manager.update_window();
                 }
             }
         }
@@ -118,11 +116,7 @@ public class TowerListener extends Parent implements EventHandler<MouseEvent>, S
                     else{
                         System.out.println("Error!!!");
                     }
-                        try {
-                            Controller.Update_manager.get_instance().update_window();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
-                        }
+                    Controller.Update_manager.update_window();
                     handle_finished = true;
                     break;
                 }

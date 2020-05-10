@@ -52,7 +52,7 @@ public class Board implements Runnable, Serializable {
         for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
             Path_custom other_path = Board.get_instance().get_paths().get(i);
             for (Pair<Double, Double> pair: other_path.get_pos()){
-                if (distance(pair.getKey(),  pair.getValue(), asteroid.get_pos_x(), asteroid.get_pos_y()) <= (((double)get_width_path(i) / 2) + height_asteroid/2 + (double)Big_NPC.get_size()/2)){
+                if (distance(pair.getKey(),  pair.getValue(), asteroid.get_pos_x(), asteroid.get_pos_y()) <= (((double)get_width_path(i) / 2) + height_asteroid/2 + (double)Big_NPC.get_radius_static()/2)){
                     return false;
                 }
             }
@@ -107,10 +107,10 @@ public class Board implements Runnable, Serializable {
                     Asteroid asteroid;
                     double pos_x = Math.max(0, Math.min(dim_x - 1, x + offset_x)), pos_y;
                     if (offset_y > 0){
-                        pos_y = Math.min(y + (double)path.get_width() / 2 + height_asteroid/2 + (double)Big_NPC.get_size()/2 + offset_y, dim_y - margin_y - height_asteroid/2 - (double)Big_NPC.get_size()/2);
+                        pos_y = Math.min(y + (double)path.get_width() / 2 + height_asteroid/2 + (double)Big_NPC.get_radius_static()/2 + offset_y, dim_y - margin_y - height_asteroid/2 - (double)Big_NPC.get_radius_static()/2);
                     }
                     else{
-                        pos_y = Math.max(y - (double)path.get_width() / 2 - height_asteroid/2 - (double)Big_NPC.get_size()/2 + offset_y, margin_y + height_asteroid/2 + (double)Big_NPC.get_size()/2);
+                        pos_y = Math.max(y - (double)path.get_width() / 2 - height_asteroid/2 - (double)Big_NPC.get_radius_static()/2 + offset_y, margin_y + height_asteroid/2 + (double)Big_NPC.get_radius_static()/2);
                     }
                     asteroid = new Asteroid(pos_x, pos_y);
 

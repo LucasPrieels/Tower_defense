@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.scene.image.Image;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
 
@@ -106,4 +107,7 @@ public abstract class NPC implements Serializable {
     }
 
     public abstract int get_radius();
+
+    public abstract Image get_image();
+    public abstract double get_size();
 }

@@ -1,15 +1,16 @@
-package View;
+package Controller;
 
 
 import Model.Board;
 import Model.Game;
 import Model.Level;
+import View.Main;
+import View.Map;
+import View.Menu;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import kuusisto.tinysound.TinySound;
-
-import java.io.FileNotFoundException;
 
 public class Menu_buttons_listener implements EventHandler<MouseEvent> {
     private String message;
@@ -30,7 +31,7 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
                 TinySound.shutdown();
                 stage.close();
             } else if (message == "menu") {
-                Menu.save_data();
+                Launch_manager.save_data();
                 Game.get_instance().stop_threads();
 
                 Game.set_instance(null);

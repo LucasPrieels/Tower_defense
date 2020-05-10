@@ -1,9 +1,5 @@
 package View;
 
-
-
-
-import Model.Game;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -19,18 +15,11 @@ import java.io.FileReader;
 public class Main extends Application {
     private static Stage theStage;
 
-
     public static void start_static(Stage theStage){
         Group root = new Group();
         Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
 
-
-
-
-        //Canvas canvas = new Canvas(1920,1080);
-         //Menu_gameover menu = new Menu_gameover(theStage);
-        Menu menu = new Menu(theStage);
-
+        View.Menu menu = new Menu(theStage);
         root.getChildren().add(menu);
 
         Main.theStage.setScene(scene);
@@ -42,7 +31,7 @@ public class Main extends Application {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         Main.theStage.setWidth(screenSize.getWidth());
         Main.theStage.setHeight(screenSize.getHeight());
-        Main.theStage.setTitle("Nom du jeu");
+        Main.theStage.setTitle("Space Defense");
         TinySound.init();
         try{
             BufferedReader file = new BufferedReader(new FileReader("src/Songs/music.wav")); // Just to throw a FileNotFoundException

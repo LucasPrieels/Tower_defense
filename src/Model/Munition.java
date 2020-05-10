@@ -1,11 +1,14 @@
 package Model;
 
+import javafx.scene.image.Image;
+
 import java.io.Serializable;
 
 public abstract class Munition implements Serializable {
     private NPC npc;
     private Attack_tower tower;
     private double pos_x, pos_y, dir_x, dir_y, speed;
+    private static double size_munition = 15;
 
     public Munition(Attack_tower tower, NPC npc, double speed){
         this.npc = npc;
@@ -37,5 +40,8 @@ public abstract class Munition implements Serializable {
     public Attack_tower get_tower(){return tower;}
 
     public abstract boolean check_shot_npc();
+    public abstract Image get_image();
+
+    public static double get_size_munition(){return size_munition;}
 }
 

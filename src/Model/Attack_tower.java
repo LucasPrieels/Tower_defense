@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.ArrayList;
+import javafx.scene.image.Image;
 
 public abstract class Attack_tower extends Tower{
     private double[] range;
@@ -45,4 +45,6 @@ public abstract class Attack_tower extends Tower{
     protected abstract void shoot(NPC npc);
 
     public int get_power(){return power[get_curr_level()];}
+
+    public abstract Image get_image();
 }

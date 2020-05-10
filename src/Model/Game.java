@@ -1,29 +1,20 @@
 package Model;
 
-import View.Main;
 import View.Map;
-import View.Menu;
-import View.Menu_gameover;
-import javafx.application.Platform;
-import javafx.stage.Stage;
-import javafx.util.Pair;
-import javafx.util.Pair;
 
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Game implements Runnable, Serializable {
-    private int money, npc_destroyed = 0, score, curr_wave = 0, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost;
+    private int money, npc_destroyed = 0, score, curr_wave = 0, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost, num_level;
     private double fact;
     private static Game instance;
     private transient ArrayList<Thread> threads = new ArrayList<>();
     private static final Object key = new Object();
 
     private Game(int num_level){
-        fps = 50;
+        fps = 20;
         fact = 15; // Number of points for each increment of 1 in x or y (~ resolution)
 
         price_factory_tower = 100;
@@ -35,6 +26,7 @@ public class Game implements Runnable, Serializable {
         Level.init(num_level, fps, fact);
         money = Level.get_instance().get_init_money();
         score = Level.get_instance().get_init_score();
+        this.num_level = num_level;
 
         Board.init(num_level, fact);
     }
@@ -128,4 +120,5 @@ public class Game implements Runnable, Serializable {
     public ArrayList<Thread> get_threads(){return threads;}
     public void set_threads(ArrayList<Thread> threads){this.threads = threads;}
     public double get_fact(){ return fact;}
+    public int get_num_level(){ return num_level;}
 }

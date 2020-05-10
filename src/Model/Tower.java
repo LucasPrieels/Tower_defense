@@ -1,5 +1,6 @@
 package Model;
 
+import javafx.scene.image.Image;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
 
@@ -12,6 +13,7 @@ public abstract class Tower implements Runnable, Serializable {
     private int[] period, price_upgrade, npc_destroyed_needed;
     private transient Sound tower_snd;
     protected transient Thread thread; //enlever si ca marche pas
+    private static double size_tower = 50;
 
     protected Tower(Asteroid asteroid, int[] period, int[] price_upgrade, int max_level, int[] npc_destroyed_needed){
         tower_snd = TinySound.loadSound("Songs/tower.wav");
@@ -62,4 +64,8 @@ public abstract class Tower implements Runnable, Serializable {
     }
 
     public int get_npc_destroyed_needed(){return npc_destroyed_needed[curr_level];}
+
+    public abstract Image get_image();
+
+    protected static double get_size_tower(){ return size_tower;}
 }

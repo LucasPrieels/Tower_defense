@@ -1,6 +1,7 @@
-package View;
+package Controller;
 
 import Model.*;
+import View.Menu;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 
