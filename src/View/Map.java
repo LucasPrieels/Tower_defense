@@ -226,7 +226,7 @@ public class Map extends Parent{
         gc.drawImage(level_background, 0, 0); // Cover the previous images
         draw_asteroids();
         draw_score_rectangle();
-        //show_forbidden_zones(); // To see rectangles where no asteroid can be placed (behind buttons)
+        //show_forbidden_zones(); // To see rectangles where no asteroid can be placed (behind buttons)e
     }
 
     private void draw_asteroids(){
