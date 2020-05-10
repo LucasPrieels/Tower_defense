@@ -1,7 +1,5 @@
 package Model;
 
-import View.Map;
-
 import java.io.Serializable;
 
 public class Save implements Serializable {

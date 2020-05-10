@@ -8,13 +8,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Freezing_munition extends Munition {
-    private int freezing_time;
     private static int speed = 50;
     private static Image freezing_munition_img;
 
-    public Freezing_munition(Attack_tower tower, NPC npc, int freezing_time){
+    public Freezing_munition(Attack_tower tower, NPC npc){
         super(tower, npc, speed);
-        this.freezing_time=freezing_time;
         Sound shot_snd = TinySound.loadSound("Songs/freezing_munition.wav");
         shot_snd.play();
         try{

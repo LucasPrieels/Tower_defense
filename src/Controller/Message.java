@@ -8,7 +8,7 @@ public class Message implements Runnable{
     private static final Object key = new Object();
     private static Map map;
 
-    public void Message(){ }
+    public Message(){ }
 
     public static void init(Map map){
         Message.map = map;
@@ -39,6 +39,6 @@ public class Message implements Runnable{
                 return;
             }
         }
-        if (map.get_curr_message() == message) map.set_curr_message(""); //Si le message n'a pas changé entretemps, on l'efface
+        if (map.get_curr_message().equals(message)) map.set_curr_message(""); //Si le message n'a pas changé entretemps, on l'efface
     }
 }

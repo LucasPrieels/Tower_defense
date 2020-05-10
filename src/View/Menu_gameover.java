@@ -9,25 +9,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import kuusisto.tinysound.Sound;
-import kuusisto.tinysound.TinySound;
-
 import java.io.*;
 
 public class Menu_gameover extends Parent {
-    private Stage theStage;
     private Image image;
 
     public Menu_gameover(Stage theStage, String message){
-        this.theStage = theStage;
-        if (message == "gameover") {
+        if (message.equals("gameover")) {
             try {
                 image = new Image(new FileInputStream("Assets/gameover1.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
-        if (message == "wingame") {
+        if (message.equals("wingame")) {
             try{
                 image = new Image(new FileInputStream("Assets/win1.png"), theStage.getWidth(), theStage.getHeight(), false, false);
             } catch(FileNotFoundException e){

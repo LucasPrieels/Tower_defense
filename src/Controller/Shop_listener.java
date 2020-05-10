@@ -5,7 +5,6 @@ import View.Menu;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -14,14 +13,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serializable {
-    private GraphicsContext gc;
     private String message;
     private Canvas canvas;
     public static final Object key = new Object();
     private ImageView iv_upgrade_tower_icon;
 
-    public Shop_listener(GraphicsContext gc, String message, Canvas canvas, ImageView iv_upgrade_tower_icon){
-        this.gc = gc;
+    public Shop_listener(String message, Canvas canvas, ImageView iv_upgrade_tower_icon){
         this.message = message;
         this.canvas = canvas;
         this.iv_upgrade_tower_icon = iv_upgrade_tower_icon;
@@ -29,10 +26,10 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
 
     public void handle(MouseEvent mouseEvent) {
         Menu.sound();
-        message(gc);
+        message();
     }
 
-    private void message(GraphicsContext gc){
+    private void message(){
         Thread thread_message = new Thread(this);
         Game.get_instance().add_thread(thread_message);
         thread_message.start();
@@ -48,13 +45,11 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
         }
         Tower_listener towerListener = new Tower_listener(canvas, pos_x_asteroid, pos_y_asteroid, message);
         canvas.setOnMouseClicked(towerListener);
-        if(message == "Classic_tower" || message == "Freezing_tower" || message == "Factory_tower"){
-            Platform.runLater( () -> {
-                Message.set_const_message("Click on an asteroid");
-            });
+        if(message.equals("Classic_tower") || message.equals("Freezing_tower") || message.equals("Factory_tower")){
+            Platform.runLater( () -> Message.set_const_message("Click on an asteroid"));
         }
-        else if(message == "Upgrade_tower"|| message == "Destroy_tower"){
-            if(message == "Upgrade_tower") {
+        else if(message.equals("Upgrade_tower") || message.equals("Destroy_tower")){
+            if(message.equals("Upgrade_tower")) {
                 Platform.runLater(()->{
                     iv_upgrade_tower_icon.setOnMouseEntered(new Upgrade_tower_listener(canvas));
                     Thread thread_tower_message = new Thread(new Upgrade_tower_listener(canvas));
@@ -63,18 +58,14 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
 
                 });
             }
-                Platform.runLater( () -> {
-                Message.set_const_message("Click on a tower");
-            });
+                Platform.runLater( () -> Message.set_const_message("Click on a tower"));
         }
         //else if(message == "Destroy_tower"){
         //    Platform.runLater(() -> {
         //        Map.get_instance().set_const_message("Cliquez sur une tour");
         //    });
         //}
-        Platform.runLater( () -> {
-            //System.out.println("Updating");
-            Controller.Update_manager.update_window();
-        });
+        //System.out.println("Updating");
+        Platform.runLater(Update_manager::update_window);
     }
 }

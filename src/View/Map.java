@@ -5,7 +5,6 @@ import Controller.Shop_listener;
 import Controller.Start_wave_listener;
 import Controller.Update_manager;
 import Model.*;
-import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
@@ -16,13 +15,9 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import kuusisto.tinysound.Sound;
-import kuusisto.tinysound.TinySound;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Map extends Parent{
     private static double canvas_height, canvas_width;
@@ -146,7 +141,7 @@ public class Map extends Parent{
 
     }
 
-    private void create_shop() throws FileNotFoundException {
+    private void create_shop(){
         //this.upgrade_tower_icon = new Upgrade_tower_icon();
         //this.buy_classic_tower_icon = new Buy_classic_tower_icon();
         //this.buy_factory_tower_icon = new Buy_factory_tower_icon();
@@ -161,44 +156,38 @@ public class Map extends Parent{
 
         draw_shop_icons();
 
-        iv_upgrade_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Upgrade_tower", canvas,iv_upgrade_tower_icon));
-        iv_buy_classic_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Classic_tower", canvas,iv_upgrade_tower_icon));
-        iv_buy_factory_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Factory_tower", canvas,iv_upgrade_tower_icon));
-        iv_buy_freezing_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Freezing_tower", canvas,iv_upgrade_tower_icon));
-        iv_destroy_tower_icon.setOnMouseClicked(new Shop_listener(gc, "Destroy_tower", canvas,iv_upgrade_tower_icon));
+        iv_upgrade_tower_icon.setOnMouseClicked(new Shop_listener("Upgrade_tower", canvas,iv_upgrade_tower_icon));
+        iv_buy_classic_tower_icon.setOnMouseClicked(new Shop_listener("Classic_tower", canvas,iv_upgrade_tower_icon));
+        iv_buy_factory_tower_icon.setOnMouseClicked(new Shop_listener("Factory_tower", canvas,iv_upgrade_tower_icon));
+        iv_buy_freezing_tower_icon.setOnMouseClicked(new Shop_listener("Freezing_tower", canvas,iv_upgrade_tower_icon));
+        iv_destroy_tower_icon.setOnMouseClicked(new Shop_listener("Destroy_tower", canvas,iv_upgrade_tower_icon));
         iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
 
-        String string = new String (" Range: " +" 70\n"+
+        String string = " Range: " +" 70\n"+
                 " Period: " +" 2000\n"+
                 " Power: " +" 4\n"+
-                " Price: " +" 100 coins\n"
-
-        );
+                " Price: " +" 100 coins\n";
         Tooltip tooltip=new Tooltip(string);
         Tooltip.install(iv_buy_classic_tower_icon, tooltip);
 
 
-        String string1 = new String (" Money Produced: " +" 20\n"+
+        String string1 = " Money Produced: " +" 20\n"+
                 " Period: " +" 20\n"+
-                " Price: " +" 200 coins \n"
-
-        );
+                " Price: " +" 200 coins \n";
         Tooltip tooltip1 = new Tooltip(string1);
         Tooltip.install(iv_buy_factory_tower_icon, tooltip1);
 
-        String string2 = new String (" Range: " +" 50\n"+
+        String string2 = " Range: " +" 50\n"+
                 " Period: " +" 5000\n"+
                 " Power: " +" 3\n"+
-                " Price: " +" 300 coins\n"
-
-        );
+                " Price: " +" 300 coins\n";
         Tooltip tooltip2=new Tooltip(string2);
         Tooltip.install(iv_buy_freezing_tower_icon, tooltip2);
     }
 
 
 
-    public void first_update_canvas() throws FileNotFoundException{
+    public void first_update_canvas(){
         for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
             type_asteroid.add((int) Math.floor(Math.random() * 5.999999) + 1);
             pos_x_asteroid.add(asteroid.get_pos_x() * canvas.getWidth() / Board.get_instance().get_dim_x());
@@ -238,9 +227,9 @@ public class Map extends Parent{
         gc.setFill(Color.WHITE);
         gc.fillText(Integer.toString(score), 50, 33);
         gc.fillText(Integer.toString(money), 50, 73);
-        gc.fillText("Wave " + Integer.toString(wave), 50, 113);
+        gc.fillText("Wave " + wave, 50, 113);
         gc.fillText(Integer.toString(timer), 50, 153);
-        gc.fillText(Integer.toString(npc_destroyed) + " PNJ", 50, 193);
+        gc.fillText(npc_destroyed + " PNJ", 50, 193);
     }
 
 

@@ -2,10 +2,8 @@ package Controller;
 
 
 import Model.*;
-import View.Map;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.MouseEvent;
@@ -14,30 +12,27 @@ import javafx.scene.text.Font;
 
 public class Upgrade_tower_listener implements EventHandler<MouseEvent>, Runnable{
     private String message;
-    private GraphicsContext gc;
     private Canvas canvas;
     private static final Object key = new Object();
     private MouseEvent mouseEvent;
 
-public Upgrade_tower_listener(Canvas canvas){
-    this.canvas = canvas;
-}
+public Upgrade_tower_listener(Canvas canvas){ this.canvas = canvas;}
 
 public void handle(MouseEvent mouseEvent) {
     this.mouseEvent = mouseEvent;
-    gc = canvas.getGraphicsContext2D();
+    GraphicsContext gc = canvas.getGraphicsContext2D();
     for(Tower tower: Board.get_instance().get_towers()){
         if(tower instanceof Classic_tower){
-            message = "Price : " + Integer.toString(Game.get_instance().get_price_classic_tower()) +
-                    "\n NPCs killed needed : " + Integer.toString(tower.get_npc_destroyed_needed());
+            message = "Price : " + Game.get_instance().get_price_classic_tower() +
+                    "\n NPCs killed needed : " + tower.get_npc_destroyed_needed();
         }
         else if(tower instanceof Factory_tower){
-            message = "Price : " + Integer.toString(Game.get_instance().get_price_factory_tower()) +
-                    "\n NPCs killed needed : " + Integer.toString(tower.get_npc_destroyed_needed());
+            message = "Price : " + Game.get_instance().get_price_factory_tower() +
+                    "\n NPCs killed needed : " + tower.get_npc_destroyed_needed();
         }
         else if(tower instanceof Freezing_tower){
-            message = "Price : " + Integer.toString(Game.get_instance().get_price_freezing_tower())+
-                    "\n NPCs killed needed : " + Integer.toString(tower.get_npc_destroyed_needed());
+            message = "Price : " + Game.get_instance().get_price_freezing_tower()+
+                    "\n NPCs killed needed : " + tower.get_npc_destroyed_needed();
         }
         gc.setFont(new Font("Arial", 12)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);

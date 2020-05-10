@@ -13,7 +13,6 @@ public abstract class NPC implements Serializable, Redrawable {
     private int health;
     private double speed, freezed = 0.0, curr_ind;
     private Path_custom path;
-    private transient Sound blast_snd, destroyed_snd, freezed_snd;
     private ArrayList<Double> pos_x_snowflakes = new ArrayList<>(), pos_y_snowflakes = new ArrayList<>();
     private static final Object key = new Object();
 
@@ -29,20 +28,17 @@ public abstract class NPC implements Serializable, Redrawable {
     public double get_pos_x(){return pos_x;}
     public double get_pos_y(){return pos_y;}
 
-    public void set_pos_x(double pos_x){this.pos_x = pos_x;}
-    public void set_pos_y(double pos_y){this.pos_y = pos_y;}
-
     public boolean is_shot(Classic_munition munition){
         synchronized (key) {
             boolean res = check_shot_by_munition(munition);
             if (res) {
                 System.out.println(health);
                 health -= munition.get_tower().get_power();
-                blast_snd = TinySound.loadSound("Songs/blast.wav");
+                Sound blast_snd = TinySound.loadSound("Songs/blast.wav");
                 blast_snd.play(0.8);
                 if (health <= 0) {
                     if (Board.get_instance().remove_npc(this)) {
-                        destroyed_snd = TinySound.loadSound("Songs/explosion.wav");
+                        Sound destroyed_snd = TinySound.loadSound("Songs/explosion.wav");
                         destroyed_snd.play(2);
                         Game.get_instance().increment_npc_destroyed(); // Only if a NPC has really been removec
                     }
@@ -57,7 +53,7 @@ public abstract class NPC implements Serializable, Redrawable {
         if (res){
             pos_x_snowflakes.clear();
             pos_y_snowflakes.clear();
-            freezed_snd = TinySound.loadSound("Songs/freeze.wav");
+            Sound freezed_snd = TinySound.loadSound("Songs/freeze.wav");
             freezed_snd.play();
             set_freezed(munition.get_tower().get_power());
         }
@@ -78,12 +74,10 @@ public abstract class NPC implements Serializable, Redrawable {
     private boolean check_shot_by_munition(Munition munition){
         double munition_pos_x = munition.get_pos_x();
         double munition_pos_y = munition.get_pos_y();
-        if(Math.sqrt(Math.pow(munition_pos_x - pos_x, 2)+ Math.pow(munition_pos_y - pos_y, 2))<5) return true;
-        return false;
+        return Math.sqrt(Math.pow(munition_pos_x - pos_x, 2) + Math.pow(munition_pos_y - pos_y, 2)) < 5;
     }
 
     public Path_custom get_path(){ return path;}
-    public double get_speed(){ return speed;}
     public double is_frozen(){ return freezed;}
     public ArrayList<Double> get_pos_x_snowflakes(){ return pos_x_snowflakes;}
     public ArrayList<Double> get_pos_y_snowflakes(){ return pos_y_snowflakes;}
@@ -94,12 +88,11 @@ public abstract class NPC implements Serializable, Redrawable {
     }
 
     public double get_direction() {
-        double dir_x = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_x, pos_y, speed).getKey() - pos_x;
-        double dir_y = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_x, pos_y, speed).getValue() - pos_y;
+        double dir_x = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_y, speed).getKey() - pos_x;
+        double dir_y = get_path().next_pos(Math.max((int)Math.round(curr_ind-5), 0), pos_y, speed).getValue() - pos_y;
         return Math.atan(dir_y/dir_x)*180/Math.PI;
     }
 
-    public int get_curr_ind(){ return (int)Math.round(curr_ind);} // Speed is a double
     public abstract int get_radius();
 
     public abstract Image get_image();
@@ -113,7 +106,7 @@ public abstract class NPC implements Serializable, Redrawable {
         }
         curr_ind -= curr_speed;
 
-        Pair<Double, Double> pos = path.next_pos((int)Math.round(curr_ind), pos_x, pos_y, curr_speed);
+        Pair<Double, Double> pos = path.next_pos((int)Math.round(curr_ind), pos_y, curr_speed);
         pos_x = pos.getKey();
         pos_y = pos.getValue();
 

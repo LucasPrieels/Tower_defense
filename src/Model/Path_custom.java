@@ -1,7 +1,6 @@
 package Model;
 
 import Controller.Update_manager;
-import View.Map;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
@@ -32,7 +31,7 @@ public class Path_custom implements Serializable {
     }
      */
 
-    public Pair<Double, Double> next_pos(int curr_ind, double pos_x, double pos_y, double speed){
+    public Pair<Double, Double> next_pos(int curr_ind, double pos_y, double speed){
         double offset = pos_y-pos.get(Math.min(curr_ind + (int)Math.round(speed), pos.size()-1)).getValue(); // + speed because we search for last position
         double new_pos_x = pos.get(Math.max(curr_ind, 0)).getKey(); // We have to round speed, which can be a double depending on the number of FPS
         double new_pos_y = Math.max(pos.get(Math.max(curr_ind, 0)).getValue() + offset, 0);

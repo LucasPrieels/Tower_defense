@@ -4,14 +4,12 @@ import javafx.scene.image.Image;
 
 public abstract class Attack_tower extends Tower{
     private double[] range;
-    private int[] power,  npc_destroyed_needed;
-    private static final Object key = new Object();
+    private int[] power;
 
     public Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
         this.range = range;
         this.power = power;
-        this.npc_destroyed_needed = npc_destroyed_needed;
         this.thread = new Thread(this);
         Game.get_instance().add_thread(thread);
         thread.start();

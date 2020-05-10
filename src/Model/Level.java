@@ -1,15 +1,11 @@
 package Model;
 
-import View.Map;
-import javafx.stage.Stage;
-
-import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Level implements Serializable {
     private int time_between_waves, init_money, init_score;
-    private ArrayList<Wave> waves = new ArrayList<>();
+    private ArrayList<Wave> waves;
     private static Level instance;
 
     protected Level(int init_money, int init_score, ArrayList<Wave> waves, int time_between_waves){

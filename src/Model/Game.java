@@ -1,8 +1,6 @@
 package Model;
 
 import Controller.Update_manager;
-import View.Map;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -109,12 +107,10 @@ public class Game implements Runnable, Serializable {
             t.interrupt();
             try{
                 t.join(); // Utile?
-            } catch (InterruptedException e){}
+            } catch (InterruptedException ignored){}
         }
     }
 
-    public ArrayList<Thread> get_threads(){return threads;}
     public void set_threads(ArrayList<Thread> threads){this.threads = threads;}
-    public double get_fact(){ return fact;}
     public int get_num_level(){ return num_level;}
 }

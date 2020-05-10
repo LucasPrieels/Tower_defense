@@ -1,10 +1,7 @@
 package Model;
 
-import Controller.Message;
+import Controller.Update_manager;
 import javafx.application.Platform;
-import javafx.util.Pair;
-import kuusisto.tinysound.Sound;
-import kuusisto.tinysound.TinySound;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -14,7 +11,6 @@ public class Wave implements Runnable, Serializable {
     private ArrayList<Integer> health_npc;
     private ArrayList<Double> speed_npc;
     private ArrayList<ArrayList<Integer>> time_npc;
-    private boolean finished = false;
     public static final Object key = new Object();
 
     public Wave(ArrayList<Integer> health_npc, ArrayList<Double> speed_npc, ArrayList<ArrayList<Integer>> time_npc, int time_between_waves){
@@ -36,9 +32,7 @@ public class Wave implements Runnable, Serializable {
                     if (iter % fps == 0) NPCFactory.add_npcs(time_npc, speed_npc, health_npc, time);
                     update_pos_redrawable();
                     check_munition_shot();
-                    Platform.runLater(() -> {
-                        Controller.Update_manager.update_window();
-                    });
+                    Platform.runLater(Update_manager::update_window);
                     if (Game.get_instance().get_score() <= 0){
                         return;
                     }
@@ -58,9 +52,7 @@ public class Wave implements Runnable, Serializable {
                 try{
                     synchronized (key) {
                         update_pos_redrawable();
-                        Platform.runLater(() -> {
-                            Controller.Update_manager.update_window();
-                        });
+                        Platform.runLater(Update_manager::update_window);
                     }
                     if (Game.get_instance().get_score() <= 0) return;
                     Thread.sleep(1000/fps);
@@ -69,7 +61,6 @@ public class Wave implements Runnable, Serializable {
                 }
             }
         }
-        finished = true;
     }
 
     private void update_pos_redrawable(){

@@ -34,7 +34,7 @@ public class Main extends Application {
         Main.theStage.setTitle("Space Defense");
         TinySound.init();
         try{
-            BufferedReader file = new BufferedReader(new FileReader("src/Songs/music.wav")); // Just to throw a FileNotFoundException
+            new BufferedReader(new FileReader("src/Songs/music.wav")); // Just to throw a FileNotFoundException
             TinySound.loadMusic("Songs/music.wav").play(true, 0.5);
         } catch (FileNotFoundException e){
             System.out.println("Le fichier avec la musique n'a pas été trouvé, le jeu se lance sans.");

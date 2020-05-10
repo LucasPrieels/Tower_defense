@@ -1,15 +1,9 @@
 package Model;
 
 import Controller.Update_manager;
-import View.Map;
 import javafx.application.Platform;
-import javafx.stage.Stage;
 import javafx.util.Pair;
-
-import java.io.FileNotFoundException;
 import java.io.Serializable;
-import java.lang.reflect.Array;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -23,7 +17,6 @@ public class Board implements Serializable {
     private ArrayList<Redrawable> redrawables = new ArrayList<>();
     private int dim_x, dim_y, margin_x, margin_y, max_distance;
     private double proba;
-    public static final Object key = new Object();
 
     private Board(int num_level, double fact){
         dim_x = 500;
@@ -62,9 +55,9 @@ public class Board implements Serializable {
         return true;
     }
 
-    private boolean far_other_asteroids(Asteroid asteroid, double biggest_dim_asteroid){
+    private boolean far_other_asteroids(Asteroid asteroid, double size_asteroid){
         for (Asteroid other_asteroid: asteroids){
-            if (distance(asteroid.get_pos_x(), asteroid.get_pos_y(), other_asteroid.get_pos_x(), other_asteroid.get_pos_y()) < biggest_dim_asteroid){
+            if (distance(asteroid.get_pos_x(), asteroid.get_pos_y(), other_asteroid.get_pos_x(), other_asteroid.get_pos_y()) < size_asteroid){
                 return false;
             }
         }
@@ -100,14 +93,14 @@ public class Board implements Serializable {
                     Asteroid asteroid;
                     double pos_x = Math.max(0, Math.min(dim_x - 1, x + offset_x)), pos_y;
                     if (offset_y > 0){
-                        pos_y = Math.min(y + (double)path.get_width() / 2 + size_asteroid/2 + (double)Big_NPC.get_radius_static()/2 + offset_y, dim_y - margin_y - size_asteroid/2 - (double)Big_NPC.get_radius_static()/2);
+                        pos_y = Math.min(y + (double)path.get_width() / 2 + (double)size_asteroid/2 + (double)Big_NPC.get_radius_static()/2 + offset_y, dim_y - margin_y - (double)size_asteroid/2 - (double)Big_NPC.get_radius_static()/2);
                     }
                     else{
-                        pos_y = Math.max(y - (double)path.get_width() / 2 - size_asteroid/2 - (double)Big_NPC.get_radius_static()/2 + offset_y, margin_y + size_asteroid/2 + (double)Big_NPC.get_radius_static()/2);
+                        pos_y = Math.max(y - (double)path.get_width() / 2 - (double)size_asteroid/2 - (double)Big_NPC.get_radius_static()/2 + offset_y, margin_y + (double)size_asteroid/2 + (double)Big_NPC.get_radius_static()/2);
                     }
                     asteroid = new Asteroid(pos_x, pos_y);
 
-                    boolean cond = far_other_paths(asteroid, size_asteroid) && far_other_asteroids(asteroid, Math.max(size_asteroid, size_asteroid)) & not_behind_button(asteroid);
+                    boolean cond = far_other_paths(asteroid, size_asteroid) && far_other_asteroids(asteroid, size_asteroid) & not_behind_button(asteroid);
 
                     if (cond){
                         asteroids.add(asteroid);
@@ -159,13 +152,12 @@ public class Board implements Serializable {
         redrawables.add(munition);
     }
 
-    public ArrayList<NPC> get_npcs(){ return npcs;} // Utiliser polymorphisme pour éviter répétition? Sans instanceof?
+    public ArrayList<NPC> get_npcs(){ return npcs;}
     public ArrayList<Path_custom> get_paths(){ return paths;}
     public ArrayList<Tower> get_towers(){ return towers;}
     public ArrayList<Asteroid> get_asteroids(){ return asteroids;}
     public ArrayList<Munition> get_munitions(){ return munitions;}
     public ArrayList<Redrawable> get_redrawables(){ return redrawables;}
-    public int get_max_distance(){ return max_distance;}
 
     public int get_dim_x(){return dim_x;}
     public int get_dim_y(){return dim_y;}
@@ -191,9 +183,5 @@ public class Board implements Serializable {
 
     public static void set_instance(Board instance) {
         Board.instance = instance;
-    }
-
-    public void set_paths(ArrayList<Path_custom> paths){
-        this.paths = paths;
     }
 }

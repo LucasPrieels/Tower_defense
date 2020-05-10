@@ -38,7 +38,7 @@ public class Update_manager {
         try{
             map.update_canvas();
             check_end_game();
-        } catch(AssertionError e){}
+        } catch(AssertionError ignored){}
     }
 
     private static void check_end_game(){

@@ -3,9 +3,7 @@ package Model;
 import javafx.scene.image.Image;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
-
 import java.io.Serializable;
-import java.util.ArrayList;
 
 public abstract class Tower implements Runnable, Serializable, Redrawable {
     private Asteroid asteroid;
@@ -19,7 +17,7 @@ public abstract class Tower implements Runnable, Serializable, Redrawable {
         tower_snd = TinySound.loadSound("Songs/tower.wav");
         tower_snd.play();
         this.asteroid = asteroid;
-        asteroid.occupy(this);
+        asteroid.occupy();
         this.period = period;
         this.price_upgrade = price_upgrade;
         this.max_level = max_level;
@@ -47,20 +45,18 @@ public abstract class Tower implements Runnable, Serializable, Redrawable {
         curr_level ++;
     }
 
-    public Thread get_thread(){return thread;};
+    public Thread get_thread(){return thread;}
 
     public Asteroid get_asteroid(){
         return asteroid;
     }
 
-    public boolean upgrade() {
+    public void upgrade() {
         if (get_curr_level() != get_max_level() && Game.get_instance().get_npc_destroyed() >= npc_destroyed_needed[get_curr_level()] && Game.get_instance().pay(get_price_upgrade())) {
             increment_curr_level();
             tower_snd = TinySound.loadSound("Songs/tower.wav");
             tower_snd.play(3);
-            return true;
         }
-        return false;
     }
 
     public int get_npc_destroyed_needed(){return npc_destroyed_needed[curr_level];}

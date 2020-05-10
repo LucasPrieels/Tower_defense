@@ -26,12 +26,12 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
     public void handle(MouseEvent mouseEvent) {
         Menu.sound();
         synchronized (key) {
-            if (message == "exit") {
+            if (message.equals("exit")) {
                 Game.get_instance().stop_threads();
                 TinySound.shutdown();
                 stage.close();
             }
-            else if (message == "menu") {
+            else if (message.equals("menu")) {
                 Launch_manager.save_data();
                 Game.get_instance().stop_threads();
 
