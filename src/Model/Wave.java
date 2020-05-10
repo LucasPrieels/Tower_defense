@@ -33,17 +33,13 @@ public class Wave implements Runnable, Serializable {
         this.time_med_npc = time_med_npc;
         this.time_big_npc = time_big_npc;
         max_time = time_small_npc.size() + time_between_waves;
-        /*
-        Thread t = new Thread(this);
-        t.start();
-        */
     }
 
     public void run(){
         int iter = 0, fps = Game.get_instance().get_fps();
         Map.get_instance().set_temp_message("Lancement de la vague " + (Game.get_instance().get_curr_wave() + 1));
         while (time < max_time){
-            if (time > max_time - Game.get_instance().get_time_between_waves() && Board.get_instance().get_npcs().size() == 0) return;
+            if (time > max_time - Level.get_instance().get_time_between_waves() && Board.get_instance().get_npcs().size() == 0) return;
             iter++;
             try{
                 synchronized (key) {
@@ -60,7 +56,6 @@ public class Wave implements Runnable, Serializable {
                 }
                 Thread.sleep(1000 / fps);
                 if (iter % fps == 0) {
-                    Game.get_instance().decrease_score(100);
                     time++;
                 }
             } catch(InterruptedException | AssertionError e){
@@ -96,7 +91,7 @@ public class Wave implements Runnable, Serializable {
                 int radius = Small_NPC.get_radius_static();
                 double pos_x = Board.get_instance().get_dim_x()-radius;
                 double[] res = random_pos_npc(radius);
-                Path2 path = Board.get_instance().get_paths().get((int)res[0]);
+                Path_custom path = Board.get_instance().get_paths().get((int)res[0]);
                 double pos_y = res[1];
                 Board.get_instance().add_npc(new Small_NPC(pos_x, pos_y, speed_small_npc, health_small_npc, path));
             }
@@ -106,7 +101,7 @@ public class Wave implements Runnable, Serializable {
                 int radius = Medium_NPC.get_radius_static();
                 double pos_x = Board.get_instance().get_dim_x()-radius;
                 double[] res = random_pos_npc(radius);
-                Path2 path = Board.get_instance().get_paths().get((int)res[0]);
+                Path_custom path = Board.get_instance().get_paths().get((int)res[0]);
                 double pos_y = res[1];
                 Board.get_instance().add_npc(new Medium_NPC(pos_x, pos_y, speed_med_npc, health_med_npc, path));
             }
@@ -116,7 +111,7 @@ public class Wave implements Runnable, Serializable {
                 int radius = Big_NPC.get_radius_static();
                 double pos_x = Board.get_instance().get_dim_x()-radius;
                 double[] res = random_pos_npc(radius);
-                Path2 path = Board.get_instance().get_paths().get((int)res[0]);
+                Path_custom path = Board.get_instance().get_paths().get((int)res[0]);
                 double pos_y = res[1];
                 Board.get_instance().add_npc(new Big_NPC(pos_x, pos_y, speed_big_npc, health_big_npc, path));
             }
@@ -157,7 +152,7 @@ public class Wave implements Runnable, Serializable {
         }
     }
 
-    public ArrayList<Integer> get_time_small_npc(){return time_small_npc;}
+    public int get_time_wave(){return time_small_npc.size();}
     public boolean get_finished(){return finished;}
     public int get_max_time(){return max_time;}
     public int get_time(){return time;}

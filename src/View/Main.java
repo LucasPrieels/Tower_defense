@@ -54,7 +54,6 @@ public class Main extends Application {
     }
 
     public static void main() {
-        Game game = Game.get_instance();
         launch();
     }
 }

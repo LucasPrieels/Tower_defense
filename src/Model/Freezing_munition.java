@@ -5,7 +5,7 @@ import kuusisto.tinysound.TinySound;
 
 public class Freezing_munition extends Munition {
     private int freezing_time;
-    private static int speed = 20;
+    private static int speed = 50;
 
     public Freezing_munition(Attack_tower tower, NPC npc, int freezing_time){
         super(tower, npc, speed);

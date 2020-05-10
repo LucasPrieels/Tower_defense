@@ -37,8 +37,7 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
                 Level.set_instance(null);
                 Board.set_instance(null);
                 Map.set_instance(null);
-
-                Game game = Game.get_instance();
+;
                 Main.start_static(stage);
             }
         }

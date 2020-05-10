@@ -10,12 +10,12 @@ public abstract class NPC implements Serializable {
     private double pos_x, pos_y;
     private int health;
     private double speed, freezed = 0.0, curr_ind;
-    private Path2 path;
+    private Path_custom path;
     private transient Sound blast_snd, destroyed_snd, freezed_snd;
     private ArrayList<Double> pos_x_snowflakes = new ArrayList<>(), pos_y_snowflakes = new ArrayList<>();
     private static final Object key = new Object();
 
-    protected NPC(double pos_x, double pos_y, double speed, int health, Path2 path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
+    protected NPC(double pos_x, double pos_y, double speed, int health, Path_custom path){ //Protected pour empêcher de créer un PNJ sans préciser si il est petit, moyen ou grand
         this.pos_x = pos_x;
         this.pos_y = pos_y;
         this.speed = speed;
@@ -80,7 +80,7 @@ public abstract class NPC implements Serializable {
         return false;
     }
 
-    public Path2 get_path(){ return path;}
+    public Path_custom get_path(){ return path;}
     public double get_speed(){ return speed;}
     public double is_frozen(){ return freezed;}
     public ArrayList<Double> get_pos_x_snowflakes(){ return pos_x_snowflakes;}

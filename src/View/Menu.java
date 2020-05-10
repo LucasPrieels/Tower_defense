@@ -156,7 +156,7 @@ public class Menu extends Parent implements Serializable{
                 level1.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        level = 1;
+                        Game.init(1);
                         sound();
                         launch_game();
                     }
@@ -165,7 +165,7 @@ public class Menu extends Parent implements Serializable{
                 level2.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        level = 2;
+                        Game.init(2);
                         sound();
                         launch_game();
                     }
@@ -174,7 +174,7 @@ public class Menu extends Parent implements Serializable{
                 level3.setOnMouseClicked(new EventHandler<MouseEvent>() {
                     @Override
                     public void handle(MouseEvent mouseEvent) {
-                        level = 3;
+                        Game.init(3);
                         sound();
                         launch_game();
                     }

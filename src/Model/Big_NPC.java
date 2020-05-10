@@ -4,7 +4,7 @@ public class Big_NPC extends NPC {
     private static int radius = 3;
     private static int size = 20;
 
-    public Big_NPC (double pos_x, double pos_y, double speed, int health, Path2 path){
+    public Big_NPC (double pos_x, double pos_y, double speed, int health, Path_custom path){
         super(pos_x, pos_y, speed, health, path);
     }
 

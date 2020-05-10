@@ -4,7 +4,7 @@ import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
 
 public class Classic_munition extends Munition {
-    private static double speed = 30;
+    private static double speed = 60;
 
     public Classic_munition(Attack_tower tower, NPC npc){
         super(tower, npc, speed);

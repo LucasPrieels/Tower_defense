@@ -9,11 +9,11 @@ import javafx.util.Pair;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Path2 implements Serializable {
+public class Path_custom implements Serializable {
     private int width;
     private ArrayList<Pair<Double, Double>> pos;
 
-    public Path2(ArrayList<Pair<Double, Double>> pos, int width){
+    public Path_custom(ArrayList<Pair<Double, Double>> pos, int width){
         this.pos = pos;
         this.width = width;
     }
@@ -22,12 +22,14 @@ public class Path2 implements Serializable {
         return pos.size();
     }
 
+    /*
     public double get_ord(int pos_x){
         for (int i = 0; i<pos.size(); i++){
             if (Math.abs(pos.get(i).getKey() - pos_x) < 2) return pos.get(i).getValue();
         }
-        throw new AssertionError("In get_ord in Path2.java, pos_x = " + pos_x + " corresponds to none of the positions of this path");
+        throw new AssertionError("In get_ord in Path_custom.java, pos_x = " + pos_x + " corresponds to none of the positions of this path");
     }
+     */
 
     public Pair<Double, Double> next_pos(int curr_ind, double pos_x, double pos_y, double speed){
         double offset = pos_y-pos.get(Math.min(curr_ind + (int)Math.round(speed), pos.size()-1)).getValue(); // + speed because we search for last position

@@ -15,9 +15,6 @@ public abstract class Attack_tower extends Tower{
         this.thread = new Thread(this);
         Game.get_instance().add_thread(thread);
         thread.start();
-        //Thread thread_attack_tower = new Thread(this);
-        //Game.get_instance().add_thread(thread_attack_tower);
-        //thread_attack_tower.start();
     }
 
     public void add_munition(Munition munition){
@@ -41,10 +38,6 @@ public abstract class Attack_tower extends Tower{
                 return;
             }
         }
-    }
-
-    protected double distance(NPC npc){
-        return Math.sqrt(Math.pow(get_asteroid().get_pos_x() - npc.get_pos_x(), 2) + Math.pow(get_asteroid().get_pos_y() - npc.get_pos_y(), 2));
     }
 
     public abstract boolean fire();

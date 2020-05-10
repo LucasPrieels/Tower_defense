@@ -8,38 +8,37 @@ import javafx.util.Pair;
 import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Board implements Runnable, Serializable {
     private static Board instance = null;
     private ArrayList<NPC> npcs = new ArrayList<>();
-    private  ArrayList<Path2> paths;
+    private  ArrayList<Path_custom> paths;
     private ArrayList<Tower> towers = new ArrayList<>();
     private ArrayList<Asteroid> asteroids = new ArrayList<>();
     private ArrayList<Munition> munitions = new ArrayList<>();
     private int dim_x, dim_y, margin_x, margin_y, max_distance;
-    private double proba, size_asteroid;
+    private double proba;
     public static final Object key = new Object();
 
-    private Board(int dim_x, int dim_y, int margin_x, int margin_y, double size_asteroid, double proba, int max_distance, ArrayList<Path2> paths){
-        this.dim_x = dim_x;
-        this.dim_y = dim_y;
-        this.margin_x = margin_x;
-        this.margin_y = margin_y;
-        // Ajouter exceptions dans les cas où les dimensions et marges ne sont pas compatibles
-        this.size_asteroid = size_asteroid;
-        this.proba = proba;
-        this.max_distance = max_distance;
-        this.paths = paths;
+    private Board(int num_level, double fact){
+        dim_x = 500;
+        dim_y = 300;
+        margin_x = 10;
+        margin_y = 10;
+        proba = 0.8; //For each increase of a certain number (see Board) in x, there is a probability of proba that we find an asteroid with that x-position
+        max_distance = 40; //Max distance from each asteroid to the nearest path
+        this.paths = Path_constructor.construct(num_level, dim_x, fact);
     }
 
     //Singleton
-    public static void init(int dim_x, int dim_y, int margin_x, int margin_y, double size_asteroid, double proba, int max_distance, ArrayList<Path2> paths){
+    public static void init(int num_level, double fact){
         if (instance != null){
             throw new AssertionError("Board can't be initalized twice");
         }
-        instance = new Board(dim_x, dim_y, margin_x, margin_y, size_asteroid, proba, max_distance, paths);
+        instance = new Board(num_level, fact);
     }
 
     public static Board get_instance(){
@@ -51,7 +50,7 @@ public class Board implements Runnable, Serializable {
 
     private boolean far_other_paths(Asteroid asteroid, double height_asteroid){
         for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
-            Path2 other_path = Board.get_instance().get_paths().get(i);
+            Path_custom other_path = Board.get_instance().get_paths().get(i);
             for (Pair<Double, Double> pair: other_path.get_pos()){
                 if (distance(pair.getKey(),  pair.getValue(), asteroid.get_pos_x(), asteroid.get_pos_y()) <= (((double)get_width_path(i) / 2) + height_asteroid/2 + (double)Big_NPC.get_size()/2)){
                     return false;
@@ -71,6 +70,7 @@ public class Board implements Runnable, Serializable {
     }
 
     private boolean not_behind_button(Asteroid asteroid, Map instance){
+        if (instance == null) return true;
         ArrayList<ArrayList<Double>> forbidden = instance.get_forbidden();
         for (ArrayList<Double> zone: forbidden){
             if (asteroid.get_pos_x() >= zone.get(0) && asteroid.get_pos_x() <= zone.get(1) && asteroid.get_pos_y() >= zone.get(2) && asteroid.get_pos_y() <= zone.get(3)){
@@ -90,7 +90,7 @@ public class Board implements Runnable, Serializable {
             height_asteroid /= Map.get_instance().get_fact_y();
             width_asteroid /= Map.get_instance().get_fact_x();
         }
-        for (Path2 path : paths) {
+        for (Path_custom path : paths) {
             for (int i = 0; i < path.get_pos().size(); i += 1500){
                 double x = path.get_pos().get(i).getKey(), y = path.get_pos().get(i).getValue();
                 if (x < margin_x + width_asteroid || x > dim_x - margin_x - width_asteroid || Math.random() > proba){
@@ -148,7 +148,7 @@ public class Board implements Runnable, Serializable {
     public void add_munition(Munition munition){ munitions.add(munition);}
 
     public ArrayList<NPC> get_npcs(){ return npcs;} // Utiliser polymorphisme pour éviter répétition? Sans instanceof?
-    public ArrayList<Path2> get_paths(){ return paths;}
+    public ArrayList<Path_custom> get_paths(){ return paths;}
     public ArrayList<Tower> get_towers(){ return towers;}
     public ArrayList<Asteroid> get_asteroids(){ return asteroids;}
     public ArrayList<Munition> get_munitions(){ return munitions;}
@@ -158,7 +158,10 @@ public class Board implements Runnable, Serializable {
     public int get_dim_y(){return dim_y;}
     public int get_num_paths(){return paths.size();}
     public int get_width_path(int num_path){return paths.get(num_path).get_width();}
-    public double get_ord_path(int num_path){return paths.get(num_path).get_ord(dim_x-1);}
+    public double get_ord_path(int num_path){
+        ArrayList<Pair<Double, Double>> pos = paths.get(num_path).get_pos();
+        return pos.get(pos.size()-1).getValue();
+    }
 
     public boolean empty(double pos_x, double pos_y, int radius){
         for (NPC npc: npcs){
@@ -197,7 +200,7 @@ public class Board implements Runnable, Serializable {
         Board.instance = instance;
     }
 
-    public void set_paths(ArrayList<Path2> paths){
+    public void set_paths(ArrayList<Path_custom> paths){
         this.paths = paths;
     }
 }

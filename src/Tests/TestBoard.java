@@ -12,15 +12,16 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 public class TestBoard {
+    /*
     // We assume all the methods in Game have already been tested and work properly
 
-    public ArrayList<Path2> create_random_path(){
-        ArrayList<Path2> paths = new ArrayList<>();
+    public ArrayList<Path_custom> create_random_path(){
+        ArrayList<Path_custom> paths = new ArrayList<>();
         ArrayList<Pair<Double, Double>> path = new ArrayList<>();
         for (double i = 0; i < 500; i++){
             path.add(new Pair<>(i, Math.random()*200));
         }
-        paths.add(new Path2(path, 15));
+        paths.add(new Path_custom(path, 15));
         return paths;
     }
 
@@ -41,7 +42,7 @@ public class TestBoard {
 
     @Test
     public void testInit() { // Checks the init() function normally
-        ArrayList<Path2> paths = create_random_path();
+        ArrayList<Path_custom> paths = create_random_path();
         Board.set_instance(null);
         Board.init(500, 200, 20, 20, 10, 1, 10, paths);
         assertEquals(Board.get_instance().get_paths(), paths);
@@ -69,9 +70,9 @@ public class TestBoard {
         Board.get_instance().create_asteroids_random();
         for (Asteroid asteroid: Board.get_instance().get_asteroids()){
             assertTrue(asteroid.get_pos_x() >= margin_x);
-            assertTrue(asteroid.get_pos_x() <= dim_x - margin_x - Map.get_size_asteroid()/2);
+            assertTrue(asteroid.get_pos_x() <= dim_x - margin_x - Map.get_size_asteroid());
             assertTrue(asteroid.get_pos_y() >= margin_y);
-            assertTrue(asteroid.get_pos_y() <= dim_y -  margin_y - Map.get_size_asteroid()/2);
+            assertTrue(asteroid.get_pos_y() <= dim_y -  margin_y - Map.get_size_asteroid());
         }
     }
 
@@ -86,7 +87,7 @@ public class TestBoard {
         for (Asteroid asteroid: Board.get_instance().get_asteroids()){
             boolean cond = false;
             for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
-                Path2 path = Board.get_instance().get_paths().get(i);
+                Path_custom path = Board.get_instance().get_paths().get(i);
                 cond = cond | (Math.abs(asteroid.get_pos_y() - path.get_ord((int) Math.round(asteroid.get_pos_x()))) <= (((double) Board.get_instance().get_width_path(i) / 2) + (Map.get_size_asteroid() / 2) + (double)Big_NPC.get_size()/2 + max_distance));
             }
             assertTrue(cond);
@@ -94,7 +95,7 @@ public class TestBoard {
             // But not too close
             cond = true;
             for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
-                Path2 path = Board.get_instance().get_paths().get(i);
+                Path_custom path = Board.get_instance().get_paths().get(i);
                 cond = cond & (Math.abs(asteroid.get_pos_y() - path.get_ord((int) Math.round(asteroid.get_pos_x()))) >= (((double) Board.get_instance().get_width_path(i) / 2) + (Map.get_size_asteroid() / 2) + (double)Big_NPC.get_size()/2));
             }
             assertTrue(cond);
@@ -236,4 +237,5 @@ public class TestBoard {
 
         assertFalse(Board.get_instance().empty(10, 10, 5));
     }
+     */
 }

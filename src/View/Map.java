@@ -144,7 +144,6 @@ public class Map extends Parent implements Runnable, Serializable {
     }
 
     public void first_update_canvas(){
-        if (Game.get_instance().get_paths().isEmpty()) Game.get_instance().construct_path(Board.get_instance().get_dim_x(), level);
         if (Board.get_instance().get_asteroids().isEmpty()) Board.get_instance().create_asteroids_random();
 
         for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
@@ -276,7 +275,7 @@ public class Map extends Parent implements Runnable, Serializable {
     }
 
     public void draw_paths() {
-        for (Path2 path2 : Board.get_instance().get_paths()) {
+        for (Path_custom path2 : Board.get_instance().get_paths()) {
             this.getChildren().add(path2.get_path_ui());
         }
     }
@@ -296,7 +295,7 @@ public class Map extends Parent implements Runnable, Serializable {
         this.score = Game.get_instance().get_score();
         this.money = Game.get_instance().get_money();
         this.wave = Game.get_instance().get_curr_wave() + 1;
-        this.timer = Game.get_instance().get_time_wave(Game.get_instance().get_curr_wave()) + Game.get_instance().get_time_between_waves() - Level.get_instance().get_waves().get(Game.get_instance().get_curr_wave()).get_time();
+        this.timer = Level.get_instance().get_waves().get(Game.get_instance().get_curr_wave()).get_time_wave() + Level.get_instance().get_time_between_waves() - Level.get_instance().get_waves().get(Game.get_instance().get_curr_wave()).get_time();
         this.npc_destroyed = Game.get_instance().get_npc_destroyed();
 
         gc.setFont(new Font("Arial", 18)); //trouver plus joli si temps
