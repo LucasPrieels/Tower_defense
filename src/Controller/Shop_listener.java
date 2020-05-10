@@ -51,7 +51,7 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
         canvas.setOnMouseClicked(towerListener);
         if(message == "Classic_tower" || message == "Freezing_tower" || message == "Factory_tower"){
             Platform.runLater( () -> {
-                Map.get_instance().set_const_message("Click on an asteroid");
+                Message.set_const_message("Click on an asteroid");
             });
         }
         else if(message == "Upgrade_tower"|| message == "Destroy_tower"){
@@ -65,7 +65,7 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
                 });
             }
                 Platform.runLater( () -> {
-                Map.get_instance().set_const_message("Click on a tower");
+                Message.set_const_message("Click on a tower");
             });
         }
         //else if(message == "Destroy_tower"){

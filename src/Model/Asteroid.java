@@ -24,8 +24,11 @@ public class Asteroid implements Serializable {
         occupied = true;
         this.tower = tower;
     }
+
     public void unoccupy(){
         occupied = false;
         this.tower = null;
     }
+
+    public static int get_size(){ return size_gui;}
 }

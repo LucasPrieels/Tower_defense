@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Update_manager;
 import View.Map;
 
 import java.io.Serializable;
@@ -61,9 +62,8 @@ public class Game implements Runnable, Serializable {
                     thread_wave.start();
                 }
                 thread_wave.join();
-                if (score < 0 ){
-                    Map.get_instance().end_game(score);
-
+                if (score < 0){
+                    Update_manager.end_game();
                     return;
                 }
 
@@ -71,7 +71,7 @@ public class Game implements Runnable, Serializable {
                 return;
             }
         }
-        Map.get_instance().end_game(score);
+        Update_manager.end_game();
     }
 
     public boolean pay(int paid){

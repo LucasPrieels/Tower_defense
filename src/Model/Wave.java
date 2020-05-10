@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Message;
 import View.Map;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -37,7 +38,7 @@ public class Wave implements Runnable, Serializable {
 
     public void run(){
         int iter = 0, fps = Game.get_instance().get_fps();
-        Map.get_instance().set_temp_message("Lancement de la vague " + (Game.get_instance().get_curr_wave() + 1));
+        Message.set_temp_message("Lancement de la vague " + (Game.get_instance().get_curr_wave() + 1));
         while (time < max_time){
             if (time > max_time - Level.get_instance().get_time_between_waves() && Board.get_instance().get_npcs().size() == 0) return;
             iter++;

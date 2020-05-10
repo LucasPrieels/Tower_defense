@@ -41,9 +41,9 @@ public void handle(MouseEvent mouseEvent) {
         }
         gc.setFont(new Font("Arial", 12)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
-        gc.fillText(message, tower.get_asteroid().get_pos_x()* Map.get_instance().get_fact_x(), tower.get_asteroid().get_pos_y()*Map.get_instance().get_fact_y()-20);
+        gc.fillText(message, tower.get_asteroid().get_pos_x()* Update_manager.get_fact_x(), tower.get_asteroid().get_pos_y()*Update_manager.get_fact_y()-20);
     }
-    }
+}
 
     @Override
     public void run() {
@@ -62,6 +62,5 @@ public void handle(MouseEvent mouseEvent) {
             }
         }
         message = " ";
-
     }
 }

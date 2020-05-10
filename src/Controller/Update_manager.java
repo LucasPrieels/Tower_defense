@@ -2,30 +2,66 @@ package Controller;
 
 import Model.*;
 import View.Map;
-import javafx.scene.SnapshotParameters;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import kuusisto.tinysound.Sound;
+import kuusisto.tinysound.TinySound;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Update_manager {
+    private static Map map;
+    private static boolean end_game = false;
+    private static Stage stage;
 
     private Update_manager(){ }
+
+    public static Map first_update_window(Stage theStage){
+        Update_manager.stage = theStage;
+        try{
+            Update_manager.map = Map.init(theStage);
+            map.first_update_canvas();
+            init_message(map);
+        } catch (FileNotFoundException e){e.printStackTrace();}
+        return map;
+    }
+
+    private static void init_message(Map map){
+        Message.init(map);
+    }
 
     public static void update_window(){
         //System.out.println("Updating");
         try{
-            Map map = Map.get_instance();
             map.update_canvas();
+            check_end_game();
         } catch(AssertionError e){}
     }
+
+    private static void check_end_game(){
+        if (end_game){
+            Game.get_instance().stop_threads();
+            if (Game.get_instance().get_score() > 0){
+                Sound won_snd = TinySound.loadSound("Songs/won.wav");
+                won_snd.play();
+                //update_window();
+                View.Menu_gameover.start_gameover(stage,"wingame");
+            }
+            else{
+                Sound game_over_snd = TinySound.loadSound("Songs/game_over.wav");
+                game_over_snd.play(5);
+                //update_window();
+                View.Menu_gameover.start_gameover(stage,"gameover");}
+        }
+    }
+
+    public static void end_game(){ end_game = true;}
+
+
+
     public static void update_gui(){
         update_score_rectangle();
         update_munitions_canvas();
@@ -40,7 +76,7 @@ public class Update_manager {
         int timer = Level.get_instance().get_waves().get(Game.get_instance().get_curr_wave()).get_time_wave() + Level.get_instance().get_time_between_waves() - Level.get_instance().get_waves().get(Game.get_instance().get_curr_wave()).get_time();
         int npc_destroyed = Game.get_instance().get_npc_destroyed();
 
-        Map.get_instance().fill_score_rectangle(score, money, wave, timer, npc_destroyed);
+        map.fill_score_rectangle(score, money, wave, timer, npc_destroyed);
     }
 
     public static void update_munitions_canvas() {
@@ -51,17 +87,17 @@ public class Update_manager {
             Image munition_img = munition.get_image();
             ImageView munition_iv = new ImageView(munition_img);
             munition_iv.setRotate(Math.atan(munition.get_dir_y()/munition.get_dir_x())*180/Math.PI);
-            Map.get_instance().draw_iv(munition_iv, pos_x, pos_y);
+            map.draw_iv(munition_iv, pos_x, pos_y);
         }
     }
 
     private static void show_towers(){
         for (Tower tower: Board.get_instance().get_towers()){
             Image tower_img = tower.get_image();
-            Map.get_instance().draw_img(tower_img, tower.get_asteroid().get_pos_x(), tower.get_asteroid().get_pos_y());
+            map.draw_img(tower_img, tower.get_asteroid().get_pos_x(), tower.get_asteroid().get_pos_y());
 
             for(int k = 0; k<= tower.get_max_level(); k++){
-                Map.get_instance().draw_star(tower.get_curr_level()+1, tower.get_asteroid().get_pos_x(), tower.get_asteroid().get_pos_y());
+                map.draw_star(tower.get_curr_level()+1, tower.get_asteroid().get_pos_x(), tower.get_asteroid().get_pos_y());
             }
         }
     }
@@ -72,11 +108,11 @@ public class Update_manager {
         for (NPC npc : npcs) {
             ImageView npc_iv = new ImageView(npc.get_image());
             npc_iv.setRotate(npc.get_direction() - 90);
-            Map.get_instance().draw_iv(npc_iv, npc.get_pos_x(), npc.get_pos_y());
+            map.draw_iv(npc_iv, npc.get_pos_x(), npc.get_pos_y());
 
             if (npc.is_frozen() > 0){
                 for (int i = 0; i < npc.get_pos_x_snowflakes().size(); i++){
-                    Map.get_instance().draw_snowflake(npc.get_pos_x_snowflakes().get(i), npc.get_pos_y_snowflakes().get(i));
+                    map.draw_snowflake(npc.get_pos_x_snowflakes().get(i), npc.get_pos_y_snowflakes().get(i));
                 }
                 if (Math.random() < 0.8){
                     npc.add_snowflake(npc.get_pos_x() + npc.get_size()/6, npc.get_pos_y() + Math.random()*npc.get_size()/3 - npc.get_size()/6 + + npc.get_size()/6);
@@ -88,4 +124,13 @@ public class Update_manager {
     public static int get_level() {
         return Game.get_instance().get_num_level();
     }
+
+    public static ArrayList<ArrayList<Double>> get_forbidden(){
+        if (map == null) return new ArrayList<>();
+        return map.get_forbidden();
+    }
+
+    public static int get_size_asteroid(){ return Asteroid.get_size();}
+    public static double get_fact_x(){ return map.get_fact_x();}
+    public static double get_fact_y(){ return map.get_fact_y();}
 }

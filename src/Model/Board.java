@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Update_manager;
 import View.Map;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -48,11 +49,11 @@ public class Board implements Runnable, Serializable {
         return Board.instance;
     }
 
-    private boolean far_other_paths(Asteroid asteroid, double height_asteroid){
+    private boolean far_other_paths(Asteroid asteroid, double size_asteroid){
         for (int i=0; i<Board.get_instance().get_paths().size(); i++) {
             Path_custom other_path = Board.get_instance().get_paths().get(i);
             for (Pair<Double, Double> pair: other_path.get_pos()){
-                if (distance(pair.getKey(),  pair.getValue(), asteroid.get_pos_x(), asteroid.get_pos_y()) <= (((double)get_width_path(i) / 2) + height_asteroid/2 + (double)Big_NPC.get_radius_static()/2)){
+                if (distance(pair.getKey(),  pair.getValue(), asteroid.get_pos_x(), asteroid.get_pos_y()) <= (((double)get_width_path(i) / 2) + size_asteroid/2 + (double)Big_NPC.get_radius_static()/2)){
                     return false;
                 }
             }
@@ -69,9 +70,8 @@ public class Board implements Runnable, Serializable {
         return true;
     }
 
-    private boolean not_behind_button(Asteroid asteroid, Map instance){
-        if (instance == null) return true;
-        ArrayList<ArrayList<Double>> forbidden = instance.get_forbidden();
+    private boolean not_behind_button(Asteroid asteroid){
+        ArrayList<ArrayList<Double>> forbidden = Update_manager.get_forbidden();
         for (ArrayList<Double> zone: forbidden){
             if (asteroid.get_pos_x() >= zone.get(0) && asteroid.get_pos_x() <= zone.get(1) && asteroid.get_pos_y() >= zone.get(2) && asteroid.get_pos_y() <= zone.get(3)){
                 return false;
@@ -81,19 +81,11 @@ public class Board implements Runnable, Serializable {
     }
 
     public void create_asteroids_random(){
-        double height_asteroid = Map.get_size_asteroid(), width_asteroid = Map.get_size_asteroid();
-        Map instance = null;
-        try{
-            instance = Map.get_instance();
-        } catch (AssertionError e){}
-        if (instance != null) {
-            height_asteroid /= Map.get_instance().get_fact_y();
-            width_asteroid /= Map.get_instance().get_fact_x();
-        }
+        int size_asteroid = Asteroid.get_size();
         for (Path_custom path : paths) {
             for (int i = 0; i < path.get_pos().size(); i += 1500){
                 double x = path.get_pos().get(i).getKey(), y = path.get_pos().get(i).getValue();
-                if (x < margin_x + width_asteroid || x > dim_x - margin_x - width_asteroid || Math.random() > proba){
+                if (x < margin_x + size_asteroid || x > dim_x - margin_x - size_asteroid || Math.random() > proba){
                     // Proba is the probability an asteroid is created at each iteration of x
                     continue;
                 }
@@ -107,14 +99,14 @@ public class Board implements Runnable, Serializable {
                     Asteroid asteroid;
                     double pos_x = Math.max(0, Math.min(dim_x - 1, x + offset_x)), pos_y;
                     if (offset_y > 0){
-                        pos_y = Math.min(y + (double)path.get_width() / 2 + height_asteroid/2 + (double)Big_NPC.get_radius_static()/2 + offset_y, dim_y - margin_y - height_asteroid/2 - (double)Big_NPC.get_radius_static()/2);
+                        pos_y = Math.min(y + (double)path.get_width() / 2 + size_asteroid/2 + (double)Big_NPC.get_radius_static()/2 + offset_y, dim_y - margin_y - size_asteroid/2 - (double)Big_NPC.get_radius_static()/2);
                     }
                     else{
-                        pos_y = Math.max(y - (double)path.get_width() / 2 - height_asteroid/2 - (double)Big_NPC.get_radius_static()/2 + offset_y, margin_y + height_asteroid/2 + (double)Big_NPC.get_radius_static()/2);
+                        pos_y = Math.max(y - (double)path.get_width() / 2 - size_asteroid/2 - (double)Big_NPC.get_radius_static()/2 + offset_y, margin_y + size_asteroid/2 + (double)Big_NPC.get_radius_static()/2);
                     }
                     asteroid = new Asteroid(pos_x, pos_y);
 
-                    boolean cond = far_other_paths(asteroid, height_asteroid) && far_other_asteroids(asteroid, Math.max(height_asteroid, width_asteroid)) & not_behind_button(asteroid, instance);
+                    boolean cond = far_other_paths(asteroid, size_asteroid) && far_other_asteroids(asteroid, Math.max(size_asteroid, size_asteroid)) & not_behind_button(asteroid);
 
                     if (cond){
                         asteroids.add(asteroid);

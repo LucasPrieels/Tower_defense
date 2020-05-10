@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Freezing_tower extends Attack_tower{
     private static double[] range = {50.0, 70.0, 100.0};
-    private static int[] power = {3, 5, 10}, npc_destroyed_needed = {10, 30}, period = {5000, 3000, 1500}, price_upgrade = {200, 500};
+    private static int[] power = {5, 10, 15}, npc_destroyed_needed = {10, 30}, period = {3000, 2000, 1000}, price_upgrade = {200, 500};
     private static int max_level = 2; //On compte àpd 0
     private static Image freezing_tower_img;
 

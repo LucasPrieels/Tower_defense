@@ -30,7 +30,8 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
                 Game.get_instance().stop_threads();
                 TinySound.shutdown();
                 stage.close();
-            } else if (message == "menu") {
+            }
+            else if (message == "menu") {
                 Launch_manager.save_data();
                 Game.get_instance().stop_threads();
 
@@ -38,7 +39,7 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
                 Level.set_instance(null);
                 Board.set_instance(null);
                 Map.set_instance(null);
-;
+
                 Main.start_static(stage);
             }
         }

@@ -24,9 +24,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Map extends Parent implements Runnable, Serializable {
+public class Map extends Parent{
     private static double canvas_height, canvas_width;
-    private static int size_asteroid = 40, num_diff_asteroid = 8, size_snowflake = 6;
+    private static int num_diff_asteroid = 8, size_snowflake = 6;
     private static Canvas canvas;
     private GraphicsContext gc;
     private Stage stage;
@@ -41,11 +41,8 @@ public class Map extends Parent implements Runnable, Serializable {
     private transient Destroy_tower_icon destroy_tower_icon;
     private ArrayList<Integer> type_asteroid = new ArrayList<>();
     private ArrayList<Double> pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
-    private static String curr_message;
     private double fact_x, fact_y;
-    private static final Object key = new Object();
-    private transient Sound game_over_snd, won_snd;
-    private boolean game_over = false, win_game = false;
+    private String curr_message = "";
 
     private Map(Stage stage) throws FileNotFoundException {
         canvas_width = stage.getWidth();
@@ -64,22 +61,15 @@ public class Map extends Parent implements Runnable, Serializable {
         this.getChildren().addAll(canvas, upgrade_tower_icon, buy_classic_tower_icon, buy_factory_tower_icon, buy_freezing_tower_icon,destroy_tower_icon,iv_start_wave_button,iv_exit_button,iv_menu_button);
     }
 
-    //Singleton
-    public static Map get_instance() {
-        if (instance == null) {
-            throw new AssertionError("Map has to be initialized before getting accessed");
-        }
-        return instance;
-    }
-
-    public static void init(Stage stage) throws FileNotFoundException {
+    public static Map init(Stage stage) throws FileNotFoundException {
         if (instance != null) {
             throw new AssertionError("Map can't be initialized twice");
         }
-        instance = new Map(stage);
+        return instance = new Map(stage);
     }
 
     public void create_images() throws FileNotFoundException {
+        int size_asteroid = Update_manager.get_size_asteroid();
         for (int j = 1; j < 4; j++) {
             if (Update_manager.get_level() == j) {
                 level_background = new Image(new FileInputStream("Assets/level" + j + ".jpg"), stage.getWidth(), stage.getHeight(), false, false);
@@ -207,17 +197,10 @@ public class Map extends Parent implements Runnable, Serializable {
 
 
 
-    public void update_canvas(){
+    public void update_canvas() {
         draw_gui();
         Update_manager.update_gui();
         show_message_displayed();
-        if (game_over){
-            System.out.println("Update  Lose");
-            View.Menu_gameover.start_gameover(stage,"gameover");}
-        if (win_game){
-            System.out.println("Update  win");
-            View.Menu_gameover.start_gameover(stage,"wingame");
-        }
     }
 
     public void draw_gui(){
@@ -257,10 +240,7 @@ public class Map extends Parent implements Runnable, Serializable {
         iv_menu_button.setOnMouseClicked(new Menu_buttons_listener(stage, "menu"));
     }
 
-
-
-
-    private void show_message_displayed() {
+    public void show_message_displayed() {
         gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
         gc.fillRoundRect(canvas.getWidth() - 330, canvas.getHeight() - 160, 330, 45, 15, 25);
         gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
@@ -268,73 +248,15 @@ public class Map extends Parent implements Runnable, Serializable {
         gc.fillText(curr_message, canvas.getWidth() - 300, canvas.getHeight() - 130);
     }
 
+    public String get_curr_message(){ return curr_message;}
+    public void set_curr_message(String message){ curr_message = message;}
+
     public static double get_canvas_height() {
         return canvas.getHeight();
     }
 
     public static double get_canvas_width() {
         return canvas.getWidth();
-    }
-
-    public static double get_size_asteroid() {
-        return size_asteroid;
-    }
-
-    public void set_const_message(String message) {
-        curr_message = message;
-    }
-
-    public void set_temp_message(String message) {
-        Thread thread_message = new Thread(this);
-        Game.get_instance().add_thread(thread_message);
-        curr_message = message;
-        thread_message.start();
-    }
-
-    public void run() {
-        String message = curr_message;
-        double t = 0;
-        while (t < 3000) {
-            try {
-                synchronized (key) {
-                    Platform.runLater(() -> show_message_displayed());
-                    Thread.sleep((long) (1000.0 / Game.get_instance().get_fps()));
-                    t += 1000.0 / Game.get_instance().get_fps();
-                }
-            } catch (InterruptedException e) {
-                return;
-            }
-        }
-        if (curr_message == message) curr_message = ""; //Si le message n'a pas changé entretemps, on l'efface
-    }
-
-    public void game_over() {
-        game_over = true ;
-        game_over_snd = TinySound.loadSound("Songs/game_over.wav");
-        game_over_snd.play(5);
-        System.out.println("Game Over");
-        //gc.drawImage(gameover,400,300);
-
-        update_canvas();
-
-        System.out.println("You Lose");
-        //View.Menu_gameover.start_gameover(stage);
-
-    }
-
-    public void game_won(){
-        win_game = true;
-        won_snd = TinySound.loadSound("Songs/won.wav");
-        won_snd.play();
-        System.out.println("you win");
-
-        update_canvas();
-        System.out.println("you win 2");
-    }
-
-    public void end_game(int score){
-        if (score > 0) game_won();
-        else game_over();
     }
 
     public double get_fact_x(){return fact_x;}

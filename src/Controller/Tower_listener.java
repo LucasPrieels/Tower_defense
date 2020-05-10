@@ -34,7 +34,7 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
         }
         Menu.sound();
         gc = canvas.getGraphicsContext2D();
-        Map.get_instance().set_const_message("");
+        Message.set_const_message("");
         double fact_x = Map.get_canvas_width()/Board.get_instance().get_dim_x(), fact_y = Map.get_canvas_height()/Board.get_instance().get_dim_y();
         CopyOnWriteArrayList<Tower> copyTowers = new CopyOnWriteArrayList<>(Board.get_instance().get_towers());
         if (message == "Upgrade_tower"|| message == "Destroy_tower"){
@@ -47,15 +47,15 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
                                     tower.upgrade();
                                 } else {
                                     Menu.bad_sound();
-                                    Map.get_instance().set_temp_message("The tower is at its maximum level");
+                                    Message.set_temp_message("The tower is at its maximum level");
                                 }
                             } else {
                                 Menu.bad_sound();
-                                Map.get_instance().set_temp_message("You must have killed " + tower.get_npc_destroyed_needed() + " NPCs");
+                                Message.set_temp_message("You must have killed " + tower.get_npc_destroyed_needed() + " NPCs");
                             }
                         } else {
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("You don't have enough money");
+                            Message.set_temp_message("You don't have enough money");
                         }
                     }
                 }
@@ -68,7 +68,7 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
 
                     }
                     else{
-                        Map.get_instance().set_temp_message("There is no tower");
+                        Message.set_temp_message("There is no tower");
                     }
                     Controller.Update_manager.update_window();
                 }
@@ -80,7 +80,7 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
                     //ATTENTION Faire une factory plutôt que des else if
                     if (Board.get_instance().get_asteroids().get(i).is_occupied()){
                         Menu.bad_sound();
-                        Map.get_instance().set_temp_message("Asteroid already occupied");
+                        Message.set_temp_message("Asteroid already occupied");
                     }
                     else if (message == "Classic_tower"){
                         if (Game.get_instance().pay(Game.get_instance().get_price_classic_tower())){
@@ -88,7 +88,7 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
                         }
                         else{
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("You don't have enough money");
+                            Message.set_temp_message("You don't have enough money");
                         }
                     }
                     else if (message == "Freezing_tower"){
@@ -97,7 +97,7 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
                         }
                         else{
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("You don't have enough money");
+                            Message.set_temp_message("You don't have enough money");
                         }
                     }
                     else if (message == "Factory_tower"){
@@ -106,12 +106,12 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
                         }
                         else{
                             Menu.bad_sound();
-                            Map.get_instance().set_temp_message("You don't have enough money");
+                            Message.set_temp_message("You don't have enough money");
                         }
                     }
                     //else if (message == "Destroy_tower"){
                     //    Menu.bad_sound();
-                    //    Map.get_instance().set_temp_message("Il n'y a pas de tour sur l'astéroïde");
+                    //    Message.set_temp_message("Il n'y a pas de tour sur l'astéroïde");
                     //}
                     else{
                         System.out.println("Error!!!");

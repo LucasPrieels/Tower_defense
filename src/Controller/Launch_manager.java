@@ -18,15 +18,9 @@ public class Launch_manager {
         theStage.show();
         View.Map map = null;
         System.out.println("Launching");
-        try {
-            if (Board.get_instance().get_asteroids().isEmpty()) Board.get_instance().create_asteroids_random();
-            Map.init(theStage);
-            Map.get_instance().first_update_canvas();
-            map = Map.get_instance();
-            Controller.Update_manager.update_window();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        if (Board.get_instance().get_asteroids().isEmpty()) Board.get_instance().create_asteroids_random();
+        map = Update_manager.first_update_window(theStage);
+        Controller.Update_manager.update_window();
         root_play.getChildren().add(map);
     }
 

@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.Update_manager;
 import View.Map;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
@@ -41,7 +42,7 @@ public class Path_custom implements Serializable {
     public int get_width(){return width;}
 
     public Path get_path_ui(){
-        double fact_x = Map.get_instance().get_fact_x(), fact_y = Map.get_instance().get_fact_y();
+        double fact_x = Update_manager.get_fact_x(), fact_y = Update_manager.get_fact_y();
         Path path = new Path();
 
         MoveTo moveTo = new MoveTo();
