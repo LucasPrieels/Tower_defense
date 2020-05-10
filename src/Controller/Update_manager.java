@@ -137,4 +137,8 @@ public class Update_manager {
     public static int get_size_asteroid(){ return Asteroid.get_size();}
     public static double get_fact_x(){ return map.get_fact_x();}
     public static double get_fact_y(){ return map.get_fact_y();}
+
+    public static void delete_start_wave_controller(){
+        map.delete_start_wave_gui();
+    }
 }

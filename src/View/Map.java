@@ -306,4 +306,9 @@ public class Map extends Parent{
             gc.drawImage(snowflake, xmax, ymax, size_snowflake, size_snowflake);
         }
     }
+
+    public void delete_start_wave_gui(){
+        iv_start_wave_button.setX(-100);
+        iv_start_wave_button.setY(-100);
+    }
 }
