@@ -108,56 +108,45 @@ public class Map extends Parent{
 
     private void draw_shop_icons(){
         iv_buy_classic_tower_icon = new ImageView(buy_classic_tower_icon);
-        iv_buy_classic_tower_icon.setX(Map.get_canvas_width()-5*(iv_buy_classic_tower_icon.getFitWidth()+80));
-        iv_buy_classic_tower_icon.setY(Map.get_canvas_height()-iv_buy_classic_tower_icon.getFitHeight()-100);
-        iv_buy_classic_tower_icon.setFitWidth(70);
-        iv_buy_classic_tower_icon.setFitHeight(70);
+        iv_buy_classic_tower_icon.setX(Map.get_canvas_width()-5*(iv_buy_classic_tower_icon.getFitWidth()+70));
+        iv_buy_classic_tower_icon.setY(Map.get_canvas_height()-iv_buy_classic_tower_icon.getFitHeight()-90);
+        iv_buy_classic_tower_icon.setFitWidth(60);
+        iv_buy_classic_tower_icon.setFitHeight(60);
 
         iv_buy_factory_tower_icon = new ImageView(buy_factory_tower_icon);
-        iv_buy_factory_tower_icon.setX(Map.get_canvas_width()-3*(iv_buy_factory_tower_icon.getFitWidth()+80));
-        iv_buy_factory_tower_icon.setY(Map.get_canvas_height()-iv_buy_factory_tower_icon.getFitHeight()-100);
-        iv_buy_factory_tower_icon.setFitWidth(70);
-        iv_buy_factory_tower_icon.setFitHeight(70);
+        iv_buy_factory_tower_icon.setX(Map.get_canvas_width()-3*(iv_buy_factory_tower_icon.getFitWidth()+70));
+        iv_buy_factory_tower_icon.setY(Map.get_canvas_height()-iv_buy_factory_tower_icon.getFitHeight()-90);
+        iv_buy_factory_tower_icon.setFitWidth(60);
+        iv_buy_factory_tower_icon.setFitHeight(60);
 
         iv_buy_freezing_tower_icon = new ImageView(buy_freezing_tower_icon);
-        iv_buy_freezing_tower_icon.setX(Map.get_canvas_width()-4*(iv_buy_freezing_tower_icon.getFitWidth()+80));
-        iv_buy_freezing_tower_icon.setY(Map.get_canvas_height()-iv_buy_freezing_tower_icon.getFitHeight()-100);
-        iv_buy_freezing_tower_icon.setFitWidth(70);
-        iv_buy_freezing_tower_icon.setFitHeight(70);
+        iv_buy_freezing_tower_icon.setX(Map.get_canvas_width()-4*(iv_buy_freezing_tower_icon.getFitWidth()+70));
+        iv_buy_freezing_tower_icon.setY(Map.get_canvas_height()-iv_buy_freezing_tower_icon.getFitHeight()-90);
+        iv_buy_freezing_tower_icon.setFitWidth(60);
+        iv_buy_freezing_tower_icon.setFitHeight(60);
 
         iv_destroy_tower_icon = new ImageView(destroy_tower_icon);
-        iv_destroy_tower_icon.setX(Map.get_canvas_width()-iv_destroy_tower_icon.getFitWidth()-80);
-        iv_destroy_tower_icon.setY(Map.get_canvas_height()-iv_destroy_tower_icon.getFitHeight()-100);
-        iv_destroy_tower_icon.setFitWidth(70);
-        iv_destroy_tower_icon.setFitHeight(70);
+        iv_destroy_tower_icon.setX(Map.get_canvas_width()-iv_destroy_tower_icon.getFitWidth()-70);
+        iv_destroy_tower_icon.setY(Map.get_canvas_height()-iv_destroy_tower_icon.getFitHeight()-90);
+        iv_destroy_tower_icon.setFitWidth(60);
+        iv_destroy_tower_icon.setFitHeight(60);
 
         iv_upgrade_tower_icon = new ImageView(upgrade_tower_icon);
-        iv_upgrade_tower_icon.setX(Map.get_canvas_width()-2*(iv_upgrade_tower_icon.getFitWidth()+80));
-        iv_upgrade_tower_icon.setY(Map.get_canvas_height()-iv_upgrade_tower_icon.getFitHeight()-100);
-        iv_upgrade_tower_icon.setFitHeight(70);
-        iv_upgrade_tower_icon.setFitWidth(70);
+        iv_upgrade_tower_icon.setX(Map.get_canvas_width()-2*(iv_upgrade_tower_icon.getFitWidth()+70));
+        iv_upgrade_tower_icon.setY(Map.get_canvas_height()-iv_upgrade_tower_icon.getFitHeight()-90);
+        iv_upgrade_tower_icon.setFitHeight(60);
+        iv_upgrade_tower_icon.setFitWidth(60);
 
         iv_start_wave_button = new ImageView(start_wave_button);
-        iv_start_wave_button.setX(canvas_width - 6*(iv_start_wave_button.getFitWidth() + 80));
-        iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 100);
-        iv_start_wave_button.setFitHeight(70);
-        iv_start_wave_button.setFitWidth(70);
+        iv_start_wave_button.setX(canvas_width - 6*(iv_start_wave_button.getFitWidth() + 70));
+        iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 90);
+        iv_start_wave_button.setFitHeight(60);
+        iv_start_wave_button.setFitWidth(60);
 
 
     }
 
     private void create_shop() throws FileNotFoundException {
-        //this.upgrade_tower_icon = new Upgrade_tower_icon();
-        //this.buy_classic_tower_icon = new Buy_classic_tower_icon();
-        //this.buy_factory_tower_icon = new Buy_factory_tower_icon();
-        //this.buy_freezing_tower_icon = new Buy_freezing_tower_icon();
-        //this.destroy_tower_icon = new Destroy_tower_icon();
-        //this.iv_start_wave_button = new ImageView(start_wave_button);
-
-        //iv_start_wave_button.setX(canvas_width - 6*(iv_start_wave_button.getFitWidth() + 80));
-        //iv_start_wave_button.setY(canvas_height - iv_start_wave_button.getFitHeight() - 100);
-        //iv_start_wave_button.setFitHeight(70);
-        //iv_start_wave_button.setFitWidth(70);
 
         draw_shop_icons();
 
@@ -234,7 +223,7 @@ public class Map extends Parent{
     }
 
     public void fill_score_rectangle(int score, int money, int wave, int timer, int npc_destroyed){
-        gc.setFont(new Font("Arial", 18)); //trouver plus joli si temps
+        gc.setFont(new Font("Arial", 15)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
         gc.fillText(Integer.toString(score), 50, 33);
         gc.fillText(Integer.toString(money), 50, 73);
@@ -291,10 +280,10 @@ public class Map extends Parent{
 
     public void show_message_displayed() {
         gc.setFill(Color.rgb(0, 0, 0, 0.5)); //noir transparent
-        gc.fillRoundRect(canvas.getWidth() - 330, canvas.getHeight() - 160, 330, 45, 15, 25);
+        gc.fillRoundRect(canvas.getWidth() - 330, canvas.getHeight() - 150, 330, 45, 15, 25);
         gc.setFont(new Font("Arial", 20)); //trouver plus joli si temps
         gc.setFill(Color.WHITE);
-        gc.fillText(curr_message, canvas.getWidth() - 300, canvas.getHeight() - 130);
+        gc.fillText(curr_message, canvas.getWidth() - 300, canvas.getHeight() - 120);
     }
 
     public String get_curr_message(){ return curr_message;}

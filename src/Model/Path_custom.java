@@ -2,17 +2,23 @@ package Model;
 
 import Controller.Update_manager;
 import View.Map;
+import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.LineTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Pair;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Path_custom implements Serializable {
     private int width;
     private ArrayList<Pair<Double, Double>> pos;
+    private LineTo lineTo, lineTo2, lineTo3;
 
     public Path_custom(ArrayList<Pair<Double, Double>> pos, int width){
         this.pos = pos;
@@ -41,7 +47,7 @@ public class Path_custom implements Serializable {
 
     public int get_width(){return width;}
 
-    public Path get_path_ui(){
+    public Path get_path_ui() {
         double fact_x = Update_manager.get_fact_x(), fact_y = Update_manager.get_fact_y();
         Path path = new Path();
 
@@ -51,11 +57,22 @@ public class Path_custom implements Serializable {
         path.getElements().add(moveTo);
 
         for (int i = 1; i < pos.size(); i++){
-            LineTo lineTo = new LineTo();
+            this.lineTo = new LineTo();
             lineTo.setX(pos.get(i).getKey()*fact_x);
             lineTo.setY(pos.get(i).getValue()*fact_y);
             path.getElements().add(lineTo);
-        }
+            path.setStrokeWidth(0);
+
+
+        };
+        for (int j = pos.size()-1; j > 0; j--){
+            this.lineTo2 = new LineTo();
+            lineTo2.setX(pos.get(j).getKey()*fact_x+20*width/3);
+            lineTo2.setY(pos.get(j).getValue()*fact_y+20*width/3);
+            path.getElements().add(lineTo2);
+            path.setStrokeWidth(0);}
+        path.setFill(Color.rgb(0,0,0,0.2));
+
         return path;
     }
 
