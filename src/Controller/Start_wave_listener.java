@@ -15,6 +15,7 @@ public class Start_wave_listener implements EventHandler<MouseEvent> {
         for (Tower tower: Board.get_instance().get_towers()){
             Thread thread_tower = new Thread(tower);
             Game.get_instance().add_thread(thread_tower);
+            System.out.println("Starting thread");
             thread_tower.start(); // If the game has been relaunched from a save, we need to reactivate towers already placed
         }
 

@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Classic_tower extends Attack_tower{
     private static double[] range = {70.0, 100.0, 200.0};
-    private static int[] period = {2000, 1500, 700}, power = {4, 7, 10}, npc_destroyed_needed = {5, 15}, price_upgrade = {50, 200};
+    private static int[] period = {2000, 1500, 1000}, power = {4, 7, 10}, npc_destroyed_needed = {5, 15}, price_upgrade = {100, 200};
     private static int max_level = 2; //On compte àpd 0
     private static Image classic_tower_img;
 
@@ -23,7 +23,7 @@ public class Classic_tower extends Attack_tower{
 
     public void action_scanned(NPC npc){
         Munition munition = new Classic_munition(this, npc);
-        System.out.println("Munition classique crée");
+        System.out.println("Munition classique créée");
         add_munition(munition);
     }
 

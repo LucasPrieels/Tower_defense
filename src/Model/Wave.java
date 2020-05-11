@@ -24,6 +24,7 @@ public class Wave implements Runnable, Serializable {
         int iter = 0, fps = Game.get_instance().get_fps();
         while (time < max_time){
             if (time > max_time - Level.get_instance().get_time_between_waves() && Board.get_instance().get_npcs().size() == 0){
+                System.out.println("Reussi");
                 return; // If no NPC is going to be added in this wave (first condition) and there are no more NPCs on the Board,
                 // There is no point in waiting for the next wave, we launch it right away
             }
@@ -54,9 +55,13 @@ public class Wave implements Runnable, Serializable {
                 try{
                     synchronized (key) {
                         update_pos_movable();
+                        check_munition_shot(); // Checks if any NPC has been shot by a munition
                         Platform.runLater(Update_manager::update_window);
                     }
-                    if (Game.get_instance().get_score() <= 0) return;
+                    if (Game.get_instance().get_score() <= 0){
+                        System.out.println("Game over");
+                        return;
+                    }
                     Thread.sleep(1000/fps);
                 } catch(InterruptedException e) {
                     return;

@@ -2,6 +2,7 @@ package Controller;
 
 import Model.*;
 import View.Map;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -35,8 +36,8 @@ public class Update_manager {
     private static void init_message(Map map){ Message.init(map);}
 
     public static void update_window(){
-        System.out.println("Updating");
         try{
+            System.out.println("Updating");
             map.draw_gui(); // Draws things that can't move during the game
             update_gui(); // Draws things that can move
             map.show_message_displayed(); // Shows eventual messages
@@ -59,7 +60,10 @@ public class Update_manager {
         }
     }
 
-    public static void end_game(){ end_game = true;}
+    public static void end_game(){
+        end_game = true;
+        Platform.runLater(Update_manager::update_window);
+    }
 
 
 

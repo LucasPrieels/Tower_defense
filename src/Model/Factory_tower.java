@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Factory_tower extends Tower implements Runnable{
-    private static int[] period = {10000, 7000, 5000}, prod_money = {100, 150, 200}, price_upgrade = {200, 500};
+    private static int[] period = {10000, 5000, 3000}, prod_money = {100, 150, 200}, price_upgrade = {200, 300};
     private static int[] npc_destroyed_needed = {10, 30};
     private static int max_level = 2; // Counting from 0
     private static Image factory_tower_img;
@@ -20,6 +20,7 @@ public class Factory_tower extends Tower implements Runnable{
         this.thread = new Thread(this);
         Game.get_instance().add_thread(thread);
         // Not started yet because we can't produce money before launching the first wave
+        if (Level.get_instance().get_waves().get(Game.get_instance().get_curr_wave()).get_time() > 0) thread.start();
         try{
             factory_tower_img = new Image(new FileInputStream("Assets/factory_tower.png"), Tower.get_size_static() / 1.5, Tower.get_size_static(), false, false);
         } catch(FileNotFoundException e){
@@ -28,6 +29,7 @@ public class Factory_tower extends Tower implements Runnable{
     }
 
     public void run(){
+        System.out.println("Running");
         while (true){
             if (scan()) {
                 action_scanned(new Small_NPC(0, 0, 0, 0, new Path_custom(new ArrayList<>(), 0)));

@@ -30,9 +30,9 @@ public class Message implements Runnable{
             try {
                 synchronized (key) {
                     Platform.runLater(() -> map.show_message_displayed());
-                    Thread.sleep((long) (500.0 / Game.get_instance().get_fps()));
                     t += 500.0 / Game.get_instance().get_fps();
                 }
+                Thread.sleep((long) (500.0 / Game.get_instance().get_fps()));
             } catch (InterruptedException e) {
                 return; // If the thread is interrupted, we stop it
             }

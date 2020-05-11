@@ -49,7 +49,7 @@ public class Level_constructor {
     }
 
     private static Level construct_lv2(){
-        init_money = 1000;
+        init_money = 2000;
         init_score = 500;
 
         health_small_npc = new ArrayList<>(List.of(15, 17, 20));
@@ -77,27 +77,27 @@ public class Level_constructor {
     }
 
     private static Level construct_lv3(){
-        init_money = 1000;
+        init_money = 1500;
         init_score = 300;
 
-         health_small_npc = new ArrayList<>(List.of(17, 20, 25));
-         health_med_npc = new ArrayList<>(List.of(25, 30, 35));
-         health_big_npc = new ArrayList<>(List.of(40, 50, 60));
+        health_small_npc = new ArrayList<>(List.of(15, 17, 20));
+        health_med_npc = new ArrayList<>(List.of(20, 25, 30));
+        health_big_npc = new ArrayList<>(List.of(30, 40, 50));
          speed_small_npc = new ArrayList<>(List.of(22.0, 25.0, 27.0));
          speed_med_npc = new ArrayList<>(List.of(15.0, 18.0, 20.0));
          speed_big_npc = new ArrayList<>(List.of(12.0, 15.0, 17.0));
 
-         time_small_npc1 = new ArrayList<>(List.of(1, 0, 1, 0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0));
-         time_small_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1));
-         time_small_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0));
+         time_small_npc1 = new ArrayList<>(List.of(1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0));
+         time_small_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1));
+         time_small_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0));
 
          time_med_npc1 = new ArrayList<>(List.of(0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0));
-         time_med_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1));
+         time_med_npc2 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1));
          time_med_npc3 = new ArrayList<>(List.of(0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0));
 
          time_big_npc1 = new ArrayList<>(List.of(0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
          time_big_npc2 = new ArrayList<>(List.of(0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0));
-         time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0));
+         time_big_npc3 = new ArrayList<>(List.of(1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0));
 
          time_between_waves = 10;
 
@@ -115,6 +115,12 @@ public class Level_constructor {
         ArrayList<ArrayList<Integer>> time_small_npc = new ArrayList<>(List.of(time_small_npc1, time_small_npc2, time_small_npc3));
         ArrayList<ArrayList<Integer>> time_med_npc = new ArrayList<>(List.of(time_med_npc1, time_med_npc2, time_med_npc3));
         ArrayList<ArrayList<Integer>> time_big_npc = new ArrayList<>(List.of(time_big_npc1, time_big_npc2, time_big_npc3));
+
+        for (int i=0; i<time_small_npc.size(); i++){
+            if (time_small_npc.get(i).size() != time_med_npc.get(i).size() || time_med_npc.get(i).size() != time_big_npc.get(i).size()){
+                throw new AssertionError("The size of all time_npcs must be the same");
+            }
+        }
 
         int num_waves = time_small_npc.size();
 

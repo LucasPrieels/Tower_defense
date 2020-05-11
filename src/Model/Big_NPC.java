@@ -15,7 +15,7 @@ public class Big_NPC extends NPC {
             big_npc_img = new Image(new FileInputStream("Assets/Big_NPC.png"), size * Update_manager.get_fact_x(), size * Update_manager.get_fact_y(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
-        }
+        } catch(NullPointerException ignore){} // If we create a NPC without gui, Update_manager is null but we don't need its image
     }
 
     public Image get_image(){ return big_npc_img;}

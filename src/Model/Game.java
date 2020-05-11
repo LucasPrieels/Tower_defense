@@ -84,7 +84,7 @@ public class Game implements Runnable, Serializable{
         for (Thread t: copyThreads){
             t.interrupt();
             try{
-                t.join(); // Utile?
+                t.join();
             } catch (InterruptedException ignored){}
         }
     }

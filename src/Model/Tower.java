@@ -26,24 +26,20 @@ public abstract class Tower implements Runnable, Serializable, Movable, Scanner{
     }
 
     public void upgrade() {
-        if (get_curr_level() != get_max_level() && Game.get_instance().get_npc_destroyed() >= npc_destroyed_needed[get_curr_level()] && Game.get_instance().pay(get_price_upgrade())) {
-            increment_curr_level();
-            tower_snd = TinySound.loadSound("Songs/tower.wav");
-            tower_snd.play(3);
-        }
+        curr_level++;
+        tower_snd = TinySound.loadSound("Songs/tower.wav");
+        tower_snd.play(3);
     }
 
     public void update_pos(){} // Towers don't move regularly but are Movable because they can be deleted
 
-    public void increment_curr_level(){ curr_level ++;}
-
     public int get_curr_level(){ return curr_level;}
     public int get_max_level(){ return max_level;}
-    public int get_price_upgrade(){ return price_upgrade[curr_level]; }
-    public int get_period(){ return period[curr_level]; }
+    public int get_price_upgrade(){return price_upgrade[curr_level];} // Can't be called if curr_level = max_level
+    public int get_period(){ return period[curr_level];}
     public Thread get_thread(){return thread;}
-    public Asteroid get_asteroid(){ return asteroid; }
-    public int get_npc_destroyed_needed(){return npc_destroyed_needed[curr_level];}
+    public Asteroid get_asteroid(){ return asteroid;}
+    public int get_npc_destroyed_needed(){return npc_destroyed_needed[curr_level];} // Can't be called if curr_level = max_level
     public static double get_size_static(){ return size_tower;}
 
     public abstract Image get_image();
