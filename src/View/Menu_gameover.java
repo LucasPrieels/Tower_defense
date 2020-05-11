@@ -31,7 +31,7 @@ public class Menu_gameover extends Parent {
 
         }
         ImageView imageView = new ImageView(image);
-        Button button_return = new_button("Home", 810, 550, 120, 30, "-fx-background-color:  #2E8B57");
+        Button button_return = Menu.new_button("Home", 810, 550, 120, 30, "-fx-background-color:  #2E8B57");
         button_return.setOnMouseClicked(new Menu_buttons_listener(theStage, "menu"));
         this.getChildren().addAll(imageView, button_return);
     }
@@ -43,15 +43,5 @@ public class Menu_gameover extends Parent {
         Scene scene = new Scene(root, theStage.getWidth(), theStage.getHeight(), Color.LIGHTGRAY);
         theStage.setScene(scene);
         theStage.show();
-    }
-
-    private Button new_button(String text, int x, int y, int width, int height, String color) {
-        Button button = new Button(text);
-        button.setLayoutX(x);
-        button.setLayoutY(y);
-        button.setPrefWidth(width);
-        button.setPrefHeight(height);
-        button.setStyle(color);
-        return button;
     }
 }

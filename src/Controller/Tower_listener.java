@@ -58,11 +58,6 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
                         tower.get_thread().interrupt();
                         Board.get_instance().remove_tower(tower);
                         tower.get_asteroid().unoccupy();
-
-
-                    }
-                    else{
-                        Message.set_temp_message("There is no tower");
                     }
                     Controller.Update_manager.update_window();
                 }
@@ -103,12 +98,8 @@ public class Tower_listener extends Parent implements EventHandler<MouseEvent>, 
                             Message.set_temp_message("You don't have enough money");
                         }
                     }
-                    //else if (message == "Destroy_tower"){
-                    //    Menu.bad_sound();
-                    //    Message.set_temp_message("Il n'y a pas de tour sur l'astéroïde");
-                    //}
                     else{
-                        System.out.println("Error!!!");
+                        throw new AssertionError("Message given to Tower_listener is oincorrect");
                     }
                     Controller.Update_manager.update_window();
                     handle_finished = true;

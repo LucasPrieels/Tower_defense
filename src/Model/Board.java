@@ -161,11 +161,11 @@ public class Board implements Serializable {
     public ArrayList<Asteroid> get_asteroids(){ return asteroids;}
     public ArrayList<Munition> get_munitions(){ return munitions;}
     public ArrayList<Movable> get_redrawables(){ return movables;}
-
     public int get_dim_x(){return dim_x;}
     public int get_dim_y(){return dim_y;}
     public int get_num_paths(){return paths.size();}
     public int get_width_path(int num_path){return paths.get(num_path).get_width();}
+
     public double get_ord_path(int num_path){
         // Returns the y position of the leftmost point of path number num_path
         ArrayList<Pair<Double, Double>> pos = paths.get(num_path).get_pos();

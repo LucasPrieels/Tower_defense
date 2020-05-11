@@ -8,7 +8,7 @@ public class Level implements Serializable {
     private ArrayList<Wave> waves;
     private static Level instance;
 
-    protected Level(int init_money, int init_score, ArrayList<Wave> waves, int time_between_waves){
+    public Level(int init_money, int init_score, ArrayList<Wave> waves, int time_between_waves){
         this.init_money = init_money;
         this.init_score = init_score;
         this.waves = waves;

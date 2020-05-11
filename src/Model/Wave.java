@@ -80,7 +80,6 @@ public class Wave implements Runnable, Serializable {
         }
     }
 
-
     public int get_time_wave(){return time_npc.get(0).size();}
     public int get_time(){return time;}
 }

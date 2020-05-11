@@ -58,12 +58,6 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
             }
                 Platform.runLater( () -> Message.set_const_message("Click on a tower"));
         }
-        //else if(message == "Destroy_tower"){
-        //    Platform.runLater(() -> {
-        //        Map.get_instance().set_const_message("Cliquez sur une tour");
-        //    });
-        //}
-        //System.out.println("Updating");
         Platform.runLater(Update_manager::update_window);
     }
 }

@@ -13,7 +13,7 @@ public abstract class Tower implements Runnable, Serializable, Movable, Scanner{
     protected transient Thread thread; //enlever si ca marche pas
     private static double size_tower = 50;
 
-    protected Tower(Asteroid asteroid, int[] period, int[] price_upgrade, int max_level, int[] npc_destroyed_needed){
+    public Tower(Asteroid asteroid, int[] period, int[] price_upgrade, int max_level, int[] npc_destroyed_needed){
         tower_snd = TinySound.loadSound("Songs/tower.wav");
         tower_snd.play();
         this.asteroid = asteroid;
@@ -63,7 +63,7 @@ public abstract class Tower implements Runnable, Serializable, Movable, Scanner{
 
     public abstract Image get_image();
 
-    protected static double get_size(){ return size_tower;}
+    public static double get_size(){ return size_tower;}
 
     public void update_pos(){} // Les tours ne se déplacent pas mais doivent être Redrawable car leur position n'est pas fixée
 }

@@ -145,7 +145,7 @@ public class Menu extends Parent implements Serializable{
         });
     }
 
-    public void vbox_text(Group vbox, String text){
+    private void vbox_text(Group vbox, String text){
         vbox.getChildren().clear();
         vbox.setLayoutX(400);
         vbox.setLayoutY(100);
@@ -168,7 +168,7 @@ public class Menu extends Parent implements Serializable{
         vbox.getChildren().add(border);
     }
 
-    public Button new_button(String text, int x, int y, int width, int height, String color){
+    public static Button new_button(String text, int x, int y, int width, int height, String color){
         Button button = new Button(text);
         button.setLayoutX(x);
         button.setLayoutY(y);

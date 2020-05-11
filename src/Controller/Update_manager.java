@@ -19,7 +19,7 @@ public class Update_manager {
 
     private Update_manager(){ }
 
-    public static Map first_update_window(Stage theStage){
+    static Map first_update_window(Stage theStage){
         Update_manager.stage = theStage;
         try{
             Update_manager.map = Map.init(theStage);
@@ -29,7 +29,7 @@ public class Update_manager {
         return map;
     }
 
-    public static void show_asteroids_controller(){
+    static void show_asteroids_controller(){
         map.show_asteroids_gui();
     }
 
@@ -83,7 +83,7 @@ public class Update_manager {
         map.fill_score_rectangle(score, money, wave, timer, npc_destroyed);
     }
 
-    public static void update_munitions_canvas() {
+    private static void update_munitions_canvas() {
         CopyOnWriteArrayList<Munition> copyMunitions = new CopyOnWriteArrayList<>(Board.get_instance().get_munitions());
         for (Munition munition : copyMunitions) {
             double pos_x = munition.get_pos_x(), pos_y = munition.get_pos_y();
@@ -106,7 +106,7 @@ public class Update_manager {
         }
     }
 
-    public static void update_npc_canvas() {
+    private static void update_npc_canvas() {
         CopyOnWriteArrayList<NPC> npcs = new CopyOnWriteArrayList<>(Board.get_instance().get_npcs());
         // Car on peut faire des suppressions d'éléments
         for (NPC npc : npcs) {

@@ -22,15 +22,6 @@ public class Path_custom implements Serializable {
         return pos.size();
     }
 
-    /*
-    public double get_ord(int pos_x){
-        for (int i = 0; i<pos.size(); i++){
-            if (Math.abs(pos.get(i).getKey() - pos_x) < 2) return pos.get(i).getValue();
-        }
-        throw new AssertionError("In get_ord in Path_custom.java, pos_x = " + pos_x + " corresponds to none of the positions of this path");
-    }
-     */
-
     public Pair<Double, Double> next_pos(int curr_ind, double pos_y, double speed){
         double offset = pos_y-pos.get(Math.min(curr_ind + (int)Math.round(speed), pos.size()-1)).getValue(); // + speed because we search for last position
         double new_pos_x = pos.get(Math.max(curr_ind, 0)).getKey(); // We have to round speed, which can be a double depending on the number of FPS
@@ -56,7 +47,7 @@ public class Path_custom implements Serializable {
             path.getElements().add(lineTo);
             path.setStrokeWidth(0);
         }
-        
+
         for (int j = pos.size()-1; j > 0; j--){
             LineTo lineTo2 = new LineTo();
             lineTo2.setX(pos.get(j).getKey()*fact_x+20*(double)width/3);

@@ -29,11 +29,6 @@ public class Map extends Parent{
     private transient Image level_background, score_img, money_img, wave_img, timer_img, start_wave_button, menu_button, exit_button, win, gameover, star1, star2, star3, snowflake, im_big_npc,buy_freezing_tower_icon, buy_factory_tower_icon,buy_classic_tower_icon, destroy_tower_icon, upgrade_tower_icon;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_start_wave_button, iv_menu_button, iv_exit_button,iv_buy_classic_tower_icon, iv_buy_factory_tower_icon, iv_buy_freezing_tower_icon, iv_destroy_tower_icon, iv_upgrade_tower_icon;
-    //private transient Upgrade_tower_icon upgrade_tower_icon;
-    //private transient Buy_freezing_tower_icon buy_freezing_tower_icon;
-    //private transient Buy_factory_tower_icon buy_factory_tower_icon;
-    //private transient Buy_classic_tower_icon buy_classic_tower_icon;
-    //private transient Destroy_tower_icon destroy_tower_icon;
     private ArrayList<Integer> type_asteroid = new ArrayList<>();
     private ArrayList<Double> pos_x_asteroid = new ArrayList<>(), pos_y_asteroid = new ArrayList<>();
     private double fact_x, fact_y;
@@ -217,12 +212,12 @@ public class Map extends Parent{
 
 
     public void update_canvas() {
-        draw_gui();
-        Update_manager.update_gui();
+        draw_gui(); // Draws things that can't move during the game
+        Update_manager.update_gui(); // Draws things that can move
         show_message_displayed();
     }
 
-    public void draw_gui(){
+    private void draw_gui(){
         gc.drawImage(level_background, 0, 0); // Cover the previous images
         draw_asteroids();
         draw_score_rectangle();
@@ -294,6 +289,7 @@ public class Map extends Parent{
         return forbidden;
     }
 
+    /*
     public void show_forbidden_zones(){
         for (ArrayList<Double> forbid: Update_manager.get_forbidden()){
             double xmin = forbid.get(0);
@@ -306,6 +302,7 @@ public class Map extends Parent{
             gc.drawImage(snowflake, xmax, ymax, size_snowflake, size_snowflake);
         }
     }
+     */
 
     public void delete_start_wave_gui(){
         iv_start_wave_button.setX(-100);

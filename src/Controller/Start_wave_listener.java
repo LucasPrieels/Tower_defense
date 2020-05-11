@@ -14,7 +14,7 @@ public class Start_wave_listener implements EventHandler<MouseEvent> {
             return;
         }
         Menu.sound();
-        Message.set_temp_message("First wave launched");
+        Message.set_temp_message("Game launched");
         Update_manager.delete_start_wave_controller(); // Deletes the icon of the start_wave button
 
         for (Tower tower: Board.get_instance().get_towers()){

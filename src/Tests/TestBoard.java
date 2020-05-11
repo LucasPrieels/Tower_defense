@@ -11,7 +11,7 @@ public class TestBoard {
     // We assume all the methods in Game have already been tested and work properly
     private int level = 1; // Modify to test the unit tests with the different level
 
-    public void init(){
+    private void init(){
         Board.set_instance(null);
         Level.set_instance(null);
         Game.set_instance(null);
@@ -52,13 +52,10 @@ public class TestBoard {
         for (int i = 0; i < 500; i++){ // We try it 500 times to have a better sample
             init();
             Board.get_instance().create_asteroids_random();
-            System.out.println(Board.get_instance().get_asteroids().size());
             if (Board.get_instance().get_asteroids().size() < 5){ // 5 asteroids is the minimum
                 not_enough++;
             }
         }
-        System.out.println();
-        System.out.println(not_enough);
         assertTrue(not_enough <= 5); // Such as we have at least 5 asteroids in more than 99% of the cases
     }
 

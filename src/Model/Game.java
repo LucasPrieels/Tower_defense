@@ -99,6 +99,7 @@ public class Game implements Runnable, Serializable {
         Game.instance = instance;
         if (instance != null) instance.set_threads(new ArrayList<>());
     }
+
     public void add_thread(Thread thread){threads.add(thread);}
 
     public void stop_threads(){

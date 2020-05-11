@@ -38,6 +38,4 @@ public abstract class Attack_tower extends Tower implements Runnable{
     }
 
     public int get_power(){return power[get_curr_level()];}
-
-    public abstract Image get_image();
 }
