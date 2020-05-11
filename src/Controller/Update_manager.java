@@ -20,7 +20,8 @@ public class Update_manager {
     private Update_manager(){ }
 
     static Map first_update_window(Stage theStage){
-        Update_manager.stage = theStage;
+        end_game = false;
+        stage = theStage;
         try{
             Update_manager.map = Map.init(theStage);
             map.draw_paths();

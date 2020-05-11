@@ -19,7 +19,7 @@ public class Message implements Runnable{
     }
 
     public static void set_temp_message(String message) {
-        Thread thread_message = new Thread();
+        Thread thread_message = new Thread(new Message());
         Game.get_instance().add_thread(thread_message);
         map.set_curr_message(message);
         thread_message.start();
@@ -32,8 +32,8 @@ public class Message implements Runnable{
             try {
                 synchronized (key) {
                     Platform.runLater(() -> map.show_message_displayed());
-                    Thread.sleep((long) (1000.0 / Game.get_instance().get_fps()));
-                    t += 1000.0 / Game.get_instance().get_fps();
+                    Thread.sleep((long) (500.0 / Game.get_instance().get_fps()));
+                    t += 500.0 / Game.get_instance().get_fps();
                 }
             } catch (InterruptedException e) {
                 return;

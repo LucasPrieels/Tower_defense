@@ -104,8 +104,8 @@ public class Level_constructor {
 
         for (int i=0; i<3; i++){
             speed_small_npc.set(i, speed_small_npc.get(i)*fact/fps);
-            speed_med_npc.set(i, speed_small_npc.get(i)*fact/fps);
-            speed_big_npc.set(i, speed_small_npc.get(i)*fact/fps);
+            speed_med_npc.set(i, speed_med_npc.get(i)*fact/fps);
+            speed_big_npc.set(i, speed_big_npc.get(i)*fact/fps);
         }
 
         ArrayList<ArrayList<Integer>> time_small_npc = new ArrayList<>(List.of(time_small_npc1, time_small_npc2, time_small_npc3));

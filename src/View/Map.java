@@ -11,6 +11,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
+import javafx.scene.shape.Path;
 import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -166,7 +167,8 @@ public class Map extends Parent{
 
     public void draw_paths() {
         for (Path_custom path2 : Board.get_instance().get_paths()) {
-            this.getChildren().add(path2.get_path_ui());
+            Path path = path2.get_path_ui();
+            this.getChildren().add(path);
         }
     }
 
@@ -181,7 +183,8 @@ public class Map extends Parent{
     public void draw_iv(ImageView iv, double x, double y){
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
-        gc.drawImage(iv.snapshot(params, null), x*fact_x, y*fact_y);
+        Image image = iv.snapshot(params, null);
+        gc.drawImage(image, x*fact_x, y*fact_y);
     }
 
     public void draw_img(Image img, double x, double y){

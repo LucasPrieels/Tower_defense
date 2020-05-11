@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class Game implements Runnable, Serializable {
+public class Game implements Runnable, Serializable{
     private int money, npc_destroyed = 0, score, curr_wave = 0, fps, price_classic_tower, price_freezing_tower, price_factory_tower, score_lost, num_level;
     private double fact;
     private static Game instance;
