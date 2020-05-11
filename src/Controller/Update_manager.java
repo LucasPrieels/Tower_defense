@@ -24,8 +24,8 @@ public class Update_manager {
         stage = theStage;
         try{
             Update_manager.map = Map.init(theStage); // Inits map
-            map.draw_paths(); // Draw paths
-            init_message(map); // Init the class Message
+            map.draw_paths(); // Draws paths
+            init_message(map); // Inits the class Message
         } catch (FileNotFoundException e){e.printStackTrace();}
         return map;
     }
@@ -35,6 +35,7 @@ public class Update_manager {
     private static void init_message(Map map){ Message.init(map);}
 
     public static void update_window(){
+        System.out.println("Updating");
         try{
             map.draw_gui(); // Draws things that can't move during the game
             update_gui(); // Draws things that can move

@@ -9,7 +9,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 public class Factory_tower extends Tower implements Runnable{
-    private static int[] period = {10000, 7000, 5000}, prod_money = {50, 70, 100}, price_upgrade = {200, 500};
+    private static int[] period = {10000, 7000, 5000}, prod_money = {100, 150, 200}, price_upgrade = {200, 500};
     private static int[] npc_destroyed_needed = {10, 30};
     private static int max_level = 2; // Counting from 0
     private static Image factory_tower_img;

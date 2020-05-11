@@ -25,13 +25,13 @@ public class Path_constructor {
             path2 = new Path_custom(pos_path2, width2);
             paths = new ArrayList<>(List.of(path1, path2));
         } else if (num_level == 2) {
-            int start_path1 = 90, width1 = 5;
+            int start_path1 = 100, width1 = 5;
             ArrayList<Pair<Double, Double>> pos_path1 = construct_path_2(dim_x, start_path1, 1);
-            int start_path2 = 90, width2 = 5;
+            int start_path2 = 100, width2 = 5;
             path1 = new Path_custom(pos_path1, width1);
             ArrayList<Pair<Double, Double>> pos_path2 = construct_path_2(dim_x, start_path2, 2);
             path2 = new Path_custom(pos_path2, width2);
-            int start_path3 = 180, width3 = 5;
+            int start_path3 = 190, width3 = 5;
             ArrayList<Pair<Double, Double>> pos_path3 = construct_path_2(dim_x, start_path3, 3);
             path3 = new Path_custom(pos_path3, width3);
             paths = new ArrayList<>(List.of(path1, path2, path3));
@@ -97,7 +97,7 @@ public class Path_constructor {
         if (path_num == 1){
             while (x < dim_x){
                 tab.add(new Pair<>(x, y));
-                Pair<Double, Double> pair = increment_pos(x, y, 1, 47*Math.sin(0.01*x-5.5) - 47*Math.sin(0.01*(x-1)-5.5));
+                Pair<Double, Double> pair = increment_pos(x, y, 1, 40*Math.sin(0.01*x-5.5) - 40*Math.sin(0.01*(x-1)-5.5));
                 x = pair.getKey();
                 y = pair.getValue();
             }
@@ -105,7 +105,7 @@ public class Path_constructor {
         else if (path_num == 2){
             while (x < dim_x){
                 tab.add(new Pair<>(x, y));
-                Pair<Double, Double> pair = increment_pos(x, y, 1, -47*Math.sin(0.01*x-5.5) + 47*Math.sin(0.01*(x-1)-5.5));
+                Pair<Double, Double> pair = increment_pos(x, y, 1, -40*Math.sin(0.01*x-5.5) + 40*Math.sin(0.01*(x-1)-5.5));
                 x = pair.getKey();
                 y = pair.getValue();
             }
