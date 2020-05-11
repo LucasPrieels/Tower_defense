@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import kuusisto.tinysound.Sound;
 import kuusisto.tinysound.TinySound;
-
 import java.io.*;
 
 import static Controller.Launch_manager.load_data;

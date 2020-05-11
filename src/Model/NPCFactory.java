@@ -26,7 +26,6 @@ public class NPCFactory {
                     Path_custom path = Board.get_instance().get_paths().get((int) res[0]);
                     double pos_y = res[1];
                     NPC npc = null;
-                    System.out.println("Speed: " + speed_npc.get(i));
                     switch (i) {
                         case 0:
                             npc = new Small_NPC(pos_x, pos_y, speed_npc.get(i), health_npc.get(i), path);

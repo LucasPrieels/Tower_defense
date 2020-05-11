@@ -23,7 +23,8 @@ public class Board implements Serializable {
         dim_y = 300;
         margin_x = 10;
         margin_y = 10;
-        proba = 0.8; //For each increase of a certain number (see Board) in x, there is a probability of proba that we find an asteroid with that x-position
+        if (num_level == 1) proba = 0.95; //For each increase of a certain number (see Board) in x, there is a probability of proba that we find an asteroid with that x-position
+        else proba = 0.85;
         max_distance = 40; //Max distance from each asteroid to the nearest path
         this.paths = Path_constructor.construct(num_level, dim_x, fact);
     }
@@ -76,11 +77,12 @@ public class Board implements Serializable {
     }
 
     public void create_asteroids_random(){
-        int size_asteroid = Asteroid.get_size();
+        if (asteroids.size() > 0) return;
+        double size_asteroid = Asteroid.get_size();
         for (Path_custom path : paths) {
             for (int i = 0; i < path.get_pos().size(); i += 1500){
                 double x = path.get_pos().get(i).getKey(), y = path.get_pos().get(i).getValue();
-                if (x < margin_x + (double)size_asteroid/2 || x > dim_x - margin_x - (double)size_asteroid/2 || Math.random() > proba){
+                if (x < margin_x + size_asteroid/2 || x > dim_x - margin_x - size_asteroid/2 || Math.random() > proba){
                     // Proba is the probability an asteroid is created at each iteration of x
                     continue;
                 }
@@ -94,10 +96,10 @@ public class Board implements Serializable {
                     Asteroid asteroid;
                     double pos_x = Math.max(0, Math.min(dim_x - 1, x + offset_x)), pos_y;
                     if (offset_y > 0){
-                        pos_y = Math.min(y + (double)path.get_width() / 2 + (double)size_asteroid/2 + (double)Big_NPC.get_radius_static()/2 + offset_y, dim_y - margin_y - (double)size_asteroid/2 - (double)Big_NPC.get_radius_static()/2);
+                        pos_y = Math.min(y + (double)path.get_width() / 2 + size_asteroid/2 + (double)Big_NPC.get_radius_static()/2 + offset_y, dim_y - margin_y - size_asteroid/2);
                     }
                     else{
-                        pos_y = Math.max(y - (double)path.get_width() / 2 - (double)size_asteroid/2 - (double)Big_NPC.get_radius_static()/2 + offset_y, margin_y + (double)size_asteroid/2 + (double)Big_NPC.get_radius_static()/2);
+                        pos_y = Math.max(y - (double)path.get_width() / 2 - size_asteroid/2 - (double)Big_NPC.get_radius_static()/2 + offset_y, margin_y + size_asteroid/2);
                     }
                     asteroid = new Asteroid(pos_x, pos_y);
 
@@ -165,6 +167,7 @@ public class Board implements Serializable {
     public int get_num_paths(){return paths.size();}
     public int get_width_path(int num_path){return paths.get(num_path).get_width();}
     public double get_ord_path(int num_path){
+        // Returns the y position of the leftmost point of path number num_path
         ArrayList<Pair<Double, Double>> pos = paths.get(num_path).get_pos();
         return pos.get(pos.size()-1).getValue();
     }
@@ -185,4 +188,8 @@ public class Board implements Serializable {
     public static void set_instance(Board instance) {
         Board.instance = instance;
     }
+
+    public int get_margin_x(){ return margin_x;}
+    public int get_margin_y(){ return margin_y;}
+    public int get_max_distance(){ return max_distance;}
 }
