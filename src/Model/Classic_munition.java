@@ -23,9 +23,9 @@ public class Classic_munition extends Munition {
     }
 
     public void action_scanned(NPC npc){ // Munitions explodes
-        npc.decrease_health(get_tower().get_power());
         Sound blast_snd = TinySound.loadSound("Songs/blast.wav");
         blast_snd.play(0.8);
+        npc.decrease_health(get_tower().get_power());
         if (npc.get_health() <= 0) {
             if (Board.get_instance().remove_npc(npc)) {
                 Sound destroyed_snd = TinySound.loadSound("Songs/explosion.wav");

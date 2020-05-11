@@ -67,7 +67,6 @@ public class Path_custom implements Serializable {
 
         LineTo finalLine = new LineTo();
         finalLine.setX(0);
-        System.out.println((pos.get(0).getValue() - actual_width/3) + " " + (pos.get(0).getValue() + 2*actual_width/3));
         finalLine.setY((pos.get(0).getValue() + 2*actual_width/3) * fact_y);
         path.getElements().add(finalLine);
         path.setStrokeWidth(0);

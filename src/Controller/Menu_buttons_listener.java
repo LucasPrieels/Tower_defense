@@ -33,6 +33,7 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
             else if (message.equals("menu")) {
                 Game.get_instance().stop_threads();
                 Launch_manager.save_data();
+                System.out.println("Menu");
 
                 Game.set_instance(null); // Deletes the current Game, Level, Board and Map after being saved
                 Level.set_instance(null);
