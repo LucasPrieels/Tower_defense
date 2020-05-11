@@ -50,7 +50,7 @@ public class NPCFactory {
         do {
             num_paths = Board.get_instance().get_num_paths();
             path_chosen = (int) Math.floor(Math.random() * num_paths);
-            width = Board.get_instance().get_width_path(path_chosen)-2*radius;
+            width = Board.get_instance().get_width_path(path_chosen);
             pos_y = Board.get_instance().get_ord_path(path_chosen) + Math.random()*2*width - width;
         } while(!Board.get_instance().empty(Board.get_instance().get_dim_x(), pos_y, radius));
         return new double[]{path_chosen, pos_y};

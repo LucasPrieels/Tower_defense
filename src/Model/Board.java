@@ -109,7 +109,7 @@ public class Board implements Serializable {
                     }
                     asteroid = new Asteroid(pos_x, pos_y);
 
-                    boolean cond = far_other_paths(asteroid, size_asteroid) && far_other_asteroids(asteroid, size_asteroid) & not_behind_button(asteroid);
+                    boolean cond = far_other_paths(asteroid, size_asteroid/2) && far_other_asteroids(asteroid, size_asteroid/2) & not_behind_button(asteroid);
 
                     if (cond){ // If every condition is respected, the asteroid can be added to the board
                         asteroids.add(asteroid);

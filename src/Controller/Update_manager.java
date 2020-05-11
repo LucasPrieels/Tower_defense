@@ -118,7 +118,7 @@ public class Update_manager {
                     map.draw_snowflake(npc.get_pos_x_snowflakes().get(i), npc.get_pos_y_snowflakes().get(i));
                 }
                 if (Math.random() < 0.8){ // There's a probability that we add another snowflake at each update
-                    npc.add_snowflake(npc.get_pos_x() + npc.get_size()/6, npc.get_pos_y() + Math.random()*npc.get_size()/4);
+                    npc.add_snowflake(npc.get_pos_x() + npc.get_size()/3 + Math.random()*npc.get_size()/2, npc.get_pos_y() + Math.random()*npc.get_size()/2 + npc.get_size()/4.5);
                 }
             }
         }
