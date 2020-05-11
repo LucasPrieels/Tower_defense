@@ -15,7 +15,7 @@ public class Freezing_tower extends Attack_tower{
     public Freezing_tower(Asteroid asteroid){
         super(asteroid, range, power, npc_destroyed_needed, period, price_upgrade, max_level);
         try{
-            freezing_tower_img = new Image(new FileInputStream("Assets/freezing_tower.png"), Tower.get_size() / 1.5, Tower.get_size(), false, false);
+            freezing_tower_img = new Image(new FileInputStream("Assets/freezing_tower.png"), Tower.get_size_static() / 1.5, Tower.get_size_static(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -31,11 +31,11 @@ public class Freezing_tower extends Attack_tower{
         ArrayList<NPC> npcs = Board.get_instance().get_npcs();
         if (npcs.size() == 0) return false;
 
-        //On cherche le PNJ qui se trouve le plus à gauche de l'écran, pour lui tirer dessus en priorité
+        // We're shooting in priority at leftmost NPC since there closer to the end
         double mini = -1;
         NPC curr_npc = null;
         for (NPC npc: npcs){
-            if ((curr_npc == null || npc.get_pos_x() < mini) && npc_in_tower_area(npc) && npc.is_frozen() == 0) {
+            if ((curr_npc == null || npc.get_pos_x() < mini) && npc_in_tower_area(npc) && npc.is_frozen() == 0) { // We don't shoot at already frozen NPCs
                 mini = npc.get_pos_x();
                 curr_npc = npc;
             }

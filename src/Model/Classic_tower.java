@@ -15,7 +15,7 @@ public class Classic_tower extends Attack_tower{
     public Classic_tower(Asteroid asteroid){
         super(asteroid, range, power, npc_destroyed_needed, period, price_upgrade, max_level);
         try{
-            classic_tower_img = new Image(new FileInputStream("Assets/classic_tower.png"), Tower.get_size() / 1.5, Tower.get_size(), false, false);
+            classic_tower_img = new Image(new FileInputStream("Assets/classic_tower.png"), Tower.get_size_static() / 1.5, Tower.get_size_static(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -31,7 +31,7 @@ public class Classic_tower extends Attack_tower{
         ArrayList<NPC> npcs = Board.get_instance().get_npcs();
         if (npcs.size() == 0) return false;
 
-        //On cherche le PNJ qui se trouve le plus à gauche de l'écran, pour lui tirer dessus en priorité
+        // We're shooting in priority at leftmost NPC since there closer to the end
         double mini = -1;
         NPC curr_npc = null;
         for (NPC npc: npcs){

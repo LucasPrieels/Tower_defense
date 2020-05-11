@@ -29,10 +29,11 @@ public class Level implements Serializable {
         instance = Level_constructor.construct(num_level, fps, fact);
     }
 
+    public static void set_instance(Level instance){ Level.instance = instance;}
+
     public int get_num_waves(){ return waves.size();}
     public ArrayList<Wave> get_waves(){ return waves;}
     public int get_init_money(){ return init_money;}
     public int get_init_score(){ return init_score;}
-    public static void set_instance(Level instance){ Level.instance = instance;}
     public int get_time_between_waves(){return time_between_waves;}
 }

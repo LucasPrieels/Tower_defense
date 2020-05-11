@@ -23,7 +23,7 @@ public class Game implements Runnable, Serializable{
         score_lost = 100; //Score lost when a PNJ is at the end of the window
 
         Level.init(num_level, fps, fact);
-        money = Level.get_instance().get_init_money();
+        money = Level.get_instance().get_init_money(); // Initial money and score depends on the leveel
         score = Level.get_instance().get_init_score();
         this.num_level = num_level;
 
@@ -44,7 +44,7 @@ public class Game implements Runnable, Serializable{
         instance = new Game(num_level);
     }
 
-    public void run(){ //Appelé par un listener sur un bouton
+    public void run(){
         for (int i=0; i<Level.get_instance().get_waves().size(); i++){
             try{
                 Thread thread_wave;
@@ -52,12 +52,13 @@ public class Game implements Runnable, Serializable{
                     curr_wave = i;
                     Wave wave = Level.get_instance().get_waves().get(i);
                     thread_wave = new Thread(wave);
-                    Game.get_instance().add_thread(thread_wave);
+                    Game.get_instance().add_thread(thread_wave); // Launching a new wave
                     thread_wave.start();
                 }
-                thread_wave.join();
+                thread_wave.join(); // We wait for the wave to be finished before launching another one
                 if (score < 0){
-                    Update_manager.end_game();
+                    Update_manager.end_game(); // We can't end the game directly from the Game thread, we have to set a boolean end_game = true
+                    // the Game Over menu will be launched at the next iteration of update_window (from the JavaFX thread)
                     return;
                 }
 
@@ -65,10 +66,10 @@ public class Game implements Runnable, Serializable{
                 return;
             }
         }
-        Update_manager.end_game();
+        Update_manager.end_game(); // All waves are over
     }
 
-    public boolean pay(int paid){
+    public boolean pay(int paid){ // Returns true and pays if the user as enough money, returns false otherwise
         if (money>=paid){
             money -= paid;
             return true;
@@ -77,30 +78,6 @@ public class Game implements Runnable, Serializable{
             return false;
         }
     }
-
-    public int get_npc_destroyed(){ return npc_destroyed;}
-    public int get_score(){ return score;}
-    public int get_money(){return money;}
-    public void decrease_score(int a){ score -= a;}
-    public void increase_money(int a){money += a;}
-    public int get_fps(){ return fps;}
-    public int get_curr_wave(){ return curr_wave;}
-
-    public void increment_npc_destroyed(){
-        npc_destroyed++;
-    }
-
-    public int get_price_classic_tower(){return price_classic_tower;}
-    public int get_price_freezing_tower(){return price_freezing_tower;}
-    public int get_price_factory_tower(){return price_factory_tower;}
-    public int get_score_lost(){return score_lost;}
-
-    public static void set_instance(Game instance){
-        Game.instance = instance;
-        if (instance != null) instance.set_threads(new ArrayList<>());
-    }
-
-    public void add_thread(Thread thread){threads.add(thread);}
 
     public void stop_threads(){
         CopyOnWriteArrayList<Thread> copyThreads = new CopyOnWriteArrayList<>(threads);
@@ -112,6 +89,25 @@ public class Game implements Runnable, Serializable{
         }
     }
 
-    public void set_threads(ArrayList<Thread> threads){this.threads = threads;}
+    public static void set_instance(Game instance){
+        Game.instance = instance;
+        if (instance != null) instance.set_threads(new ArrayList<>());
+    }
+
+    private void set_threads(ArrayList<Thread> threads){this.threads = threads;}
+    public void increment_npc_destroyed(){ npc_destroyed++;}
+    public void add_thread(Thread thread){threads.add(thread);}
+    public void decrease_score(int a){ score -= a;}
+    public void increase_money(int a){money += a;}
+
+    public int get_npc_destroyed(){ return npc_destroyed;}
+    public int get_score(){ return score;}
+    public int get_money(){return money;}
+    public int get_fps(){ return fps;}
+    public int get_curr_wave(){ return curr_wave;}
+    public int get_price_classic_tower(){return price_classic_tower;}
+    public int get_price_freezing_tower(){return price_freezing_tower;}
+    public int get_price_factory_tower(){return price_factory_tower;}
+    public int get_score_lost(){return score_lost;}
     public int get_num_level(){ return num_level;}
 }

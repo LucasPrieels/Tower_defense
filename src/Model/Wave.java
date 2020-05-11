@@ -24,22 +24,23 @@ public class Wave implements Runnable, Serializable {
         int iter = 0, fps = Game.get_instance().get_fps();
         while (time < max_time){
             if (time > max_time - Level.get_instance().get_time_between_waves() && Board.get_instance().get_npcs().size() == 0){
-                return;
+                return; // If no NPC is going to be added in this wave (first condition) and there are no more NPCs on the Board,
+                // There is no point in waiting for the next wave, we launch it right away
             }
             iter++;
             try{
                 synchronized (key) {
-                    if (iter % fps == 0) NPCFactory.add_npcs(time_npc, speed_npc, health_npc, time);
-                    update_pos_redrawable();
-                    check_munition_shot();
+                    if (iter % fps == 0) NPCFactory.add_npcs(time_npc, speed_npc, health_npc, time); // Creates and adds new NPCs
+                    update_pos_movable(); // Update the position of all Movable objects
+                    check_munition_shot(); // Checks if any NPC has been shot by a munition
                     Platform.runLater(Update_manager::update_window);
                     if (Game.get_instance().get_score() <= 0){
-                        return;
+                        return; // Game over
                     }
                 }
                 Thread.sleep(1000 / fps);
                 if (iter % fps == 0) {
-                    time++;
+                    time++; // There are fps iterations of the code each second (so time is in seconds)
                 }
             } catch(InterruptedException e){
                 return;
@@ -47,11 +48,12 @@ public class Wave implements Runnable, Serializable {
                 e.printStackTrace();
             }
         }
-        if (Game.get_instance().get_curr_wave() == Level.get_instance().get_num_waves() - 1){ // Si la dernière vague est finie, le jeu continue jusqu'à ce qu'il n'y ait plus de PNJ
+        if (Game.get_instance().get_curr_wave() == Level.get_instance().get_num_waves() - 1){
+            // If the last wave is over, the game carries on until there are no NPC left
             while (Board.get_instance().get_npcs().size() > 0){
                 try{
                     synchronized (key) {
-                        update_pos_redrawable();
+                        update_pos_movable();
                         Platform.runLater(Update_manager::update_window);
                     }
                     if (Game.get_instance().get_score() <= 0) return;
@@ -63,17 +65,17 @@ public class Wave implements Runnable, Serializable {
         }
     }
 
-    private void update_pos_redrawable(){
-        CopyOnWriteArrayList<Movable> copyMovables = new CopyOnWriteArrayList<>(Board.get_instance().get_redrawables());
+    private void update_pos_movable(){
+        CopyOnWriteArrayList<Movable> copyMovables = new CopyOnWriteArrayList<>(Board.get_instance().get_movables());
         for (Movable movable : copyMovables){
-            movable.update_pos();
+            movable.update_pos(); // Updates the position of all Movable objects
         }
     }
 
     private void check_munition_shot(){
         CopyOnWriteArrayList<Munition> copyMunitions = new CopyOnWriteArrayList<>(Board.get_instance().get_munitions());
         for (Munition munition: copyMunitions){
-            if (munition.scan() && copyMunitions.contains(munition)){ // Check if a munition has been removed from munitions but is still in its copy
+            if (munition.scan()){
                 System.out.println("Munition détruite");
                 Board.get_instance().remove_munition(munition);
             }

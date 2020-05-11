@@ -27,7 +27,7 @@ public class Map extends Parent{
     private GraphicsContext gc;
     private Stage stage;
     private static Map instance = null;
-    private transient Image level_background, score_img, money_img, wave_img, timer_img, start_wave_button, menu_button, exit_button, win, gameover, star1, star2, star3, snowflake, im_big_npc,buy_freezing_tower_icon, buy_factory_tower_icon,buy_classic_tower_icon, destroy_tower_icon, upgrade_tower_icon;
+    private transient Image level_background, score_img, money_img, wave_img, timer_img, start_wave_button, menu_button, exit_button, star1, star2, star3, snowflake, im_big_npc,buy_freezing_tower_icon, buy_factory_tower_icon,buy_classic_tower_icon, destroy_tower_icon, upgrade_tower_icon;
     private ArrayList<Image> planets = new ArrayList<>();
     private ImageView iv_start_wave_button, iv_menu_button, iv_exit_button,iv_buy_classic_tower_icon, iv_buy_factory_tower_icon, iv_buy_freezing_tower_icon, iv_destroy_tower_icon, iv_upgrade_tower_icon;
     private ArrayList<Integer> type_asteroid = new ArrayList<>();
@@ -42,8 +42,7 @@ public class Map extends Parent{
 
         gc = canvas.getGraphicsContext2D();
         this.stage = stage;
-        create_images();
-        //init_canvas();
+        create_images(); // Initializes all the images
         draw_score_rectangle();
         draw_menu_buttons();
         create_shop();
@@ -60,18 +59,13 @@ public class Map extends Parent{
     }
 
     public void create_images() throws FileNotFoundException {
-        int size_asteroid = Update_manager.get_size_asteroid();
-        for (int j = 1; j < 4; j++) {
-            if (Update_manager.get_level() == j) {
-                level_background = new Image(new FileInputStream("Assets/level" + j + ".jpg"), stage.getWidth(), stage.getHeight(), false, false);
-                for (int i = 0; i < num_diff_asteroid; i++) {
-                    planets.add(new Image(new FileInputStream("Assets/" + j + "planet" + (i + 1) + ".png"), size_asteroid, size_asteroid, false, false));
-                }
-            }
+        int size_asteroid = Update_manager.get_size_static_asteroid();
+        int level = Update_manager.get_level();
+        level_background = new Image(new FileInputStream("Assets/level" + level + ".jpg"), stage.getWidth(), stage.getHeight(), false, false);
+        for (int i = 0; i < num_diff_asteroid; i++) {
+            planets.add(new Image(new FileInputStream("Assets/" + level + "planet" + (i + 1) + ".png"), size_asteroid, size_asteroid, false, false));
         }
 
-        win = new Image(new FileInputStream("Assets/win.png"));
-        gameover = new Image(new FileInputStream("Assets/gameover.jpg"));
         score_img = new Image(new FileInputStream("Assets/score_rectangle_1.png"));
         money_img = new Image(new FileInputStream("Assets/score_rectangle_2.png"));
         wave_img = new Image(new FileInputStream("Assets/score_rectangle_3.png"));
@@ -143,25 +137,17 @@ public class Map extends Parent{
         iv_destroy_tower_icon.setOnMouseClicked(new Shop_listener("Destroy_tower", canvas));
         iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
 
-        String string = " Range: " +" 70\n"+
-                " Period: " +" 2000\n"+
-                " Power: " +" 4\n"+
-                " Price: " +" 100 coins\n";
-        Tooltip tooltip=new Tooltip(string);
+        String string_classic = " Price: " + Game.get_instance().get_price_classic_tower() + " coins\n";
+        Tooltip tooltip=new Tooltip(string_classic);
         Tooltip.install(iv_buy_classic_tower_icon, tooltip);
 
 
-        String string1 = " Money Produced: " +" 20\n"+
-                " Period: " +" 20\n"+
-                " Price: " +" 200 coins \n";
-        Tooltip tooltip1 = new Tooltip(string1);
+        String string_factory = " Price: " + Game.get_instance().get_price_factory_tower() + " coins \n";
+        Tooltip tooltip1 = new Tooltip(string_factory);
         Tooltip.install(iv_buy_factory_tower_icon, tooltip1);
 
-        String string2 = " Range: " +" 50\n"+
-                " Period: " +" 5000\n"+
-                " Power: " +" 3\n"+
-                " Price: " +" 300 coins\n";
-        Tooltip tooltip2=new Tooltip(string2);
+        String string_freezing = " Price: " + Game.get_instance().get_price_freezing_tower() + " coins\n";
+        Tooltip tooltip2=new Tooltip(string_freezing);
         Tooltip.install(iv_buy_freezing_tower_icon, tooltip2);
     }
 
@@ -174,35 +160,35 @@ public class Map extends Parent{
 
     public void show_asteroids_gui(){
         for (Asteroid asteroid : Board.get_instance().get_asteroids()) {
-            type_asteroid.add((int) Math.floor(Math.random() * 5.999999) + 1);
+            type_asteroid.add((int) Math.floor(Math.random() * 6) + 1); // Randomly select an image of asteroid
             pos_x_asteroid.add(asteroid.get_pos_x() * canvas.getWidth() / Board.get_instance().get_dim_x());
             pos_y_asteroid.add(asteroid.get_pos_y() * canvas.getHeight() / Board.get_instance().get_dim_y());
         }
     }
 
-    public void draw_iv(ImageView iv, double x, double y){
+    public void draw_iv(ImageView iv, double x, double y){ // Draws an ImageView on the canvas
         SnapshotParameters params = new SnapshotParameters();
         params.setFill(Color.TRANSPARENT);
         Image image = iv.snapshot(params, null);
         gc.drawImage(image, x*fact_x, y*fact_y);
     }
 
-    public void draw_img(Image img, double x, double y){
+    public void draw_img(Image img, double x, double y){ // Draws an image on the canvas
         gc.drawImage(img, x*fact_x, y*fact_y);
     }
 
-    public void draw_star(int num, double x, double y){
+    public void draw_star(int num, double x, double y){ // Draws starts associated with the level of towers
         if (num == 1) gc.drawImage(star1, x*fact_x,y*fact_y,20,15);
         else if (num == 2) gc.drawImage(star2, x*fact_x,y*fact_y,20,15);
         else gc.drawImage(star3, x*fact_x,y*fact_y,20,15);
     }
 
-    public void draw_snowflake(double x, double y){
+    public void draw_snowflake(double x, double y){ // Draws snowflakes for freezed NPCs
         gc.drawImage(snowflake, x * fact_x, y * fact_y, size_snowflake, size_snowflake);
     }
 
-    public void fill_score_rectangle(int score, int money, int wave, int timer, int npc_destroyed){
-        gc.setFont(new Font("Arial", 15)); //trouver plus joli si temps
+    public void fill_score_rectangle(int score, int money, int wave, int timer, int npc_destroyed){ // Fills the rectangle with score, money, etc with data
+        gc.setFont(new Font("Arial", 15));
         gc.setFill(Color.WHITE);
         gc.fillText(Integer.toString(score), 50, 33);
         gc.fillText(Integer.toString(money), 50, 73);
@@ -217,7 +203,7 @@ public class Map extends Parent{
         gc.drawImage(level_background, 0, 0); // Cover the previous images
         draw_asteroids();
         draw_score_rectangle();
-        //show_forbidden_zones(); // To see rectangles where no asteroid can be placed (behind buttons)e
+        //show_forbidden_zones(); // To see rectangles where no asteroid can be placed (behind buttons)
     }
 
     private void draw_asteroids(){
@@ -259,23 +245,12 @@ public class Map extends Parent{
         gc.fillText(curr_message, canvas.getWidth() - 300, canvas.getHeight() - 120);
     }
 
-    public String get_curr_message(){ return curr_message;}
-    public void set_curr_message(String message){ curr_message = message;}
-
-    public static double get_canvas_height() {
-        return canvas.getHeight();
+    public void delete_start_wave_gui(){
+        iv_start_wave_button.setX(-100); // Moves the button outside of the canvas
+        iv_start_wave_button.setY(-100);
     }
 
-    public static double get_canvas_width() {
-        return canvas.getWidth();
-    }
-
-    public double get_fact_x(){return fact_x;}
-    public double get_fact_y(){return fact_y;}
-
-    public static void set_instance(Map instance) {
-        Map.instance = instance;
-    }
+    public static void set_instance(Map instance){ Map.instance = instance;}
 
     public ArrayList<ArrayList<Double>> get_forbidden(){
         ArrayList<ArrayList<Double>> forbidden = new ArrayList<>(); // zones where asteroids can't be placed
@@ -284,6 +259,13 @@ public class Map extends Parent{
         forbidden.add(new ArrayList<>(Arrays.asList(canvas_width - 2 * menu_button.getWidth() - 50, canvas_width, 0.0, 70.0)));
         return forbidden;
     }
+
+    public String get_curr_message(){ return curr_message;}
+    public void set_curr_message(String message){ curr_message = message;}
+    public static double get_canvas_height(){ return canvas.getHeight();}
+    public static double get_canvas_width(){ return canvas.getWidth(); }
+    public double get_fact_x(){return fact_x;}
+    public double get_fact_y(){return fact_y;}
 
     /*
     public void show_forbidden_zones(){
@@ -299,9 +281,4 @@ public class Map extends Parent{
         }
     }
      */
-
-    public void delete_start_wave_gui(){
-        iv_start_wave_button.setX(-100);
-        iv_start_wave_button.setY(-100);
-    }
 }

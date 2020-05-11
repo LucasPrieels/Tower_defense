@@ -15,14 +15,14 @@ public class Menu_gameover extends Parent {
     private Image image;
 
     public Menu_gameover(Stage theStage, String message){
-        if (message.equals("gameover")) {
+        if (message.equals("gameover")) { // If game is lost
             try {
                 image = new Image(new FileInputStream("Assets/gameover1.jpg"), theStage.getWidth(), theStage.getHeight(), false, false);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }
         }
-        if (message.equals("wingame")) {
+        if (message.equals("wingame")) { // If game is won
             try{
                 image = new Image(new FileInputStream("Assets/win1.png"), theStage.getWidth(), theStage.getHeight(), false, false);
             } catch(FileNotFoundException e){
@@ -36,7 +36,7 @@ public class Menu_gameover extends Parent {
         this.getChildren().addAll(imageView, button_return);
     }
 
-    public static void start_gameover(Stage theStage, String message){
+    public static void start_gameover(Stage theStage, String message){ // Start the menu
         Group root = new Group();
         Menu_gameover menu_over = new Menu_gameover(theStage, message);
         root.getChildren().add(menu_over);

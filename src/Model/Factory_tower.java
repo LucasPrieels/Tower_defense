@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Factory_tower extends Tower implements Runnable{
     private static int[] period = {10, 7, 5}, prod_money = {50, 70, 100}, price_upgrade = {200, 500};
     private static int[] npc_destroyed_needed = {10, 30};
-    private static int max_level = 2; //On compte àpd 0
+    private static int max_level = 2; // Counting from 0
     private static Image factory_tower_img;
     private boolean interrupted = false;
 
@@ -21,7 +21,7 @@ public class Factory_tower extends Tower implements Runnable{
         Game.get_instance().add_thread(thread);
         // Not started yet because we can't produce money before launching the first wave
         try{
-            factory_tower_img = new Image(new FileInputStream("Assets/factory_tower.png"), Tower.get_size() / 1.5, Tower.get_size(), false, false);
+            factory_tower_img = new Image(new FileInputStream("Assets/factory_tower.png"), Tower.get_size_static() / 1.5, Tower.get_size_static(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
@@ -36,8 +36,7 @@ public class Factory_tower extends Tower implements Runnable{
         }
     }
 
-    public boolean scan(){return true;} // Cas dégénéré, la tour produit de l'argent non stop mais on pourrait par exemple imaginer qu'un type de PNJ
-    // empêche la création d'argent, donc la possibilité reste ouverte
+    public boolean scan(){return true;} // The tower doesn't stop producing money
 
     public void action_scanned(NPC npc){action_scanned();} // We have to put it because other action_scanned need a NPC
 

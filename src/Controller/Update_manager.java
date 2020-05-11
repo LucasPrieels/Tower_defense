@@ -130,7 +130,7 @@ public class Update_manager {
     }
 
     public static int get_level(){ return Game.get_instance().get_num_level(); }
-    public static int get_size_asteroid(){ return Asteroid.get_size();}
+    public static int get_size_static_asteroid(){ return Asteroid.get_size_static();}
     public static double get_fact_x(){ return map.get_fact_x();}
     public static double get_fact_y(){ return map.get_fact_y();}
 

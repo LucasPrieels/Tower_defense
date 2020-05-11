@@ -25,49 +25,6 @@ public abstract class NPC implements Serializable, Movable {
         curr_ind = path.get_pos_size()-1;
     }
 
-    public double get_pos_x(){return pos_x;}
-    public double get_pos_y(){return pos_y;}
-
-    public void set_freezed(double time){
-        freezed = time;
-    }
-
-    public void clear_snowflakes(){
-        pos_x_snowflakes.clear();
-        pos_y_snowflakes.clear();
-    }
-
-    public void decrease_freezed(double time){
-        if (freezed>0){
-            freezed -= time;
-            freezed = Math.max(freezed, 0);
-        }
-    }
-
-    public void decrease_health(int num){ health -= num;}
-    public int get_health(){ return health;}
-
-    public Path_custom get_path(){ return path;}
-    public double is_frozen(){ return freezed;}
-    public ArrayList<Double> get_pos_x_snowflakes(){ return pos_x_snowflakes;}
-    public ArrayList<Double> get_pos_y_snowflakes(){ return pos_y_snowflakes;}
-
-    public void add_snowflake(double x, double y){
-        pos_x_snowflakes.add(x);
-        pos_y_snowflakes.add(y);
-    }
-
-    public double get_direction() {
-        double dir_x = get_path().next_pos(Math.max((int)Math.round(curr_ind-10), 0), pos_y, speed).getKey() - pos_x;
-        double dir_y = get_path().next_pos(Math.max((int)Math.round(curr_ind-10), 0), pos_y, speed).getValue() - pos_y;
-        return Math.atan(dir_y/dir_x)*180/Math.PI;
-    }
-
-    public abstract int get_radius();
-
-    public abstract Image get_image();
-    public abstract double get_size();
-
     public void update_pos(){
         double curr_speed = speed;
         if (is_frozen() > 0){
@@ -87,4 +44,41 @@ public abstract class NPC implements Serializable, Movable {
             Game.get_instance().decrease_score(Game.get_instance().get_score_lost());
         }
     }
+
+    public void clear_snowflakes(){
+        pos_x_snowflakes.clear();
+        pos_y_snowflakes.clear();
+    }
+
+    public void decrease_freezed(double time){
+        if (freezed>0){
+            freezed -= time;
+            freezed = Math.max(freezed, 0);
+        }
+    }
+
+    public void add_snowflake(double x, double y){
+        pos_x_snowflakes.add(x);
+        pos_y_snowflakes.add(y);
+    }
+
+    public void set_freezed(double time){ freezed = time;}
+    public void decrease_health(int num){ health -= num;}
+
+    public double get_direction() {
+        double dir_x = get_path().next_pos(Math.max((int)Math.round(curr_ind-10), 0), pos_y, speed).getKey() - pos_x;
+        double dir_y = get_path().next_pos(Math.max((int)Math.round(curr_ind-10), 0), pos_y, speed).getValue() - pos_y;
+        return Math.atan(dir_y/dir_x)*180/Math.PI;
+    }
+
+    public int get_health(){ return health;}
+    public double get_pos_x(){return pos_x;}
+    public double get_pos_y(){return pos_y;}
+    public Path_custom get_path(){ return path;}
+    public double is_frozen(){ return freezed;}
+    public ArrayList<Double> get_pos_x_snowflakes(){ return pos_x_snowflakes;}
+    public ArrayList<Double> get_pos_y_snowflakes(){ return pos_y_snowflakes;}
+
+    public abstract Image get_image();
+    public abstract double get_size();
 }

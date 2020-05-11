@@ -50,14 +50,6 @@ public class Path_constructor {
         return paths;
     }
 
-    private static Pair<Double, Double> increment_pos(double x, double y, double dx, double dy){
-        dx /= Math.sqrt(dx*dx + dy*dy);
-        dy /= Math.sqrt(dx*dx + dy*dy);
-        dx /= fact;
-        dy /= fact;
-        return new Pair<>(x+dx, y+dy);
-    }
-
     private static ArrayList<Pair<Double, Double>> construct_path_1(int dim_x, double start, int path_num){
         ArrayList<Pair<Double, Double>> tab = new ArrayList<>();
         double x = 0, y = start;
@@ -176,5 +168,13 @@ public class Path_constructor {
             }
         }
         return tab;
+    }
+
+    private static Pair<Double, Double> increment_pos(double x, double y, double dx, double dy){
+        dx /= Math.sqrt(dx*dx + dy*dy);
+        dy /= Math.sqrt(dx*dx + dy*dy);
+        dx /= fact;
+        dy /= fact;
+        return new Pair<>(x+dx, y+dy);
     }
 }

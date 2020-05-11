@@ -16,13 +16,13 @@ public class Classic_munition extends Munition {
         Sound shot_snd = TinySound.loadSound("Songs/classic_munition.wav");
         shot_snd.play();
         try{
-            classic_munition_img = new Image(new FileInputStream("Assets/Classic_munition.png"), get_size_munition(), get_size_munition(),false, false);
+            classic_munition_img = new Image(new FileInputStream("Assets/Classic_munition.png"), get_size_static_munition(), get_size_static_munition(),false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
 
-    public void action_scanned(NPC npc){
+    public void action_scanned(NPC npc){ // Munitions explodes
         npc.decrease_health(get_tower().get_power());
         Sound blast_snd = TinySound.loadSound("Songs/blast.wav");
         blast_snd.play(0.8);

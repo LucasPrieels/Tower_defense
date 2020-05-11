@@ -28,7 +28,7 @@ public class Main extends Application {
 
     public void start(Stage theStage){
         Main.theStage = theStage;
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize(); // The game will automatically be in full screen
         Main.theStage.setWidth(screenSize.getWidth());
         Main.theStage.setHeight(screenSize.getHeight());
         Main.theStage.setTitle("Space Defense");
@@ -42,7 +42,5 @@ public class Main extends Application {
         start_static(theStage);
     }
 
-    public static void main() {
-        launch();
-    }
+    public static void main(){ launch();}
 }

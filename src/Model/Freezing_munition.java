@@ -16,13 +16,13 @@ public class Freezing_munition extends Munition {
         Sound shot_snd = TinySound.loadSound("Songs/freezing_munition.wav");
         shot_snd.play();
         try{
-            freezing_munition_img = new Image(new FileInputStream("Assets/Freezing_munition.png"), get_size_munition(), get_size_munition(), false, false);
+            freezing_munition_img = new Image(new FileInputStream("Assets/Freezing_munition.png"), get_size_static_munition(), get_size_static_munition(), false, false);
         } catch(FileNotFoundException e){
             e.printStackTrace();
         }
     }
 
-    public void action_scanned(NPC npc){
+    public void action_scanned(NPC npc){ // Munition explodes
         npc.clear_snowflakes();
         Sound freezed_snd = TinySound.loadSound("Songs/freeze.wav");
         freezed_snd.play();

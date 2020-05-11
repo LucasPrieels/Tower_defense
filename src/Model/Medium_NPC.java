@@ -1,12 +1,12 @@
 package Model;
 
+import Controller.Update_manager;
 import javafx.scene.image.Image;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
 public class Medium_NPC extends NPC {
-    private static int radius = 2;
     private static double size = 45;
     private static Image medium_npc_img;
 
@@ -19,8 +19,7 @@ public class Medium_NPC extends NPC {
         }
     }
 
-    public int get_radius(){return radius;}
-    public static int get_radius_static(){return radius;}
     public Image get_image(){ return medium_npc_img;}
-    public double get_size(){ return size;}
+    public static double get_size_static(){ return 2*size/(Update_manager.get_fact_x() + Update_manager.get_fact_y());}
+    public double get_size(){ return 2*size/(Update_manager.get_fact_x() + Update_manager.get_fact_y());}
 }

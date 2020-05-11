@@ -4,17 +4,13 @@ public abstract class Attack_tower extends Tower implements Runnable{
     private double[] range;
     private int[] power;
 
-    public Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level){
+    public Attack_tower(Asteroid asteroid, double[] range, int[] power, int[] npc_destroyed_needed, int[] period, int[] price_upgrade, int max_level) {
         super(asteroid, period, price_upgrade, max_level, npc_destroyed_needed);
         this.range = range;
         this.power = power;
         this.thread = new Thread(this);
         Game.get_instance().add_thread(thread);
         thread.start();
-    }
-
-    public void add_munition(Munition munition){
-        Board.get_instance().add_munition(munition);
     }
 
     public boolean npc_in_tower_area(NPC npc){
@@ -25,15 +21,16 @@ public abstract class Attack_tower extends Tower implements Runnable{
     public void run(){
         while (true) {
             try{
-                if (scan()) {
-                    Thread.sleep(get_period());
+                if (scan()) { // scan returns true if there is a NPC in the range of the attack tower, and attacks it
+                    Thread.sleep(get_period()); // Since a munition has been launched, the tower has to wait before shooting again
                 }
-                Thread.sleep(1000/Game.get_instance().get_fps());
+                Thread.sleep(1000/Game.get_instance().get_fps()); // Just to avoid checking too frequently and slowing down the code
             } catch(InterruptedException e){
                 return;
             } catch(AssertionError ignored){}
         }
     }
 
-    public int get_power(){return power[get_curr_level()];}
+    public void add_munition(Munition munition){ Board.get_instance().add_munition(munition);}
+    public int get_power(){ return power[get_curr_level()];}
 }

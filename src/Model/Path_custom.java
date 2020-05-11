@@ -18,20 +18,7 @@ public class Path_custom implements Serializable {
         this.width = width;
     }
 
-    public int get_pos_size(){
-        return pos.size();
-    }
-
-    public Pair<Double, Double> next_pos(int curr_ind, double pos_y, double speed){
-        double offset = pos_y-pos.get(Math.min(curr_ind + (int)Math.round(speed), pos.size()-1)).getValue(); // + speed because we search for last position
-        double new_pos_x = pos.get(Math.max(curr_ind, 0)).getKey(); // We have to round speed, which can be a double depending on the number of FPS
-        double new_pos_y = Math.max(pos.get(Math.max(curr_ind, 0)).getValue() + offset, 0);
-        return new Pair<>(new_pos_x, new_pos_y);
-    }
-
-    public int get_width(){return width;}
-
-    public Path get_path_ui() {
+    public Path get_path_ui() { // Creates a Path (from JavaFX) to be displayed
         double fact_x = Update_manager.get_fact_x(), fact_y = Update_manager.get_fact_y();
         Path path = new Path();
 
@@ -42,7 +29,7 @@ public class Path_custom implements Serializable {
         moveTo.setY((pos.get(0).getValue() + 2*actual_width/3) * fact_y); // Initial point
         path.getElements().add(moveTo);
 
-        for (int i = 1; i < pos.size(); i++) {
+        for (int i = 1; i < pos.size(); i++) { // First path of the path
             double apparent_width;
             LineTo lineTo = new LineTo();
             double dy = pos.get(i).getValue() - pos.get(i-1).getValue(); // Difference of y at this point
@@ -61,7 +48,7 @@ public class Path_custom implements Serializable {
             path.setStrokeWidth(0);
         }
 
-        for (int i = pos.size()-1; i > 0; i--){
+        for (int i = pos.size()-1; i > 0; i--){ // Second side of the path
             double apparent_width;
             LineTo lineTo2 = new LineTo();
             double dy = pos.get(i).getValue() - pos.get(i-1).getValue();
@@ -85,10 +72,20 @@ public class Path_custom implements Serializable {
         path.getElements().add(finalLine);
         path.setStrokeWidth(0);
 
-        path.setFill(Color.rgb(0,0,0,0.2));
+        path.setFill(Color.rgb(0,0,0,0.2)); // Darkens the path between the sides
 
         return path;
     }
 
+    public Pair<Double, Double> next_pos(int curr_ind, double pos_y, double speed){
+        // Returns the nex_pos of a NPC currently at position pos_y (associated with the point of the path given by curr_ind) with speed "speed"
+        double offset = pos_y-pos.get(Math.min(curr_ind + (int)Math.round(speed), pos.size()-1)).getValue(); // + speed because we search for last position
+        double new_pos_x = pos.get(Math.max(curr_ind, 0)).getKey(); // We have to round speed, which can be a double depending on the number of FPS
+        double new_pos_y = Math.max(pos.get(Math.max(curr_ind, 0)).getValue() + offset, 0);
+        return new Pair<>(new_pos_x, new_pos_y);
+    }
+
+    public int get_pos_size(){ return pos.size();}
+    public int get_width(){return width;}
     public ArrayList<Pair<Double, Double>> get_pos(){ return pos;}
 }

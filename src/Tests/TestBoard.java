@@ -65,7 +65,7 @@ public class TestBoard {
         Board.get_instance().create_asteroids_random();
         int dim_x = Board.get_instance().get_dim_x(), dim_y = Board.get_instance().get_dim_y();
         int margin_x = Board.get_instance().get_margin_x(), margin_y = Board.get_instance().get_margin_y();
-        double size_asteroid = Asteroid.get_size();
+        double size_asteroid = Asteroid.get_size_static();
         for (Asteroid asteroid: Board.get_instance().get_asteroids()){
             assertTrue(asteroid.get_pos_x() >= margin_x + size_asteroid/2);
             assertTrue(asteroid.get_pos_x() <= dim_x - margin_x - size_asteroid/2);
@@ -98,7 +98,7 @@ public class TestBoard {
                 for (Pair<Double, Double> pair: path.get_pos()){
                     double x1 = pair.getKey(), x2 = asteroid.get_pos_x();
                     double y1 = pair.getValue(), y2 = asteroid.get_pos_y();
-                    cond = cond & Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2)) > Asteroid.get_size();
+                    cond = cond & Math.sqrt(Math.pow(x1-x2, 2) + Math.pow(y1-y2, 2)) > Asteroid.get_size_static();
                 }
             }
             assertTrue(cond);
@@ -114,7 +114,7 @@ public class TestBoard {
                 if (i == j) continue;
                 Asteroid asteroid1 = Board.get_instance().get_asteroids().get(i);
                 Asteroid asteroid2 = Board.get_instance().get_asteroids().get(j);
-                assertTrue(Math.sqrt((Math.pow(asteroid1.get_pos_x() - asteroid2.get_pos_x(), 2) + Math.pow(asteroid1.get_pos_y() - asteroid2.get_pos_y(), 2))) > Asteroid.get_size());
+                assertTrue(Math.sqrt((Math.pow(asteroid1.get_pos_x() - asteroid2.get_pos_x(), 2) + Math.pow(asteroid1.get_pos_y() - asteroid2.get_pos_y(), 2))) > Asteroid.get_size_static());
             }
         }
     }

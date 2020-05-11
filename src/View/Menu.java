@@ -21,7 +21,7 @@ import static Controller.Launch_manager.load_data;
 
 public class Menu extends Parent implements Serializable{
     private Image image;
-    private int level = 1; // Niveau sélectionné si on n'en sélectionne pas d'autre
+    private int level;
 
     public Menu(Stage theStage){
         try{
@@ -121,7 +121,6 @@ public class Menu extends Parent implements Serializable{
             border.getChildren().clear();
             border.setCenter(bp);
 
-            //root.getChildren().add(bp);
             vbox.getChildren().add(border);
 
             level1.setOnMouseClicked(mouseEvent -> {
@@ -144,7 +143,7 @@ public class Menu extends Parent implements Serializable{
         });
     }
 
-    private void vbox_text(Group vbox, String text){
+    private void vbox_text(Group vbox, String text){ // Shows text in vbox
         vbox.getChildren().clear();
         vbox.setLayoutX(400);
         vbox.setLayoutY(100);
@@ -167,7 +166,7 @@ public class Menu extends Parent implements Serializable{
         vbox.getChildren().add(border);
     }
 
-    public static Button new_button(String text, int x, int y, int width, int height, String color){
+    public static Button new_button(String text, int x, int y, int width, int height, String color){ // Creates a new button
         Button button = new Button(text);
         button.setLayoutX(x);
         button.setLayoutY(y);
@@ -178,12 +177,12 @@ public class Menu extends Parent implements Serializable{
     }
 
     public static void sound(){
-        Sound button_snd = TinySound.loadSound("Songs/button.wav");
+        Sound button_snd = TinySound.loadSound("Songs/button.wav"); // Makes the sound when clicked on a button
         button_snd.play();
     }
 
     public static void bad_sound(){
-        Sound bad_button_snd = TinySound.loadSound("Songs/bad_button.wav");
+        Sound bad_button_snd = TinySound.loadSound("Songs/bad_button.wav"); // Makes the sound when clicked on a button and there is an error
         bad_button_snd.play();
     }
 }

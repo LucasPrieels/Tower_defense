@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class Asteroid implements Serializable {
     private double pos_x, pos_y;
-    private boolean occupied;
+    private boolean occupied; // True if there is a tower placed on the asteroid
     private static int size_gui = 50;
 
     public Asteroid(double pos_x, double pos_y){
@@ -26,5 +26,5 @@ public class Asteroid implements Serializable {
         occupied = false;
     }
 
-    public static int get_size(){ return size_gui;}
+    public static int get_size_static(){ return size_gui;}
 }
