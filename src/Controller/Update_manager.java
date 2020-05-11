@@ -37,7 +37,6 @@ public class Update_manager {
 
     public static void update_window(){
         try{
-            System.out.println("Updating");
             map.draw_gui(); // Draws things that can't move during the game
             update_gui(); // Draws things that can move
             map.show_message_displayed(); // Shows eventual messages
@@ -116,6 +115,7 @@ public class Update_manager {
             ImageView npc_iv = new ImageView(npc.get_image());
             npc_iv.setRotate(npc.get_direction() - 90); // So that the NPC is always "looking in front of it"
             map.draw_iv(npc_iv, npc.get_pos_x(), npc.get_pos_y());
+            npc_iv.toFront();
 
             // If the npc is frozen, we print snowflakes around it
             if (npc.is_frozen() > 0){

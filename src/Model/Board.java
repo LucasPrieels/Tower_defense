@@ -23,9 +23,9 @@ public class Board implements Serializable {
         dim_y = 300;
         margin_x = 10;
         margin_y = 10;
-        if (num_level == 2) proba = 0.85; //For each increase of a certain number (see Board) in the points of each path,
-            // there is a probability of proba that we find there an asteroid
-        else proba = 0.95;
+        //For each increase of a certain number (see Board) in the points of each path,
+            //there is a probability of proba that we find there an asteroid
+        proba = 0.95;
         max_distance = 40; //Max distance from each asteroid to the nearest path
         this.paths = Path_constructor.construct(num_level, dim_x, fact); // Construct paths
     }

@@ -1,7 +1,6 @@
 package Model;
 
 import javafx.scene.image.Image;
-
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -9,7 +8,7 @@ import java.util.ArrayList;
 public class Classic_tower extends Attack_tower{
     private static double[] range = {70.0, 100.0, 200.0};
     private static int[] period = {2000, 1500, 1000}, power = {4, 7, 10}, npc_destroyed_needed = {5, 15}, price_upgrade = {100, 200};
-    private static int max_level = 2; //On compte àpd 0
+    private static int max_level = 2; //Counting from 0
     private static Image classic_tower_img;
 
     public Classic_tower(Asteroid asteroid){

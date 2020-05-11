@@ -2,6 +2,7 @@ package Controller;
 
 import Model.Board;
 import Model.Save;
+import Model.Small_NPC;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

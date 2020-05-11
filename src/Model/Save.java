@@ -1,14 +1,16 @@
 package Model;
 
+import javafx.util.Pair;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Save implements Serializable {
     private static final long serialVersionUID = 8L;
-
-    Game game;
-    Level level;
-    Board board;
-    int num_level;
+    private Game game;
+    private Level level;
+    private Board board;
+    private int num_level;
 
     public Save(){
         game = Game.get_instance();
@@ -23,5 +25,5 @@ public class Save implements Serializable {
         Board.set_instance(board);
     }
 
-    public int get_level(){return num_level;}
+    public int get_level(){ return num_level;}
 }
