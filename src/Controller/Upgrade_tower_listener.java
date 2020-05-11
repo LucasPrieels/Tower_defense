@@ -18,7 +18,7 @@ public class Upgrade_tower_listener implements EventHandler<MouseEvent>, Runnabl
 
     public Upgrade_tower_listener(Canvas canvas){ this.canvas = canvas;}
 
-    public void handle(MouseEvent mouseEvent) {
+    public void handle(MouseEvent mouseEvent) { // Shows information about a type of tower if the mouse of the user stays upon the button of this type
         this.mouseEvent = mouseEvent;
         GraphicsContext gc = canvas.getGraphicsContext2D();
         for(Tower tower: Board.get_instance().get_towers()){
@@ -47,8 +47,8 @@ public class Upgrade_tower_listener implements EventHandler<MouseEvent>, Runnabl
             try {
                 synchronized (key) {
                     Platform.runLater(() -> handle(mouseEvent));
-                    Thread.sleep((long) (50.0 / Game.get_instance().get_fps()));
-                    t += 50.0 / Game.get_instance().get_fps();
+                    Thread.sleep((long) (500.0 / Game.get_instance().get_fps()));
+                    t += 500.0 / Game.get_instance().get_fps();
 
                 }
             } catch (InterruptedException e) {

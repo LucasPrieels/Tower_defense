@@ -5,10 +5,7 @@ import View.Menu;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-
-
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -16,12 +13,10 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
     private String message;
     private Canvas canvas;
     public static final Object key = new Object();
-    private ImageView iv_upgrade_tower_icon;
 
-    public Shop_listener(String message, Canvas canvas, ImageView iv_upgrade_tower_icon){
+    public Shop_listener(String message, Canvas canvas){
         this.message = message;
         this.canvas = canvas;
-        this.iv_upgrade_tower_icon = iv_upgrade_tower_icon;
     }
 
     public void handle(MouseEvent mouseEvent) {
@@ -44,7 +39,8 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
             }
         }
         Tower_listener towerListener = new Tower_listener(pos_x_asteroid, pos_y_asteroid, message);
-        canvas.setOnMouseClicked(towerListener);
+        canvas.setOnMouseClicked(towerListener); // Each time we click on the canvas we launch the handle of TowerListener
+
         if(message.equals("Classic_tower") || message.equals("Freezing_tower") || message.equals("Factory_tower")){
             Platform.runLater( () -> Message.set_const_message("Click on an asteroid"));
         }
@@ -58,6 +54,6 @@ public class Shop_listener implements EventHandler<MouseEvent>, Runnable, Serial
             }
                 Platform.runLater( () -> Message.set_const_message("Click on a tower"));
         }
-        Platform.runLater(Update_manager::update_window);
+        Platform.runLater(Update_manager::update_window); // So that the new tower is shown on the screen even if the first wave is not yet running
     }
 }

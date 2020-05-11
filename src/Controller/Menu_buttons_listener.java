@@ -1,6 +1,5 @@
 package Controller;
 
-
 import Model.Board;
 import Model.Game;
 import Model.Level;
@@ -27,7 +26,7 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
         Menu.sound();
         synchronized (key) {
             if (message.equals("exit")) {
-                Game.get_instance().stop_threads();
+                Game.get_instance().stop_threads(); // Stops all the running threads
                 TinySound.shutdown();
                 stage.close();
             }
@@ -35,12 +34,12 @@ public class Menu_buttons_listener implements EventHandler<MouseEvent> {
                 Game.get_instance().stop_threads();
                 Launch_manager.save_data();
 
-                Game.set_instance(null);
+                Game.set_instance(null); // Deletes the current Game, Level, Board and Map after being saved
                 Level.set_instance(null);
                 Board.set_instance(null);
                 Map.set_instance(null);
 
-                Main.start_static(stage);
+                Main.start_static(stage); // Start the game again
             }
         }
     }

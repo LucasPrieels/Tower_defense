@@ -8,21 +8,18 @@ public class Save implements Serializable {
     Level level;
     Board board;
     int num_level;
-    //Map map;
 
     public Save(){
         game = Game.get_instance();
         level = Level.get_instance();
         board = Board.get_instance();
         num_level = Game.get_instance().get_num_level();
-        //map = Map.get_instance();
     }
 
     public void init(){
         Game.set_instance(game);
         Level.set_instance(level);
         Board.set_instance(board);
-        //Map.set_instance(map);
     }
 
     public int get_level(){return num_level;}

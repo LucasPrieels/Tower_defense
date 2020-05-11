@@ -1,7 +1,5 @@
 package Model;
 
-import javafx.scene.image.Image;
-
 public abstract class Attack_tower extends Tower implements Runnable{
     private double[] range;
     private int[] power;

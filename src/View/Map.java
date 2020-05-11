@@ -136,11 +136,11 @@ public class Map extends Parent{
     private void create_shop() {
         draw_shop_icons();
 
-        iv_upgrade_tower_icon.setOnMouseClicked(new Shop_listener("Upgrade_tower", canvas,iv_upgrade_tower_icon));
-        iv_buy_classic_tower_icon.setOnMouseClicked(new Shop_listener("Classic_tower", canvas,iv_upgrade_tower_icon));
-        iv_buy_factory_tower_icon.setOnMouseClicked(new Shop_listener("Factory_tower", canvas,iv_upgrade_tower_icon));
-        iv_buy_freezing_tower_icon.setOnMouseClicked(new Shop_listener("Freezing_tower", canvas,iv_upgrade_tower_icon));
-        iv_destroy_tower_icon.setOnMouseClicked(new Shop_listener("Destroy_tower", canvas,iv_upgrade_tower_icon));
+        iv_upgrade_tower_icon.setOnMouseClicked(new Shop_listener("Upgrade_tower", canvas));
+        iv_buy_classic_tower_icon.setOnMouseClicked(new Shop_listener("Classic_tower", canvas));
+        iv_buy_factory_tower_icon.setOnMouseClicked(new Shop_listener("Factory_tower", canvas));
+        iv_buy_freezing_tower_icon.setOnMouseClicked(new Shop_listener("Freezing_tower", canvas));
+        iv_destroy_tower_icon.setOnMouseClicked(new Shop_listener("Destroy_tower", canvas));
         iv_start_wave_button.setOnMouseClicked(new Start_wave_listener());
 
         String string = " Range: " +" 70\n"+
@@ -213,14 +213,7 @@ public class Map extends Parent{
 
 
 
-
-    public void update_canvas() {
-        draw_gui(); // Draws things that can't move during the game
-        Update_manager.update_gui(); // Draws things that can move
-        show_message_displayed();
-    }
-
-    private void draw_gui(){
+    public void draw_gui(){
         gc.drawImage(level_background, 0, 0); // Cover the previous images
         draw_asteroids();
         draw_score_rectangle();

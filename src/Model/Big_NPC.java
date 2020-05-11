@@ -19,7 +19,7 @@ public class Big_NPC extends NPC {
         }
     }
 
-    public int get_radius(){return radius;} // Pas terrible
+    public int get_radius(){return radius;}
     public static int get_radius_static(){return radius;}
     public Image get_image(){ return big_npc_img;}
     public double get_size(){ return size;}
