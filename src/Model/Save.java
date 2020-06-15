@@ -1,5 +1,7 @@
 package Model;
 
+import Controller.Update_manager;
+import javafx.application.Platform;
 import javafx.util.Pair;
 
 import java.io.Serializable;

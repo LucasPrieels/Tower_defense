@@ -70,14 +70,14 @@ public class Wave implements Runnable, Serializable {
         }
     }
 
-    private void update_pos_movable(){
+    void update_pos_movable(){
         CopyOnWriteArrayList<Movable> copyMovables = new CopyOnWriteArrayList<>(Board.get_instance().get_movables());
         for (Movable movable : copyMovables){
             movable.update_pos(); // Updates the position of all Movable objects
         }
     }
 
-    private void check_munition_shot(){
+    void check_munition_shot(){
         CopyOnWriteArrayList<Munition> copyMunitions = new CopyOnWriteArrayList<>(Board.get_instance().get_munitions());
         for (Munition munition: copyMunitions){
             if (munition.scan()){
